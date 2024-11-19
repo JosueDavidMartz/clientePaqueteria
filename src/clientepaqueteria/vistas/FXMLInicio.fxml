@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="534.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLInicioController">
+   <children>
+      <Pane prefHeight="534.0" prefWidth="160.0" style="-fx-background-color: red;">
+         <children>
+            <VBox layoutY="62.0" prefHeight="472.0" prefWidth="160.0" style="-fx-background-color: gray;">
+               <children>
+                  <Button mnemonicParsing="false" text="Bienvenido" />
+                  <Button mnemonicParsing="false" text="Colaboradores" />
+                  <Button mnemonicParsing="false" text="Clientes" />
+                  <Button mnemonicParsing="false" text="Unidades" />
+                  <Button mnemonicParsing="false" text="Envíos" />
+               </children>
+            </VBox>
+            <Label layoutX="30.0" layoutY="14.0" prefHeight="39.0" prefWidth="100.0" text="Label" />
+         </children>
+      </Pane>
+      <Pane layoutX="160.0" prefHeight="62.0" prefWidth="786.0" style="-fx-background-color: green;">
+         <children>
+            <HBox layoutX="578.0" layoutY="5.0" prefHeight="53.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                  <ImageView fitHeight="39.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </HBox>
+            <Label layoutX="14.0" layoutY="16.0" prefHeight="31.0" prefWidth="446.0" text="Label" />
+         </children>
+      </Pane>
+      <StackPane layoutX="160.0" layoutY="62.0" prefHeight="472.0" prefWidth="786.0" style="-fx-background-color: blue};" />
+   </children>
+</AnchorPane>
