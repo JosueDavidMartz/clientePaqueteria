@@ -69,7 +69,7 @@ public class FXMLInicioController implements Initializable {
     
         
     private void clickFotoColaborador(MouseEvent event) {
-    }
+    } 
 
     @FXML
     private void btnColaborador(ActionEvent event) throws IOException {
@@ -78,10 +78,18 @@ public class FXMLInicioController implements Initializable {
 
     @FXML
     private void btnUnidades(ActionEvent event){  //height 786 x width 474 946 X 474
+      
         try {
-            Parent unidades = FXMLLoader.load(getClass().getResource("/clientepaqueteria/vistas/FXMLUnidades.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLUnidades.fxml"));     
+            Parent unidades = loader.load();        
+            FXMLUnidadesController controlador = loader.getController();          
+            controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "UNIDADES");
+
+            // Paso 5: Cambiar la vista en el StackPane
+            
             spEscena.getChildren().clear();
             spEscena.getChildren().add(unidades);
+            lbNombreModulo.setText("Unidades");
         } catch (IOException ex) {
             Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,8 +97,7 @@ public class FXMLInicioController implements Initializable {
 
     @FXML
     private void btnClientes(ActionEvent event) {
-        
-        Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena); 
+    
                
     }
 
@@ -101,6 +108,7 @@ public class FXMLInicioController implements Initializable {
 
     @FXML
     private void btnPaquetes(ActionEvent event) {
+        
     }
 
     @FXML
@@ -112,5 +120,6 @@ public class FXMLInicioController implements Initializable {
                  
     }
     
+   
     
 }

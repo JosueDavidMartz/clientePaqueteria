@@ -6,6 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioUnidadController">
-    
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioUnidadController">
+   <children>
+      <Label fx:id="lbTitulo" layoutX="286.0" layoutY="183.0" prefHeight="17.0" prefWidth="175.0" text="Soy el formulario de unidades" textFill="WHITE" />
+      <Button layoutX="322.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnVolver" text="volver" />
+   </children>
 </AnchorPane>
