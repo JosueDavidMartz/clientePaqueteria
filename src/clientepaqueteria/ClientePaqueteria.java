@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author WIN 10
+ * @maricarmen
  */
 public class ClientePaqueteria extends Application {
     
