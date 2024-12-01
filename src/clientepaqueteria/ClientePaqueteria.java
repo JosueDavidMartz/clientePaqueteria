@@ -13,16 +13,17 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author WIN 10
+ * @maricarmen
  */
 public class ClientePaqueteria extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/clientepaqueteria/vistas/FXMLAutenticacion.fxml"));
         
         Scene scene = new Scene(root);
         
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
