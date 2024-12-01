@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="786.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLEnviosController">
+   <children>
+      <Pane prefHeight="474.0" prefWidth="786.0" style="-fx-background-color: white;">
+         <children>
+            <Label fx:id="lbBuscarEnvio" layoutX="42.0" layoutY="34.0" prefHeight="33.0" prefWidth="45.0" text="Buscar:" />
+            <TextField fx:id="tfBuscarEnvio" layoutX="95.0" layoutY="31.0" prefHeight="33.0" prefWidth="210.0" />
+            <TableView fx:id="tvEnvios" layoutX="30.0" layoutY="107.0" prefHeight="195.0" prefWidth="733.0">
+              <columns>
+                <TableColumn fx:id="tcCliente" prefWidth="92.0" text="Cliente" />
+                <TableColumn fx:id="tcOrigen" prefWidth="175.0" text="Origen" />
+                  <TableColumn fx:id="tcDestino" prefWidth="178.0" text="Destino" />
+                  <TableColumn fx:id="tcEstado" prefWidth="104.0" text="Estado" />
+                  <TableColumn fx:id="tcConductor" prefWidth="94.0" text="Conductor" />
+                  <TableColumn fx:id="tcPaquetes" prefWidth="89.0" text="Paquetes" />
+              </columns>
+            </TableView>
+            <Button layoutX="494.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnModificar" prefHeight="33.0" prefWidth="117.0" text="Modificar" />
+            <Button layoutX="626.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnCrearEnvio" prefHeight="33.0" prefWidth="117.0" text="Crear envío" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

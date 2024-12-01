@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="296.0" prefWidth="283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLPerfilController">
+   <children>
+      <Pane prefHeight="352.0" prefWidth="308.0" style="-fx-background-color: white;">
+         <children>
+            <ImageView fx:id="ivFotoPerfil" fitHeight="123.0" fitWidth="130.0" layoutX="99.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/Miperfil.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lbNombre" layoutX="5.0" layoutY="174.0" prefHeight="32.0" prefWidth="292.0" text="Nombre">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="105.0" layoutY="210.0" prefHeight="17.0" prefWidth="111.0" text="Número personal" textFill="#24024a">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNumeroPersonal" layoutX="71.0" layoutY="227.0" prefHeight="17.0" prefWidth="187.0" text="0000000000000000000000000000" />
+            <Label fx:id="lbRol" layoutX="145.0" layoutY="255.0" text="ROL" />
+            <Pane layoutX="-1.0" layoutY="307.0" prefHeight="45.0" prefWidth="314.0" style="-fx-background-color: #24024A;">
+               <children>
+                  <ImageView fx:id="ivCerrarSesion" fitHeight="38.0" fitWidth="44.0" layoutX="6.0" layoutY="4.0" onMouseClicked="#ivCerrarSesion" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image%20(6).png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="59.0" layoutY="9.0" text="Cerrar sesión" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="btnSubirFoto" layoutX="178.0" layoutY="136.0" mnemonicParsing="false" onAction="#btnSubirFoto" text="Button" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -97,7 +97,23 @@ public class FXMLInicioController implements Initializable {
 
     @FXML
     private void btnColaborador(ActionEvent event) throws IOException {
-        
+
+         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLColaboradores.fxml"));     
+            Parent colaboradores = loader.load();        
+            FXMLColaboradoresController controlador = loader.getController();         
+            controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "COLABORADORES");
+
+            // Paso 5: Cambiar la vista en el StackPane
+            
+            spEscena.getChildren().clear();
+            spEscena.getChildren().add(colaboradores);
+            lbNombreModulo.setText("Colaboradores");
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+
     }
 
     @FXML
