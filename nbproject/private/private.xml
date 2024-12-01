@@ -3,8 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/WIN%2010/Documents/NetBeansProjects/WS/ClientePaqueteria/src/clientepaqueteria/ClientePaqueteria.java</file>
             <file>file:/C:/Users/WIN%2010/Documents/NetBeansProjects/WS/ClientePaqueteria/src/clientepaqueteria/controladores/FXMLInicioController.java</file>
-            <file>file:/C:/Users/WIN%2010/Documents/NetBeansProjects/WS/ClientePaqueteria/src/clientepaqueteria/utilidades/Utilidades.java</file>
+            <file>file:/C:/Users/WIN%2010/Documents/NetBeansProjects/WS/ClientePaqueteria/src/clientepaqueteria/controladores/FXMLEnviosController.java</file>
+            <file>file:/C:/Users/WIN%2010/Documents/NetBeansProjects/WS/ClientePaqueteria/src/clientepaqueteria/vistas/FXMLEnvios.fxml</file>
+            <file>file:/C:/Users/WIN%2010/Documents/NetBeansProjects/WS/ClientePaqueteria/src/clientepaqueteria/controladores/FXMLUnidadesController.java</file>
         </group>
     </open-files>
 </project-private>

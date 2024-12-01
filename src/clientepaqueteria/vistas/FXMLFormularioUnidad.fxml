@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioUnidadController">
+<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioUnidadController">
    <children>
-      <Label fx:id="lbTitulo" layoutX="286.0" layoutY="183.0" prefHeight="17.0" prefWidth="175.0" text="Soy el formulario de unidades" textFill="WHITE" />
-      <Button layoutX="322.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnVolver" text="volver" />
+      <Pane fx:id="paneContenedorFormularioUnidad" prefHeight="474.0" prefWidth="946.0" style="-fx-background-color: #24024A;">
+         <children>
+            <Label fx:id="lbTitulo" layoutX="35.0" layoutY="35.0" prefHeight="17.0" prefWidth="175.0" text="Registro" textFill="WHITE" />
+            <TextField fx:id="tfMarca" layoutX="80.0" layoutY="131.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tfNoIdentificacionInterno" layoutX="356.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tdAnio" layoutX="639.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tfModelo" layoutX="356.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tfNoIdentificacionVehicular" layoutX="80.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
+            <ComboBox fx:id="cbTipoUnidad" layoutX="639.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" promptText="Gasolina" />
+            <Label layoutX="80.0" layoutY="111.0" prefHeight="17.0" prefWidth="175.0" text="Marca" textFill="WHITE" />
+            <Label layoutX="356.0" layoutY="113.0" prefHeight="17.0" prefWidth="175.0" text="Modelo" textFill="WHITE" />
+            <Label layoutX="639.0" layoutY="113.0" prefHeight="17.0" prefWidth="175.0" text="Año" textFill="WHITE" />
+            <Label layoutX="80.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación vehicular" textFill="WHITE" />
+            <Label layoutX="356.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación interno" textFill="WHITE" />
+            <Label layoutX="639.0" layoutY="209.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de unidad" textFill="WHITE" />
+            <Button layoutX="770.0" layoutY="388.0" mnemonicParsing="false" onAction="#btnGuardarFormularioUnidad" prefHeight="35.0" prefWidth="114.0" text="Guardar" />
+            <Button layoutX="639.0" layoutY="388.0" mnemonicParsing="false" onAction="#btnCancelarFormularioUnidad" prefHeight="35.0" prefWidth="114.0" text="Cancelar" />
+            <ImageView fitHeight="162.0" fitWidth="502.0" layoutX="10.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/fondoFormularioUnidad.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

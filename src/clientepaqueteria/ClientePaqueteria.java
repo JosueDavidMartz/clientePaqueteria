@@ -19,10 +19,11 @@ public class ClientePaqueteria extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("vistas/FXMLInicio.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/clientepaqueteria/vistas/FXMLAutenticacion.fxml"));
         
         Scene scene = new Scene(root);
         
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

@@ -1,6 +1,7 @@
 package clientepaqueteria.utilidades;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
@@ -28,6 +29,10 @@ public class Utilidades {
         spEscena.setLayoutX(160);
         spEscena.setPrefWidth(786);
         label.setText(nombre);
+    }
+
+    public static void mostrarAlertaSimple(String error, String pro_el_momento_no_se_puede_mostrar_la_pan, Alert.AlertType alertType) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

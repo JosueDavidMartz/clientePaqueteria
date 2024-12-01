@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="786.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLPaquetesController">
+   <children>
+      <Pane fx:id="paneContenedorPaquetes" prefHeight="474.0" prefWidth="786.0" style="-fx-background-color: white;">
+         <children>
+            <TableView fx:id="tvPaquetes" layoutX="56.0" layoutY="137.0" prefHeight="200.0" prefWidth="694.0">
+              <columns>
+                <TableColumn fx:id="tcDescripcion" prefWidth="174.0" text="Descripción" />
+                <TableColumn fx:id="tcPeso" prefWidth="89.0" text="Peso" />
+                  <TableColumn fx:id="tcAncho" prefWidth="84.0" text="Ancho" />
+                  <TableColumn fx:id="tcAlto" prefWidth="86.0" text="Alto" />
+                  <TableColumn fx:id="tcProfundidad" prefWidth="94.0" text="Profundidad" />
+                  <TableColumn fx:id="tcEnvio" prefWidth="166.0" text="Envío" />
+              </columns>
+            </TableView>
+            <Label layoutX="65.0" layoutY="69.0" text="Buscar:">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfBuscarPaquete" layoutX="123.0" layoutY="70.0" prefHeight="25.0" prefWidth="210.0" />
+            <Button layoutX="514.0" layoutY="419.0" mnemonicParsing="false" onAction="#btnModificarPaquete" prefHeight="25.0" prefWidth="87.0" text="Modificar" />
+            <Button layoutX="634.0" layoutY="419.0" mnemonicParsing="false" onAction="#btnAgregarPaquete" prefHeight="25.0" prefWidth="87.0" text="Agregar" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

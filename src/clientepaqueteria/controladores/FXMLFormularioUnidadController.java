@@ -11,8 +11,13 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -26,13 +31,29 @@ public class FXMLFormularioUnidadController implements Initializable {
     Label label;
     String nombre;
     
+    
     @FXML
     private Label lbTitulo;
+    @FXML
+    private Pane paneContenedorFormularioUnidad;
+    @FXML
+    private TextField tfMarca;
+    @FXML
+    private TextField tfNoIdentificacionInterno;
+    @FXML
+    private TextField tdAnio;
+    @FXML
+    private TextField tfModelo;
+    @FXML
+    private TextField tfNoIdentificacionVehicular;
+    @FXML
+    private ComboBox<?> cbTipoUnidad;
+ 
 
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
     public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
@@ -45,13 +66,19 @@ public class FXMLFormularioUnidadController implements Initializable {
     public void setStackPane(StackPane stackPane) {
            this.stackPane = stackPane;
        }
+
     @FXML
-    private void btnVolver(ActionEvent event) {
+    private void btnGuardarFormularioUnidad(ActionEvent event) {
+        
+    }
+
+    @FXML
+    private void btnCancelarFormularioUnidad(ActionEvent event) {
         // Remueve la vista actual del StackPane
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Unidades");
     }
-    
-    
+
+   
     
 }
