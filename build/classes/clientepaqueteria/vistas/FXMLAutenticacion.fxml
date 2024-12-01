@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="366.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLAutenticacionController">
+   <children>
+      <Pane prefHeight="366.0" prefWidth="659.0">
+         <children>
+            <Pane prefHeight="366.0" prefWidth="342.0" style="-fx-background-color: #5642B5;">
+               <children>
+                  <ImageView fitHeight="158.0" fitWidth="260.0" layoutX="46.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/logo.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" layoutX="57.0" layoutY="246.0" prefHeight="17.0" prefWidth="240.0" text="FAST PACKET" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="439.0" layoutY="57.0" prefHeight="27.0" prefWidth="149.0" text="INICIAR SESION">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="365.0" layoutY="90.0" text="Por favor ingresar tu numero personal y contraseña" />
+            <Label layoutX="357.0" layoutY="154.0" prefHeight="17.0" prefWidth="104.0" text="Número personal" />
+            <Label layoutX="386.0" layoutY="189.0" prefHeight="17.0" prefWidth="67.0" text="Contraseña" />
+            <Label fx:id="lbErrorIniciarSesion" layoutX="460.0" layoutY="210.0" prefHeight="17.0" prefWidth="161.0" textFill="RED" />
+            <TextField fx:id="tfNumeroPersonal" layoutX="460.0" layoutY="150.0" prefHeight="25.0" prefWidth="161.0" />
+            <PasswordField fx:id="tfContrasenia" layoutX="460.0" layoutY="185.0" prefHeight="25.0" prefWidth="161.0" />
+            <Button layoutX="447.0" layoutY="261.0" mnemonicParsing="false" onAction="#btnIniciarSesion" prefHeight="25.0" prefWidth="121.0" text="Entrar" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

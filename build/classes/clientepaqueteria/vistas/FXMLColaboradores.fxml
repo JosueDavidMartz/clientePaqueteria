@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="684.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLColaboradoresController">
+   <children>
+      <Pane prefHeight="474.0" prefWidth="946.0">
+         <children>
+            <TextField layoutX="157.0" layoutY="43.0" prefHeight="37.0" prefWidth="253.0" promptText="Nombre, Número Personal o Rol">
+               <font>
+                  <Font size="16.0" />
+               </font></TextField>
+            <Label fx:id="lbBuscar" layoutX="80.0" layoutY="44.0" text="Buscar">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Button layoutX="674.0" layoutY="51.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #B61101;" text="Eliminar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
+            <Button layoutX="575.0" layoutY="51.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #034073;" text="Editar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
+            <Button layoutX="476.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnRegistar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #034073;" text="Registrar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
+            <TableView fx:id="tvColaboradores" layoutX="39.0" layoutY="139.0" prefHeight="295.0" prefWidth="735.0">
+              <columns>
+                <TableColumn fx:id="colNoPersonal" prefWidth="133.0" text="Numero Personal" />
+                <TableColumn fx:id="colNombre" prefWidth="115.33334350585938" text="Nombre" />
+                  <TableColumn fx:id="colApellidoP" prefWidth="110.66668701171875" text="Apellido Paterno" />
+                  <TableColumn fx:id="colApellidoM" minWidth="9.66668701171875" prefWidth="114.0" text="Apellido Materno" />
+                  <TableColumn fx:id="colCorreo" minWidth="0.0" prefWidth="127.33331298828125" text="Correo" />
+                  <TableColumn fx:id="colRol" prefWidth="136.66668701171875" text="Rol" />
+              </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Pane>
+   </children>
+</AnchorPane>

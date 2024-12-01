@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="534.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLInicioController">
+   <children>
+      <HBox fx:id="hbSuperior" alignment="CENTER" layoutX="160.0" prefHeight="61.0" prefWidth="786.0" style="-fx-background-color: #10002C;">
+         <children>
+            <Label fx:id="lbNombreModulo" alignment="TOP_LEFT" contentDisplay="RIGHT" prefHeight="31.0" prefWidth="446.0" text="Inicio" textFill="WHITE">
+               <font>
+                  <Font name="System Italic" size="31.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="hbInfoColaborador" alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="233.0" style="-fx-background-color: #10002C;">
+               <children>
+                  <VBox fx:id="vbInfoColaborador" prefHeight="53.0" prefWidth="122.0" style="-fx-background-color: #10002C;">
+                     <children>
+                        <Label fx:id="lbNombreColaborador" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="150.0" text="Nombre" textFill="WHITE">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbRolColaborador" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="125.0" style="-fx-background-color: #10002C;" text="Rol" textFill="#e4cece" />
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <ImageView fx:id="ivFotoColaborador" fitHeight="39.0" fitWidth="85.0" onMouseClicked="#clickFotoColaborador" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image%20(4).png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
+            </HBox>
+         </children>
+      </HBox>
+      <StackPane fx:id="spEscena" layoutX="160.0" layoutY="60.0" prefHeight="474.0" prefWidth="786.0" style="-fx-background-color: #5542B6;" />
+      <VBox fx:id="vbMenu" alignment="TOP_CENTER" prefHeight="534.0" prefWidth="160.0" style="-fx-background-color: #10002C;">
+         <children>
+            <ImageView fx:id="ivLogo" fitHeight="67.0" fitWidth="110.0" onMouseClicked="#clickLogo" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/logo.png" />
+               </image>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </ImageView>
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="160.0" text="Fast Packet" textFill="WHITE">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="39.0" prefWidth="160.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image%20(1).png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Button fx:id="btnColaborador" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#btnColaborador" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Colaborador" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="39.0" prefWidth="160.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image%20(3).png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Button fx:id="btnUnidades" mnemonicParsing="false" onAction="#btnUnidades" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Unidades" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="39.0" prefWidth="160.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image%20(4).png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Button fx:id="btnClientes" mnemonicParsing="false" onAction="#btnClientes" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Clientes" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="39.0" prefWidth="160.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Button fx:id="btnEnvios" mnemonicParsing="false" onAction="#btnEnvios" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Envíos" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="39.0" prefWidth="160.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/image%20(5).png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Button fx:id="btnPaquetes" mnemonicParsing="false" onAction="#btnPaquetes" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Paquetes" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

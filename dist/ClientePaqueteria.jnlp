@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="ClientePaqueteria.jnlp">
+  <information>
+    <title>ClientePaqueteria</title>
+    <vendor>WIN 10</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="ClientePaqueteria.jar" size="280821" download="eager" />
+    <jar href="lib\gson-2.9.1.jar" size="265030" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ClientePaqueteria" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="clientepaqueteria.ClientePaqueteria"  name="ClientePaqueteria" />
+  <update check="always"/>
+</jnlp>
