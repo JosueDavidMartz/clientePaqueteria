@@ -1,7 +1,9 @@
 package clientepaqueteria.utilidades;
 
+import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
@@ -31,9 +33,24 @@ public class Utilidades {
         label.setText(nombre);
     }
 
-    public static void mostrarAlertaSimple(String error, String pro_el_momento_no_se_puede_mostrar_la_pan, Alert.AlertType alertType) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    
+    public static void mostrarAlertaSimple(String titulo, String contenido, Alert.AlertType tipo){
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(contenido);
+        
+        alerta.showAndWait();//muestra y espera la confirmación
     }
     
-    
+    public static boolean mostrarConfirmacion(String titulo, String contenido){
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(contenido);
+        Optional<ButtonType> btnSeleccionado = alerta.showAndWait();
+        return(btnSeleccionado.get() == ButtonType.OK);
+        
+    }
 }
