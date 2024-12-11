@@ -10,9 +10,10 @@ import java.net.HttpURLConnection;
 
 
 public class LoginDAO {
-    public static Login iniciarsesion(String noPersonal, String contrasena) {//Login porque trae la info del json
-        Login respuesta = new Login(); //contiene la info que voya necesitar como respuesta hacia el controlador
-        //invocar el servicio. se necesita la URL y el tipo de metodo (o petición http) y parametros
+    
+    public static Login iniciarsesion(String noPersonal, String contrasena) {
+        System.out.println("nopersonal: "+noPersonal+" contr: "+contrasena);
+        Login respuesta = new Login(); 
         String url = Constantes.URL_WS + "login/colaborador";
         String parametros = String.format("noPersonal=%s&contrasena=%s", noPersonal, contrasena);//llave=valor amperson
         RespuestaHTTP respuestaWS = ConexionWS.peticionPOST(url, parametros); //mandarlo a llamar

@@ -117,7 +117,7 @@ public class FXMLPerfilController implements Initializable {
             escenarioActual.close();
 
         } catch (IOException ex) {
-            Utilidades.mostrarAlertaSimple("Error", 
+            Utilidades.mostrarAlerta("Error", 
                 "Por el momento no se puede mostrar la pantalla de inicio de sesión", 
                 Alert.AlertType.ERROR);
         }
