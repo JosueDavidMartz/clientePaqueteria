@@ -18,11 +18,10 @@ public class Colaborador {
     private String numeroLicencia;
     private String fotoBase64;
 
+
     public Colaborador() {
     }
 
-    
-    
     public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String numeroPersonal, String correo, String curp, String contraseña, Integer idRol, String rol, String numeroLicencia, String fotoBase64) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;

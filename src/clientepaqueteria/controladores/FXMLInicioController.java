@@ -1,6 +1,8 @@
 package clientepaqueteria.controladores;
 
+import clientepaqueteria.pojo.Colaborador;
 import clientepaqueteria.utilidades.Utilidades;
+import clientepaqueteria.utilidades.WindowManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,6 +32,7 @@ import javafx.stage.Stage;
 public class FXMLInicioController implements Initializable {
 
     private Pane paneSuperior;
+    private Colaborador colaborador;
     @FXML
     private HBox hbInfoColaborador;
     @FXML
@@ -59,40 +63,74 @@ public class FXMLInicioController implements Initializable {
     private Button btnPaquetes;
     @FXML
     private HBox hbSuperior;
+    
+    private Stage escenarioInicio;
+
+    
+    public void setEscenario(Stage escenario) {
+    this.escenarioInicio = escenario;
+    WindowManager.registrarVentana("inicio", escenario);
+}
+
+    public Stage getEscenario() {
+        return escenarioInicio;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Image imagen = new Image(getClass().getResourceAsStream("/clientepaqueteria/recursos/logo.png")); 
         ImageView portada = new ImageView(imagen);
         spEscena.getChildren().add(portada); 
-
-    }    
-
-    @FXML
-    
         
-    private void clickFotoColaborador(MouseEvent event) {
-        try {
-            // Cargar el nuevo FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLPerfil.fxml"));     
-            Parent perfil = loader.load();
+        // Registrar el escenario de inicio en WindowManager
+    if (escenarioInicio != null) {
+        WindowManager.registrarVentana("inicio", escenarioInicio);
+    }
+    }
 
-            // Crear un nuevo Stage para la ventana modal
-            Stage stage = new Stage();
-            stage.setScene(new Scene(perfil)); // Establecer el contenido de la ventana
-            stage.setTitle("Perfil del Colaborador"); // Título de la ventana
-
-            // Configurar modalidad
-            stage.setResizable(false);
-            stage.initModality(Modality.WINDOW_MODAL); // Define que es modal
-            stage.initOwner(spEscena.getScene().getWindow()); // Bloquea la ventana actual
-
-            // Mostrar la ventana y esperar a que se cierre
-            stage.showAndWait();
-        } catch (IOException ex) {
-            Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
+    public void obtenerInformacionColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
+        if (colaborador != null) {
+            cargarInformacionColaborador(colaborador);
         }
     }
+    
+    private void cargarInformacionColaborador(Colaborador colaborador) {
+        lbNombreColaborador.setText(colaborador.getNombre());
+        lbRolColaborador.setText(colaborador.getRol());
+    }
+    
+    
+
+    @FXML  
+    private void clickFotoColaborador(MouseEvent event) {
+       try {
+        // Cargar el FXML para la ventana de perfil
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLPerfil.fxml"));
+        Parent perfil = loader.load();
+
+        // Obtener el controlador de la ventana cargada
+        FXMLPerfilController controladorPerfil = loader.getController();
+
+        // Pasar el objeto Colaborador al controlador de perfil
+        controladorPerfil.obtenerInformacionColaborador(colaborador);
+
+        // Crear un nuevo Stage para la ventana modal
+        Stage stage = new Stage();
+        stage.setScene(new Scene(perfil)); // Establecer el contenido de la ventana
+        stage.setTitle("Perfil del Colaborador"); // Título de la ventana
+
+        // Configurar modalidad
+        stage.setResizable(false);
+        stage.initModality(Modality.WINDOW_MODAL); // Define que es una ventana modal
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow()); // Bloquea la ventana actual
+
+        // Mostrar la ventana de perfil
+        stage.showAndWait();
+    } catch (IOException ex) {
+        Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
 
 
     @FXML
