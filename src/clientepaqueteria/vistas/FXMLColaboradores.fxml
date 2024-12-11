@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="684.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLColaboradoresController">
    <children>
-      <Pane prefHeight="474.0" prefWidth="946.0">
+      <Pane prefHeight="474.0" prefWidth="946.0" style="-fx-background-color: white;">
          <children>
             <TextField layoutX="157.0" layoutY="43.0" prefHeight="37.0" prefWidth="253.0" promptText="Nombre, Número Personal o Rol">
                <font>
@@ -21,19 +21,19 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <Button layoutX="674.0" layoutY="51.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #B61101;" text="Eliminar" textFill="WHITE">
+            <Button layoutX="674.0" layoutY="387.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #B61101;" text="Eliminar" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font></Button>
-            <Button layoutX="575.0" layoutY="51.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #034073;" text="Editar" textFill="WHITE">
+            <Button layoutX="575.0" layoutY="387.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #034073;" text="Editar" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font></Button>
-            <Button layoutX="476.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnRegistar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #034073;" text="Registrar" textFill="WHITE">
+            <Button layoutX="476.0" layoutY="386.0" mnemonicParsing="false" onAction="#btnRegistar" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #034073;" text="Registrar" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font></Button>
-            <TableView fx:id="tvColaboradores" layoutX="39.0" layoutY="139.0" prefHeight="295.0" prefWidth="735.0">
+            <TableView fx:id="tvColaboradores" layoutX="37.0" layoutY="122.0" prefHeight="247.0" prefWidth="735.0">
               <columns>
                 <TableColumn fx:id="colNoPersonal" prefWidth="133.0" text="Numero Personal" />
                 <TableColumn fx:id="colNombre" prefWidth="115.33334350585938" text="Nombre" />

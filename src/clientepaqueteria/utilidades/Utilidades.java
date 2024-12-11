@@ -1,8 +1,10 @@
 package clientepaqueteria.utilidades;
 
 
+
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+
 import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -36,6 +38,9 @@ public class Utilidades {
         label.setText(nombre);
     }
 
+
+ 
+    
 
     public static void mostrarAlerta(String titulo, String contenido, Alert.AlertType tipo){
         Alert alerta = new Alert(tipo);

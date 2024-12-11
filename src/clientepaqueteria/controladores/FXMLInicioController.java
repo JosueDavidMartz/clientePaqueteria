@@ -137,8 +137,20 @@ public class FXMLInicioController implements Initializable {
 
     @FXML
     private void btnClientes(ActionEvent event) {
-    
-               
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLCliente.fxml"));     
+            Parent clientes = loader.load();        
+            FXMLClienteController controlador = loader.getController();         
+            controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "CLIENTES");
+
+            // Paso 5: Cambiar la vista en el StackPane
+            
+            spEscena.getChildren().clear();
+            spEscena.getChildren().add(clientes);
+            lbNombreModulo.setText("Clientes");
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }          
     }
 
     @FXML
