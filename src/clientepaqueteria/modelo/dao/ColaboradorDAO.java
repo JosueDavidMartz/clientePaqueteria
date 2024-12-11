@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.List;
+import javafx.collections.ObservableList;
 
 public class ColaboradorDAO {
     
@@ -32,7 +33,7 @@ public class ColaboradorDAO {
     
     public static List<Rol> obtenerRolesColaborador(){
         List <Rol> roles = null;
-        String url = Constantes.URL_WS+"roles/obtenerRoles";
+        String url = Constantes.URL_WS+"colaborador/obtenerRoles";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
         try{
             if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
@@ -48,7 +49,7 @@ public class ColaboradorDAO {
     
     public static Mensaje registrarColaborador(Colaborador colaborador){
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS+"colaborador/registro";
+        String url = Constantes.URL_WS+"colaborador/registroColaboradores";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(colaborador);
@@ -68,11 +69,11 @@ public class ColaboradorDAO {
     
     public static Mensaje modificar(Colaborador colaborador){
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "colaborador/modificarColaborador";
+        String url = Constantes.URL_WS + "colaborador/modificarColaboradores";
         Gson gson = new Gson ();
         try {
-            String parametros = gson.toJson(url);
-            RespuestaHTTP respuesta = ConexionWS.peticionPOSTJson(url, parametros);
+            String parametros = gson.toJson(colaborador);
+            RespuestaHTTP respuesta = ConexionWS.peticionPUTJson(url, parametros);
             if (respuesta.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
             }else{
@@ -86,14 +87,14 @@ public class ColaboradorDAO {
         return msj;
     }
     
-    public static Mensaje eliminarColaborador(String noPersonal) {
+    public static Mensaje eliminarColaborador(int idColaborador) {
     Mensaje msj = new Mensaje();
-    String url = Constantes.URL_WS + "colaborador/eliminar"; // URL para eliminar colaborador
+    String url = Constantes.URL_WS + "colaborador/eliminarColaborador"; // URL para eliminar colaborador
     Gson gson = new Gson();
     
     // Crear un nuevo colaborador solo con el noPersonal
     Colaborador colaborador = new Colaborador();
-    colaborador.setNumeroPersonal(noPersonal);
+    colaborador.setIdColaborador(idColaborador);
     
     try {
         // Convertir el objeto colaborador a JSON
@@ -111,7 +112,44 @@ public class ColaboradorDAO {
     }
     return msj;
 }
+    
+public static Mensaje buscarColaborador(String numeroPersonal) {
+    Mensaje msj = new Mensaje();
+    String url = Constantes.URL_WS + "colaborador/buscarColaborador"; // URL del endpoint
+    Gson gson = new Gson();
+    
+    try {
+        // Enviar la solicitud con los parámetros en formato JSON
+        String jsonInputString = "{\"numeroPersonal\":\"" + numeroPersonal + "\"}";
+        RespuestaHTTP respuesta = ConexionWS.peticionPOSTJson(url, jsonInputString);
+        
+        // Validar la respuesta del servidor
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            // Deserializa la respuesta en una lista de colaboradores
+            Type listType = new TypeToken<List<Colaborador>>() {}.getType();
+            List<Colaborador> colaboradores = gson.fromJson(respuesta.getContenido(), listType);
+            
+            if (colaboradores != null && !colaboradores.isEmpty()) {
+                msj.setError(false);
+                msj.setMensaje("Colaboradores encontrados");
+            } else {
+                msj.setError(true);
+                msj.setMensaje("No se encontraron colaboradores.");
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("Error en la respuesta del servidor: " + respuesta.getContenido()); // Respuesta detallada en caso de error
+        }
+    } catch (Exception e) {
+        msj.setError(true);
+        msj.setMensaje("Error: " + e.getMessage());
+    }
 
-   }
+    return msj;
+}
+
+
+
+}
 
 
