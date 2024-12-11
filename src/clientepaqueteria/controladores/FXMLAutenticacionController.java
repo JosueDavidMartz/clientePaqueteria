@@ -54,7 +54,7 @@ public class FXMLAutenticacionController implements Initializable {
             escenarioBase.setTitle("Inicio");
             escenarioBase.show();
         }catch (IOException ex){
-            Utilidades.mostrarAlertaSimple("Error", "Pro el momento no se puede mostrar la pantalla principal", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlerta("Error", "Pro el momento no se puede mostrar la pantalla principal", Alert.AlertType.ERROR);
 
         }
     }

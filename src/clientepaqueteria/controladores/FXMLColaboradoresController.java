@@ -52,6 +52,8 @@ public class FXMLColaboradoresController implements Initializable {
     private TableColumn colRol;
     @FXML
     private Label lbBuscar;
+    @FXML
+    private TableColumn<?, ?> colLicencia;
     
     
     @Override

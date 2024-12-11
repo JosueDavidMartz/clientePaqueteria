@@ -11,19 +11,18 @@
    <children>
       <Pane fx:id="paneContenedorFormularioUnidad" prefHeight="474.0" prefWidth="946.0" style="-fx-background-color: #24024A;">
          <children>
-            <Label fx:id="lbTitulo" layoutX="35.0" layoutY="35.0" prefHeight="17.0" prefWidth="175.0" text="Registro" textFill="WHITE" />
             <TextField fx:id="tfMarca" layoutX="80.0" layoutY="131.0" prefHeight="35.0" prefWidth="188.0" />
-            <TextField fx:id="tfNoIdentificacionInterno" layoutX="356.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
-            <TextField fx:id="tdAnio" layoutX="639.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tfNoIdentificacionInterno" layoutX="639.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tfAnio" layoutX="639.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
             <TextField fx:id="tfModelo" layoutX="356.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
             <TextField fx:id="tfNoIdentificacionVehicular" layoutX="80.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
-            <ComboBox fx:id="cbTipoUnidad" layoutX="639.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" promptText="Gasolina" />
+            <ComboBox fx:id="cbTipoUnidad" layoutX="356.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
             <Label layoutX="80.0" layoutY="111.0" prefHeight="17.0" prefWidth="175.0" text="Marca" textFill="WHITE" />
             <Label layoutX="356.0" layoutY="113.0" prefHeight="17.0" prefWidth="175.0" text="Modelo" textFill="WHITE" />
             <Label layoutX="639.0" layoutY="113.0" prefHeight="17.0" prefWidth="175.0" text="Año" textFill="WHITE" />
             <Label layoutX="80.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación vehicular" textFill="WHITE" />
-            <Label layoutX="356.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación interno" textFill="WHITE" />
-            <Label layoutX="639.0" layoutY="209.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de unidad" textFill="WHITE" />
+            <Label layoutX="639.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación interno" textFill="WHITE" />
+            <Label layoutX="356.0" layoutY="209.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de unidad" textFill="WHITE" />
             <Button layoutX="770.0" layoutY="388.0" mnemonicParsing="false" onAction="#btnGuardarFormularioUnidad" prefHeight="35.0" prefWidth="114.0" text="Guardar" />
             <Button layoutX="639.0" layoutY="388.0" mnemonicParsing="false" onAction="#btnCancelarFormularioUnidad" prefHeight="35.0" prefWidth="114.0" text="Cancelar" />
             <ImageView fitHeight="162.0" fitWidth="502.0" layoutX="10.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
@@ -31,6 +30,12 @@
                   <Image url="@../recursos/fondoFormularioUnidad.png" />
                </image>
             </ImageView>
+            <Label fx:id="lbErrorMarca" layoutX="80.0" layoutY="169.0" prefHeight="17.0" prefWidth="188.0" textFill="#f20000" />
+            <Label fx:id="lbErrorVin" layoutX="80.0" layoutY="261.0" prefHeight="17.0" prefWidth="188.0" textFill="#ff0101" />
+            <Label fx:id="lbErrorModelo" layoutX="356.0" layoutY="169.0" prefHeight="17.0" prefWidth="188.0" textFill="#fc0000" />
+            <Label fx:id="lbErrorNumeroInterno" layoutX="639.0" layoutY="261.0" prefHeight="17.0" prefWidth="188.0" textFill="RED" />
+            <Label fx:id="lbErrorAño" layoutX="639.0" layoutY="169.0" prefHeight="17.0" prefWidth="188.0" textFill="RED" />
+            <Label fx:id="lbErrorTipoUnidad" layoutX="356.0" layoutY="261.0" prefHeight="17.0" prefWidth="188.0" textFill="RED" />
          </children>
       </Pane>
    </children>
