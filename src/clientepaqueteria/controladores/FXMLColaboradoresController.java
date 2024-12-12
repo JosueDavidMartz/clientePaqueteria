@@ -92,6 +92,7 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
         colApellidoM.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
         colCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
         colRol.setCellValueFactory(new PropertyValueFactory("rol"));
+        colLicencia.setCellValueFactory(new PropertyValueFactory("numeroLicencia"));
     }
 
     private void cargarInformacionTabla() {

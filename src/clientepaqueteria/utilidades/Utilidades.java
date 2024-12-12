@@ -1,6 +1,7 @@
 package clientepaqueteria.utilidades;
 
 
+import clientepaqueteria.pojo.Direccion;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 
@@ -61,5 +62,14 @@ public class Utilidades {
         return (btnSeleccionado.get() == ButtonType.OK);
     }
 
-    
+    public static Direccion direccionOrigen(){
+        Direccion origen = new Direccion();
+        origen.setCalle("Carranza");
+        origen.setNumero(32);
+        origen.setColonia("Benito Juarez");
+        origen.setCodigoPostal(20900);
+        origen.setCiudad("Mexico");
+        origen.setCiudad("Mexico");        
+        return origen;
+    }
 }

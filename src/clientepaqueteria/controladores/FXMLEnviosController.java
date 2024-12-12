@@ -2,6 +2,7 @@ package clientepaqueteria.controladores;
 
 import clientepaqueteria.modelo.dao.EnvioDAO;
 import clientepaqueteria.modelo.dao.UnidadDAO;
+import clientepaqueteria.pojo.Colaborador;
 import clientepaqueteria.pojo.ResultadoObtenerEnvio;
 import clientepaqueteria.pojo.Unidad;
 import clientepaqueteria.utilidades.Utilidades;
@@ -32,6 +33,7 @@ import javafx.scene.layout.VBox;
 
 public class FXMLEnviosController implements Initializable {
     
+    Colaborador colaborador;
     HBox hbSuperior;
     VBox vbMenu;
     StackPane spEscena;
@@ -66,8 +68,9 @@ public class FXMLEnviosController implements Initializable {
         configurarTabla();
     }    
 
-    void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
+    void recibirConfiguracion(Colaborador colaborador, HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
          //To change body of generated methods, choose Tools | Templates.
+        this.colaborador = colaborador;
         this.hbSuperior = hbSuperior;
         this.vbMenu = vbMenu;
         this.spEscena = spEscena;
@@ -103,7 +106,7 @@ public class FXMLEnviosController implements Initializable {
 
          // Pasa el StackPane al nuevo controlador
          controlador.setStackPane(spEscena);
-         controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, label, nombre);
+         controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, label, nombre);
          // Agrega la nueva vista al StackPane (encima de la actual)
          spEscena.getChildren().add(formularioEnvio);
      } catch (IOException e) {

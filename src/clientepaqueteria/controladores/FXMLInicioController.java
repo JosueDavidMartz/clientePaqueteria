@@ -141,7 +141,7 @@ public class FXMLInicioController implements Initializable {
             Parent colaboradores = loader.load();        
             FXMLColaboradoresController controlador = loader.getController();         
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "COLABORADORES");
-
+           
             // Paso 5: Cambiar la vista en el StackPane
             
             spEscena.getChildren().clear();
@@ -198,7 +198,7 @@ public class FXMLInicioController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLEnvios.fxml"));     
             Parent envios = loader.load();        
             FXMLEnviosController controlador = loader.getController();          
-            controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "ENVIOS");
+            controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, lbNombreModulo, "ENVIOS");
 
             // Paso 5: Cambiar la vista en el StackPane
             

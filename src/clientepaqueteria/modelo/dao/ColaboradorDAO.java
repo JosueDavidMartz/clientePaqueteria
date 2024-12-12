@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.Map;
 import javafx.collections.ObservableList;
 
 public class ColaboradorDAO {
@@ -113,39 +114,25 @@ public class ColaboradorDAO {
     return msj;
 }
     
-public static Mensaje buscarColaborador(String numeroPersonal) {
-    Mensaje msj = new Mensaje();
-    String url = Constantes.URL_WS + "colaborador/buscarColaborador"; // URL del endpoint
+public static List<Colaborador> buscarColaborador(Map<String, String> parametros) {
+    List<Colaborador> colaboradores = null;
+    String url = Constantes.URL_WS + "colaborador/buscarColaborador";
     Gson gson = new Gson();
-    
+
     try {
-        // Enviar la solicitud con los parámetros en formato JSON
-        String jsonInputString = "{\"numeroPersonal\":\"" + numeroPersonal + "\"}";
-        RespuestaHTTP respuesta = ConexionWS.peticionPOSTJson(url, jsonInputString);
-        
-        // Validar la respuesta del servidor
+        // Convierte los parámetros a JSON para enviarlos al servicio
+        String parametrosJson = gson.toJson(parametros);
+        RespuestaHTTP respuesta = ConexionWS.peticionPOSTJson(url, parametrosJson);
+
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-            // Deserializa la respuesta en una lista de colaboradores
             Type listType = new TypeToken<List<Colaborador>>() {}.getType();
-            List<Colaborador> colaboradores = gson.fromJson(respuesta.getContenido(), listType);
-            
-            if (colaboradores != null && !colaboradores.isEmpty()) {
-                msj.setError(false);
-                msj.setMensaje("Colaboradores encontrados");
-            } else {
-                msj.setError(true);
-                msj.setMensaje("No se encontraron colaboradores.");
-            }
-        } else {
-            msj.setError(true);
-            msj.setMensaje("Error en la respuesta del servidor: " + respuesta.getContenido()); // Respuesta detallada en caso de error
+            colaboradores = gson.fromJson(respuesta.getContenido(), listType);
         }
     } catch (Exception e) {
-        msj.setError(true);
-        msj.setMensaje("Error: " + e.getMessage());
+        e.printStackTrace();
     }
 
-    return msj;
+    return colaboradores;
 }
 
 
