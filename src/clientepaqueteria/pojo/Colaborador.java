@@ -130,6 +130,10 @@ public class Colaborador {
         this.fotoBase64 = fotoBase64;
     }
 
+    public boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
     
 }
