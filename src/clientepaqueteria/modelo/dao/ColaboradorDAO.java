@@ -135,6 +135,22 @@ public static List<Colaborador> buscarColaborador(Map<String, String> parametros
     return colaboradores;
 }
 
+    public static List<Colaborador> obtenerConductores() {
+        List <Colaborador> conductores = null;
+        String url = Constantes.URL_WS+"colaborador/obtenerConductores";
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        try{
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+                Gson gson = new Gson();
+                Type tipoLista = new TypeToken<List<Colaborador>>(){}.getType();
+                conductores = gson.fromJson(respuesta.getContenido(),tipoLista);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return conductores;
+    }
+
 
 
 }

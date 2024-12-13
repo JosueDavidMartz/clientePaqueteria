@@ -64,12 +64,13 @@ public class Utilidades {
 
     public static Direccion direccionOrigen(){
         Direccion origen = new Direccion();
+        origen.setTipo("Origen");
         origen.setCalle("Carranza");
         origen.setNumero(32);
         origen.setColonia("Benito Juarez");
         origen.setCodigoPostal(20900);
         origen.setCiudad("Mexico");
-        origen.setCiudad("Mexico");        
+        origen.setEstado("Mexico");        
         return origen;
     }
 }

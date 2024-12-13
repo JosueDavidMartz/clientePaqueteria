@@ -8,6 +8,8 @@ package clientepaqueteria.pojo;
 public class ResultadoObtenerEnvio {
     private Integer idEnvio;  
     private String seguimiento;
+    private String numeroGuia;
+    private Float costoEnvio;
     
     private Integer idDireccionOrigen;
     private String tipoOrigen;
@@ -32,6 +34,7 @@ public class ResultadoObtenerEnvio {
     
     private Integer idColaborador; 
     private String nombreColaborador;
+    private String nombreConductor;
     
     private Integer idSeguimiento;
     private String nombreSeguimiento;
@@ -44,9 +47,11 @@ public class ResultadoObtenerEnvio {
     public ResultadoObtenerEnvio() {
     }
 
-    public ResultadoObtenerEnvio(Integer idEnvio, String seguimiento, Integer idDireccionOrigen, String tipoOrigen, String calleOrigen, Integer numeroOrigen, String coloniaOrigen, Integer codigoPostalOrigen, String ciudadOrigen, String estadoOrigen, Integer idDireccionDestino, String tipoDestino, String calleDestino, Integer numeroDestino, String coloniaDestino, Integer codigoPostalDestino, String ciudadDestino, String estadoDestino, Integer idCliente, String nombreCliente, Integer idColaborador, String nombreColaborador, Integer idSeguimiento, String nombreSeguimiento, Integer cantidadPaquetes, boolean error, String mensaje) {
+    public ResultadoObtenerEnvio(Integer idEnvio, String seguimiento, String numeroGuia, Float costoEnvio, Integer idDireccionOrigen, String tipoOrigen, String calleOrigen, Integer numeroOrigen, String coloniaOrigen, Integer codigoPostalOrigen, String ciudadOrigen, String estadoOrigen, Integer idDireccionDestino, String tipoDestino, String calleDestino, Integer numeroDestino, String coloniaDestino, Integer codigoPostalDestino, String ciudadDestino, String estadoDestino, Integer idCliente, String nombreCliente, Integer idColaborador, String nombreColaborador, String nombreConductor, Integer idSeguimiento, String nombreSeguimiento, Integer cantidadPaquetes, boolean error, String mensaje) {
         this.idEnvio = idEnvio;
         this.seguimiento = seguimiento;
+        this.numeroGuia = numeroGuia;
+        this.costoEnvio = costoEnvio;
         this.idDireccionOrigen = idDireccionOrigen;
         this.tipoOrigen = tipoOrigen;
         this.calleOrigen = calleOrigen;
@@ -67,6 +72,7 @@ public class ResultadoObtenerEnvio {
         this.nombreCliente = nombreCliente;
         this.idColaborador = idColaborador;
         this.nombreColaborador = nombreColaborador;
+        this.nombreConductor = nombreConductor;
         this.idSeguimiento = idSeguimiento;
         this.nombreSeguimiento = nombreSeguimiento;
         this.cantidadPaquetes = cantidadPaquetes;
@@ -88,6 +94,22 @@ public class ResultadoObtenerEnvio {
 
     public void setSeguimiento(String seguimiento) {
         this.seguimiento = seguimiento;
+    }
+
+    public String getNumeroGuia() {
+        return numeroGuia;
+    }
+
+    public void setNumeroGuia(String numeroGuia) {
+        this.numeroGuia = numeroGuia;
+    }
+
+    public Float getCostoEnvio() {
+        return costoEnvio;
+    }
+
+    public void setCostoEnvio(Float costoEnvio) {
+        this.costoEnvio = costoEnvio;
     }
 
     public Integer getIdDireccionOrigen() {
@@ -250,6 +272,14 @@ public class ResultadoObtenerEnvio {
         this.nombreColaborador = nombreColaborador;
     }
 
+    public String getNombreConductor() {
+        return nombreConductor;
+    }
+
+    public void setNombreConductor(String nombreConductor) {
+        this.nombreConductor = nombreConductor;
+    }
+
     public Integer getIdSeguimiento() {
         return idSeguimiento;
     }
@@ -290,5 +320,6 @@ public class ResultadoObtenerEnvio {
         this.mensaje = mensaje;
     }
 
+   
     
 }

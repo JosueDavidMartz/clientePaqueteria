@@ -13,6 +13,8 @@ public class Envio {
     private String comentario;
     private Integer idColaborador;
     private Integer idCliente;
+    private Integer idConductor;
+    private String conductor; //CONTINUAR ASIGNANDO EL NOMBRE DELCONDUCTOR LAL CB
     private Seguimiento seguimiento;
     private Direccion direccionOrigen;
     private Direccion direccionDestino;
@@ -24,13 +26,15 @@ public class Envio {
         this.direccionDestino = new Direccion();
     }
 
-    public Envio(Integer idEnvio, String numeroGuia, Float costoEnvio, String comentario, Integer idColaborador, Integer idCliente, Seguimiento seguimiento, Direccion direccionOrigen, Direccion direccionDestino) {
+    public Envio(Integer idEnvio, String numeroGuia, Float costoEnvio, String comentario, Integer idColaborador, Integer idCliente, Integer idConductor, String conductor, Seguimiento seguimiento, Direccion direccionOrigen, Direccion direccionDestino) {
         this.idEnvio = idEnvio;
         this.numeroGuia = numeroGuia;
         this.costoEnvio = costoEnvio;
         this.comentario = comentario;
         this.idColaborador = idColaborador;
         this.idCliente = idCliente;
+        this.idConductor = idConductor;
+        this.conductor = conductor;
         this.seguimiento = seguimiento;
         this.direccionOrigen = direccionOrigen;
         this.direccionDestino = direccionDestino;
@@ -84,6 +88,22 @@ public class Envio {
         this.idCliente = idCliente;
     }
 
+    public Integer getIdConductor() {
+        return idConductor;
+    }
+
+    public void setIdConductor(Integer idConductor) {
+        this.idConductor = idConductor;
+    }
+
+    public String getConductor() {
+        return conductor;
+    }
+
+    public void setConductor(String conductor) {
+        this.conductor = conductor;
+    }
+
     public Seguimiento getSeguimiento() {
         return seguimiento;
     }
@@ -107,4 +127,7 @@ public class Envio {
     public void setDireccionDestino(Direccion direccionDestino) {
         this.direccionDestino = direccionDestino;
     }
+
+    
+
 }

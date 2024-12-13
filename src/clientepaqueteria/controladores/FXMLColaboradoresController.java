@@ -43,6 +43,7 @@ import javafx.scene.layout.VBox;
 public class FXMLColaboradoresController implements Initializable, INotificadorOperacion{
     private ObservableList<Colaborador> colaboradores;
     private FilteredList<Colaborador> listaColaboradores;
+    
     private Unidad unidad;
 
     HBox hbSuperior;
@@ -199,7 +200,7 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
             actualizarTablaColaboradores(FXCollections.observableArrayList(colaboradoresEncontrados));
         } else {
             limpiarTablaColaboradores();
-            // Elimina o comenta esta línea para evitar el mensaje molesto
+            
             // Utilidades.mostrarAlerta("No se encontraron resultados", "No hay colaboradores que coincidan con el filtro: " + filtro, Alert.AlertType.INFORMATION);
         }
     }
