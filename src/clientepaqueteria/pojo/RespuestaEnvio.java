@@ -15,6 +15,7 @@ public class RespuestaEnvio {
     private String numeroGuia;
 
     public RespuestaEnvio() {
+         this.envio = new Envio();
     }
 
     public RespuestaEnvio(Boolean error, String mensaje, Envio envio, List<Envio> envios, String numeroGuia) {
@@ -24,6 +25,8 @@ public class RespuestaEnvio {
         this.envios = envios;
         this.numeroGuia = numeroGuia;
     }
+    
+    
     
     public boolean isError() {
         return error;

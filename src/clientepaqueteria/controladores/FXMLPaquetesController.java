@@ -94,7 +94,7 @@ public class FXMLPaquetesController implements Initializable {
             paquetes.addAll(listaWS);
             tvPaquetes.setItems(paquetes);
         } else {
-            Utilidades.mostrarAlertaSimple("Datos no disponibles", 
+            Utilidades.mostrarAlerta("Datos no disponibles", 
                 "Lo sentimos, por el momento no se puede cargar la información de los paquetes", 
                 Alert.AlertType.ERROR);
         }
@@ -154,7 +154,7 @@ public class FXMLPaquetesController implements Initializable {
             }
         }
     } else {
-        Utilidades.mostrarAlertaSimple(
+        Utilidades.mostrarAlerta(
             "Selecciona Paquete",
             "Para poder eliminar debes seleccionar un paquete de la tabla.",
             Alert.AlertType.WARNING
@@ -165,9 +165,9 @@ public class FXMLPaquetesController implements Initializable {
         //IMPLEMENTACION CON EL DAO
         Mensaje mensaje = PaqueteDAO.eliminarPaquete(idPaquete);
         if (!mensaje.isError()) {
-        Utilidades.mostrarAlertaSimple("Paquete eliminado", mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+        Utilidades.mostrarAlerta("Paquete eliminado", mensaje.getMensaje(), Alert.AlertType.INFORMATION);
         } else {
-            Utilidades.mostrarAlertaSimple("Error al eliminar paquete", mensaje.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlerta("Error al eliminar paquete", mensaje.getMensaje(), Alert.AlertType.ERROR);
         }
         //System.out.println("ID: "+idColaborador);
     }

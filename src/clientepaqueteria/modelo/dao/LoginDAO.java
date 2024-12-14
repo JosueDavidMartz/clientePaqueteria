@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 public class LoginDAO {
     
     public static Login iniciarsesion(String noPersonal, String contrasena) {
-        System.out.println("nopersonal: "+noPersonal+" contr: "+contrasena);
+        
         Login respuesta = new Login(); 
         String url = Constantes.URL_WS + "login/colaborador";
         String parametros = String.format("noPersonal=%s&contrasena=%s", noPersonal, contrasena);//llave=valor amperson

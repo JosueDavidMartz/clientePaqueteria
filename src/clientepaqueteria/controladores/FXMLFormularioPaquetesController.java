@@ -1,11 +1,21 @@
 package clientepaqueteria.controladores;
 
+import clientepaqueteria.modelo.dao.ClienteDAO;
+import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.modelo.dao.PaqueteDAO;
+import clientepaqueteria.pojo.Cliente;
+import clientepaqueteria.pojo.Colaborador;
+import clientepaqueteria.pojo.Envio;
 import clientepaqueteria.pojo.Mensaje;
 import clientepaqueteria.pojo.Paquete;
+import clientepaqueteria.pojo.RespuestaEnvio;
+import clientepaqueteria.pojo.ResultadoObtenerEnvio;
 import clientepaqueteria.utilidades.Utilidades;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,6 +40,9 @@ import javafx.scene.layout.VBox;
 
 
 public class FXMLFormularioPaquetesController implements Initializable {
+    private Map<String, Cliente> clienteMap = new HashMap<>();
+    private Map<String, Colaborador> conductorMap = new HashMap<>();
+    
     private StackPane stackPane;
     HBox hbSuperior;
     VBox vbMenu;
@@ -47,17 +60,30 @@ public class FXMLFormularioPaquetesController implements Initializable {
     private ScrollPane scContenedor;
 
     @FXML
-    private ComboBox<?> cbNombreCliente;
-    @FXML
-    private ComboBox<?> cbConductorEnvio;
+    private ComboBox<String> cbNombreCliente;
+    
     @FXML
     private TextField tfCostoEnvio;
+
+    private List<Paquete> listaPaquetes = new ArrayList<>(); // Lista para almacenar los paquetes
+    private List<VBox> paquetesFormularios = new ArrayList<>();
+    List<Paquete> paquetes;
+    @FXML
+    private ComboBox<String> cbNumeroGuia;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         scContenedor.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scContenedor.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scContenedor.setFitToWidth(true);
+        agregarPaquete();
+        obtenerClientes();
+        
+        scContenedor.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+
+    // Personalizar VBox
+        vbPaquetes.setStyle("-fx-background-color: #f5f5f5; -fx-border-radius: 10; -fx-border-color: #cccccc; -fx-padding: 10;");
     }
 
     public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
@@ -71,121 +97,186 @@ public class FXMLFormularioPaquetesController implements Initializable {
     public void setStackPane(StackPane stackPane) {
         this.stackPane = stackPane;
     }
+    public void obtenerClientes(){
+        
+        
+        List<Cliente> listaClientes = new ArrayList<>();
+        listaClientes = ClienteDAO.obtenerClientes();
+        if (listaClientes != null) {
+            for (Cliente cliente : listaClientes) {
+                cbNombreCliente.getItems().add(cliente.getNombre());
+                clienteMap.put(cliente.getNombre(), cliente);
+            }
+        }
+        
+        cbNombreCliente.valueProperty().addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) {
+                // Llama al método para actualizar los números de guía
+                actualizarNumerosDeGuia(newValue);
+            }
+        });
+    }
+    
+    
 
+    
+    private void actualizarNumerosDeGuia(String nombreCliente) {
+    // Obtiene el objeto Cliente asociado al nombre seleccionado
+        Cliente clienteSeleccionado = clienteMap.get(nombreCliente);
+
+        if (clienteSeleccionado != null) {
+            int idCliente = clienteSeleccionado.getIdCliente(); // Obtén el ID del cliente
+            System.out.println("ID del Cliente seleccionado: " + idCliente);
+
+            // Realiza la consulta para obtener los números de guía asociados
+            List<String> numerosDeGuia = PaqueteDAO.obtenerNumerosDeGuiaPorCliente(idCliente);
+
+            // Limpia y actualiza el ComboBox de números de guía
+            cbNumeroGuia.getItems().clear();
+            if (numerosDeGuia != null) {
+                cbNumeroGuia.getItems().addAll(numerosDeGuia);
+            }
+        }
+    
+    }
+    
+    
+    
+    
     @FXML
     private void btnCancelarPaquete(ActionEvent event) {
-        // Remueve la vista actual del StackPane
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Paquetes");
     }
 
     @FXML
     private void btnAceptarPaquete(ActionEvent event) {
-        // 1. Mostrar el formulario de vinculación de envío (paneVincularEnvio)
-        paneVincularEnvio.setVisible(true);
+        //paneVincularEnvio.setVisible(true);
+ 
+        paquetes = new ArrayList<>();
 
-        // 2. Capturar los datos del formulario de paquetes
-        for (int i = 0; i < vbPaquetes.getChildren().size(); i++) {
-            TitledPane titledPane = (TitledPane) vbPaquetes.getChildren().get(i);
-            VBox formulario = (VBox) titledPane.getContent();
-
-            // Obtener los controles del formulario
+        for (VBox formulario : paquetesFormularios) {
+        // Obtener los campos del formulario
             TextArea txtDescripcion = (TextArea) formulario.lookup("#txtDescripcion");
             TextField txtAlto = (TextField) formulario.lookup("#txtAlto");
             TextField txtAncho = (TextField) formulario.lookup("#txtAncho");
             TextField txtLargo = (TextField) formulario.lookup("#txtLargo");
             TextField txtPeso = (TextField) formulario.lookup("#txtPeso");
 
-            // Verificar que no haya campos vacíos
-            String descripcion = txtDescripcion.getText();
-            String alto = txtAlto.getText();
-            String ancho = txtAncho.getText();
-            String largo = txtLargo.getText();
-            String peso = txtPeso.getText();
-
-            if (descripcion.isEmpty() || alto.isEmpty() || ancho.isEmpty() || largo.isEmpty() || peso.isEmpty()) {
-                // Si hay algún campo vacío, mostrar un mensaje de error y detener el proceso
-                Utilidades.mostrarAlertaSimple("Error", "Todos los campos son obligatorios", Alert.AlertType.ERROR);
-                return;
-            }
-
-            // Crear un nuevo objeto Paquete con los datos del formulario
-            Paquete paquete = new Paquete();
-            paquete.setDescripcion(descripcion);
-            paquete.setDimensionAlto(Float.parseFloat(alto));
-            paquete.setDimensionAncho(Float.parseFloat(ancho));
-            paquete.setDimensionProfundidad(Float.parseFloat(largo));
-            paquete.setPeso(Float.parseFloat(peso));
-
-            // Registrar el paquete usando el DAO
-            Mensaje mensaje = PaqueteDAO.registrarPaquete(paquete);
-
-            if (!mensaje.isError()) {
-                // Si se guarda correctamente, mostrar un mensaje de éxito
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Paquete Guardado");
-                alert.setHeaderText(null);
-                alert.setContentText("El paquete #" + (i + 1) + " ha sido guardado correctamente.");
-                alert.showAndWait();
-            } else {
-                // Si ocurre un error, mostrar el mensaje de error
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
-            }
+        // Verificar si los campos están vacíos
+        if (txtDescripcion.getText().isEmpty() || 
+            txtAlto.getText().isEmpty() || 
+            txtAncho.getText().isEmpty() || 
+            txtLargo.getText().isEmpty() || 
+            txtPeso.getText().isEmpty()) {
+            
+            // Mostrar alerta si hay campos vacíos
+            Utilidades.mostrarAlerta("Error", "Por favor, complete todos los campos.", Alert.AlertType.ERROR);
+            return;  // Salir si hay campos vacíos
         }
+
+        try {
+            // Convertir los valores a números
+            float alto = Float.parseFloat(txtAlto.getText());
+            float ancho = Float.parseFloat(txtAncho.getText());
+            float largo = Float.parseFloat(txtLargo.getText());
+            float peso = Float.parseFloat(txtPeso.getText());
+
+            // Crear el objeto Paquete
+            Paquete paquete = new Paquete();
+            paquete.setDescripcion(txtDescripcion.getText());
+            paquete.setDimensionAlto(alto);
+            paquete.setDimensionAncho(ancho);
+            paquete.setDimensionProfundidad(largo);
+            paquete.setPeso(peso);
+
+            // Añadir el paquete a la lista
+            paquetes.add(paquete);
+
+        } catch (NumberFormatException e) {
+            // Mostrar alerta si hay error en la conversión
+            Utilidades.mostrarAlerta("Error", "Por favor, ingrese valores numéricos válidos para las dimensiones y el peso.", Alert.AlertType.ERROR);
+            return;  // Salir si hay error de formato
+        }
+        }
+
+        // Si se llegó aquí, significa que todos los formularios son válidos
+        // Ahora puedes guardar los paquetes en la base de datos o procesarlos
+       // guardarPaquetes(paquetes);
+        paneVincularEnvio.setVisible(true);
     }
 
-    /*@FXML
-    private void btnAceptarEnvio(ActionEvent event) {
-        // 3. Mostrar un mensaje de confirmación antes de guardar la información
-        String cliente = (String) cbNombreCliente.getValue();
-        String guia = (String) cbNumeroGuia.getValue();
-        String conductor = (String) cbConductorEnvio.getValue();
-        String costoEnvio = tfCostoEnvio.getText();
+    
+    
+        private void guardarPaquetes(List<Paquete> paquetes, String costo, String guia) {
+         // Mostrar el panel para vincular el envío
+         System.out.println("Total de paquetes registrados: " + paquetes.size());
+         boolean error = false;
+         String mensaje;
+         int idEnvio = 0;
 
-        // Verificar que los campos no estén vacíos
-        if (cliente == null || guia == null || conductor == null || costoEnvio.isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Error", "Todos los campos son obligatorios", Alert.AlertType.ERROR);
-            return;
-        }
+         // Obtener el ID de un envío por el número de guía
+         try {
+             ResultadoObtenerEnvio envio = PaqueteDAO.consultarEnvio(guia);
+             if (envio != null) {
+                 idEnvio = envio.getIdEnvio();
+             } else {
+                 Utilidades.mostrarAlerta("Error", "No se encontró un envío con el número de guía proporcionado.", Alert.AlertType.ERROR);
+                 return;
+             }
+         } catch (Exception e) {
+             Utilidades.mostrarAlerta("Error", "Hubo un problema al recuperar el envío: " + e.getMessage(), Alert.AlertType.ERROR);
+             return;
+         }
 
-        // Crear el mensaje de confirmación
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación");
-        alert.setHeaderText("¿Estás seguro de que deseas guardar esta información?");
-        alert.setContentText("Cliente: " + cliente + "\nNúmero de guía: " + guia + "\nConductor: " + conductor + "\nCosto: " + costoEnvio);
+         // Asignar el ID del envío a cada paquete antes de registrarlo
+         for (Paquete paquete : paquetes) {
+             paquete.setIdEnvio(idEnvio); // Asegúrate de que el atributo exista en tu clase Paquete
+             try {
+                 Mensaje respuesta = PaqueteDAO.registrarPaquete(paquete);
+                 if (respuesta != null && !respuesta.isError()) {
+                     mensaje = respuesta.getMensaje();
+                 } else {
+                     error = true;
+                     mensaje = respuesta != null ? respuesta.getMensaje() : "Error al registrar el paquete.";
+                 }
+             } catch (Exception e) {
+                 error = true;
+                 mensaje = "Excepción al registrar el paquete: " + e.getMessage();
+             }
+         }
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                // 4. Guardar los datos en la base de datos (Simulando el proceso)
-                // Crear el objeto de envío y guardar los datos
-                Envio envio = new Envio();
-                envio.setCliente(cliente);
-                envio.setNumeroGuia(guia);
-                envio.setConductor(conductor);
-                envio.setCosto(Float.parseFloat(costoEnvio));
+         // Registrar el costo si no hubo errores
+         if (!error) {
+             try {           
+                 
+                 Envio envio = new Envio();
+                 
+                 envio.setNumeroGuia(guia);
+                 float costoConvertido = Float.parseFloat(costo);
+    
+                // Asignar el valor convertido al objeto
+                 envio.setCostoEnvio(costoConvertido);
+        
+                 RespuestaEnvio respuestaCosto = PaqueteDAO.registrarCosto(envio);
+                 
+                 if (respuestaCosto != null && !respuestaCosto.isError()) {
+                     Utilidades.mostrarAlerta("Éxito", "Los paquetes y el costo han sido registrados correctamente.", Alert.AlertType.INFORMATION);
+                 } else {
+                     Utilidades.mostrarAlerta("Advertencia", "Los paquetes fueron registrados, pero hubo un problema con el costo.", Alert.AlertType.WARNING);
+                 }
+             } catch (Exception e) {
+                 Utilidades.mostrarAlerta("Error", "Hubo un problema al registrar el costo: " + e.getMessage(), Alert.AlertType.ERROR);
+             }
+         } else {
+             Utilidades.mostrarAlerta("Error", "Hubo problemas al registrar algunos o todos los paquetes.", Alert.AlertType.ERROR);
+         }
+     }
 
-                Mensaje mensajeEnvio = PaqueteDAO.registrarEnvio(envio);
-                if (!mensajeEnvio.isError()) {
-                    // Mostrar mensaje de éxito
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Envío Guardado");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("El envío ha sido guardado correctamente.");
-                    successAlert.showAndWait();
-                } else {
-                    // Si ocurre un error, mostrar mensaje de error
-                    Utilidades.mostrarAlertaSimple("Error", mensajeEnvio.getMensaje(), Alert.AlertType.ERROR);
-                }
 
-                // 5. Regresar a la vista de paquetes
-                btnCancelarEnvio(event);
-            }
-        });
-    }*/
 
     @FXML
     private void btnCancelarEnvio(ActionEvent event) {
-        // Ocultar el formulario de vinculación de envío
         paneVincularEnvio.setVisible(false);
     }
 
@@ -195,56 +286,87 @@ public class FXMLFormularioPaquetesController implements Initializable {
     }
 
     private void agregarPaquete() {
-        // Contenedor del formulario
-        VBox formulario = new VBox();
-        formulario.setSpacing(10);
-        formulario.setStyle("-fx-padding: 10; -fx-border-color: lightgray; -fx-border-radius: 5;");
+    // Contenedor del formulario
+    VBox formulario = new VBox();
+    formulario.setSpacing(10);
+    formulario.setStyle("-fx-padding: 10; -fx-border-color: lightgray; -fx-border-radius: 5;");
 
-        // Campo de descripción
-        Label lblDescripcion = new Label("Descripción:");
-        TextArea txtDescripcion = new TextArea();
-        txtDescripcion.setPromptText("Ingrese la descripción del paquete");
-        txtDescripcion.setPrefRowCount(3);
-        txtDescripcion.setId("txtDescripcion");  // Asignar ID para poder acceder después
+    // Campo de descripción
+    Label lblDescripcion = new Label("Descripción:");
+    TextArea txtDescripcion = new TextArea();
+    txtDescripcion.setPromptText("Ingrese la descripción del paquete");
+    txtDescripcion.setPrefRowCount(3);
+    txtDescripcion.setId("txtDescripcion");
 
-        // Campo de dimensiones
-        Label lblDimensiones = new Label("Dimensiones (cm):");
-        HBox hbDimensiones = new HBox(10);
-        TextField txtAlto = new TextField();
-        txtAlto.setPromptText("Alto");
-        txtAlto.setId("txtAlto");
-        TextField txtAncho = new TextField();
-        txtAncho.setPromptText("Ancho");
-        txtAncho.setId("txtAncho");
-        TextField txtLargo = new TextField();
-        txtLargo.setPromptText("Largo");
-        txtLargo.setId("txtLargo");
-        hbDimensiones.getChildren().addAll(txtAlto, txtAncho, txtLargo);
+    // Campo de dimensiones
+    Label lblDimensiones = new Label("Dimensiones (cm):");
+    HBox hbDimensiones = new HBox(10);
+    TextField txtAlto = new TextField();
+    txtAlto.setPromptText("Alto");
+    txtAlto.setId("txtAlto");
+    TextField txtAncho = new TextField();
+    txtAncho.setPromptText("Ancho");
+    txtAncho.setId("txtAncho");
+    TextField txtLargo = new TextField();
+    txtLargo.setPromptText("Largo");
+    txtLargo.setId("txtLargo");
+    hbDimensiones.getChildren().addAll(txtAlto, txtAncho, txtLargo);
 
-        // Campo de peso
-        Label lblPeso = new Label("Peso (kg):");
-        TextField txtPeso = new TextField();
-        txtPeso.setPromptText("Ingrese el peso");
-        txtPeso.setId("txtPeso");
+    // Campo de peso
+    Label lblPeso = new Label("Peso (kg):");
+    TextField txtPeso = new TextField();
+    txtPeso.setPromptText("Ingrese el peso");
+    txtPeso.setId("txtPeso");
 
-        // Agregar elementos al formulario
-        formulario.getChildren().addAll(
-                lblDescripcion, txtDescripcion,
-                lblDimensiones, hbDimensiones,
-                lblPeso, txtPeso
-        );
+    // Agregar elementos al formulario
+    formulario.getChildren().addAll(
+            lblDescripcion, txtDescripcion,
+            lblDimensiones, hbDimensiones,
+            lblPeso, txtPeso
+    );
 
-        // Crear el TitledPane con el formulario
-        TitledPane nuevoPaquete = new TitledPane();
-        nuevoPaquete.setText("Paquete #" + (vbPaquetes.getChildren().size() + 1));
-        nuevoPaquete.setContent(formulario);
+    // Crear el TitledPane con el formulario
+    TitledPane nuevoPaquete = new TitledPane();
+    nuevoPaquete.setText("Paquete #" + (vbPaquetes.getChildren().size() + 1));
+    nuevoPaquete.setContent(formulario);
 
-        // Agregar el TitledPane al VBox principal
-        vbPaquetes.getChildren().add(nuevoPaquete);
-    }
+    // Agregar el TitledPane al VBox principal
+    vbPaquetes.getChildren().add(nuevoPaquete);
+
+    // Guardar la referencia del formulario generado en una lista (para ser procesada luego)
+    paquetesFormularios.add(formulario);  // Lista global que contiene todos los formularios
+}
 
     @FXML
     private void btnAceptarEnvio(ActionEvent event) {
-    }
+        
+         if (cbNumeroGuia.getValue() != null && 
+            cbNombreCliente.getValue() != null && 
+            tfCostoEnvio.getText() != null && !tfCostoEnvio.getText().isEmpty()) {
+             
+            
+            String guiaSeleccionada = cbNumeroGuia.getValue();
+           
 
+            /*int idCliente = 0;
+            String nombreClienteSeleccionado = cbNombreCliente.getValue();
+            if (nombreClienteSeleccionado != null) {
+                Cliente clienteSeleccionado = clienteMap.get(nombreClienteSeleccionado);
+                if (clienteSeleccionado != null) {
+                    idCliente = clienteSeleccionado.getIdCliente();
+                }
+            }*/
+             
+             guardarPaquetes(paquetes, tfCostoEnvio.getText(), guiaSeleccionada);
+            
+        } else {
+            // Mostrar mensaje de error si algún campo está vacío
+            lbErrorSeleccionarEnvio.setText("No dejes ningún campo vacío.");
+            // Opcional: mostrar una alerta
+            //Utilidades.mostrarAlerta("Datos faltantes", "Por favor, no dejes ningún campo vacío.", Alert.AlertType.INFORMATION);
+        }
+        
+        // Lógica para aceptar el envío
+         
+    }
 }
