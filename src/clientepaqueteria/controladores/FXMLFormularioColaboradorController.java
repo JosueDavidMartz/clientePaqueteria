@@ -62,6 +62,8 @@ public class FXMLFormularioColaboradorController implements Initializable {
     private TextField tfApellidoMaterno;
     @FXML
     private PasswordField pfContraseña;
+    @FXML
+    private Label lbNumeroLicencia;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -69,13 +71,16 @@ public class FXMLFormularioColaboradorController implements Initializable {
 
         // Inicialmente, ocultar el campo de la licencia
         tfNumLicencia.setVisible(false);
+        lbNumeroLicencia.setVisible(false);
 
         // Agregar un ChangeListener al ComboBox para verificar el rol seleccionado
         cbRol.valueProperty().addListener((observable, oldValue, newValue) -> {
     if (newValue != null && "Conductor".equals(newValue.getNombre())) {
-        tfNumLicencia.setVisible(true);  // Muestra el campo de licencia si el rol es Conductor
+        tfNumLicencia.setVisible(true);
+        lbNumeroLicencia.setVisible(true);// Muestra el campo de licencia si el rol es Conductor
     } else {
-        tfNumLicencia.setVisible(false); // Oculta el campo de licencia para otros roles
+        tfNumLicencia.setVisible(false);
+        lbNumeroLicencia.setVisible(false);
     }
 });
 
@@ -122,47 +127,51 @@ public class FXMLFormularioColaboradorController implements Initializable {
         tfCorreo.setText(this.colaboradorEdicion.getCorreo());
         tfCurp.setText(this.colaboradorEdicion.getCurp());
         pfContraseña.setText(this.colaboradorEdicion.getContraseña());
-        tfNumeroPersonal.setEditable(false); // No editable en edición
+        tfNumLicencia.setText(this.colaboradorEdicion.getNumeroLicencia());
+        tfNumeroPersonal.setEditable(false); 
         int posicionRol = obtenerPosicionRol(this.colaboradorEdicion.getIdRol());
         cbRol.getSelectionModel().select(posicionRol);
+        
+        tfNumeroPersonal.setDisable(true);  
+        cbRol.setDisable(true);
     }
 
-    @FXML
-    private void btnAceptar(ActionEvent event) {
-        // Obtener los valores de los campos del formulario
-        String numeroPersonal = tfNumeroPersonal.getText();
-        String nombre = tfNombre.getText();
-        String apellidoPaterno = tfApellidoPaterno.getText();
-        String apellidoMaterno = tfApellidoMaterno.getText();
-        String correo = tfCorreo.getText();
-        String curp = tfCurp.getText();
-        String numLicencia = tfNumLicencia.isVisible() ? tfNumLicencia.getText() : null;  // Solo obtiene la licencia si es visible
-        String contrasena = pfContraseña.getText();
-        int idRol = (cbRol.getSelectionModel().getSelectedItem() != null)
-                ? cbRol.getSelectionModel().getSelectedItem().getIdRol() : 0;
-        
-        Colaborador colaborador = new Colaborador();
-        colaborador.setNumeroPersonal(numeroPersonal);
-        colaborador.setNombre(nombre);
-        colaborador.setApellidoPaterno(apellidoPaterno);
-        colaborador.setApellidoMaterno(apellidoMaterno);
-        colaborador.setCorreo(correo);
-        colaborador.setCurp(curp);
-        colaborador.setNumeroLicencia(numLicencia);  // Si el campo es visible, toma el valor
-        colaborador.setContraseña(contrasena);
-        colaborador.setIdRol(idRol);
+   @FXML
+private void btnAceptar(ActionEvent event) {
+    // Obtener los valores de los campos del formulario
+    String numeroPersonal = tfNumeroPersonal.getText();
+    String nombre = tfNombre.getText();
+    String apellidoPaterno = tfApellidoPaterno.getText();
+    String apellidoMaterno = tfApellidoMaterno.getText();
+    String correo = tfCorreo.getText();
+    String curp = tfCurp.getText();
+    String numLicencia = tfNumLicencia.isVisible() ? tfNumLicencia.getText() : null;  // Solo obtiene la licencia si es visible
+    String contrasena = pfContraseña.getText();
+    int idRol = (cbRol.getSelectionModel().getSelectedItem() != null)
+            ? cbRol.getSelectionModel().getSelectedItem().getIdRol() : 0;
+    
+    Colaborador colaborador = new Colaborador();
+    colaborador.setNumeroPersonal(numeroPersonal);
+    colaborador.setNombre(nombre);
+    colaborador.setApellidoPaterno(apellidoPaterno);
+    colaborador.setApellidoMaterno(apellidoMaterno);
+    colaborador.setCorreo(correo);
+    colaborador.setCurp(curp);
+    colaborador.setNumeroLicencia(numLicencia);  // Si el campo es visible, toma el valor
+    colaborador.setContraseña(contrasena);
+    colaborador.setIdRol(idRol);
 
-        if (sonCamposValidos(colaborador)) {
-            if (!modoEdicion) {
-                guardarDatosColaborador(colaborador); // Si es nuevo, guarda
-            } else {
-                colaborador.setIdColaborador(colaboradorEdicion.getIdColaborador()); // Para la edición, usa el ID
-                editarDatosColaborador(colaborador); // Llama al método para editar
-            }
+    if (sonCamposValidos(colaborador)) {
+        if (!modoEdicion) {
+            guardarDatosColaborador(colaborador); // Si es nuevo, guarda
         } else {
-            Utilidades.mostrarAlerta("Error de validación", "Por favor, corrige los errores en el formulario.", Alert.AlertType.ERROR);
+            colaborador.setIdColaborador(colaboradorEdicion.getIdColaborador()); // Para la edición, usa el ID
+            editarDatosColaborador(colaborador); // Llama al método para editar
         }
     }
+}
+
+
 
     @FXML
     private void btnSubirFoto(ActionEvent event) {
@@ -179,50 +188,53 @@ public class FXMLFormularioColaboradorController implements Initializable {
     }
 
     private boolean sonCamposValidos(Colaborador colaborador) {
-        // Validar nombre
-        if (colaborador.getNombre().trim().isEmpty()) {
-            Utilidades.mostrarAlerta("Campo vacío", "El nombre no puede estar vacío.", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        // Validar apellido paterno
-        if (colaborador.getApellidoPaterno().trim().isEmpty()) {
-            Utilidades.mostrarAlerta("Campo vacío", "El apellido paterno no puede estar vacío.", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        // Validar correo
-        if (colaborador.getCorreo().trim().isEmpty()) {
-            Utilidades.mostrarAlerta("Campo vacío", "El correo no puede estar vacío.", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        // Validar CURP
-        if (colaborador.getCurp().trim().isEmpty()) {
-            Utilidades.mostrarAlerta("Campo vacío", "El CURP no puede estar vacío.", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        // Validar contraseña
-        if (colaborador.getContraseña().trim().isEmpty()) {
-            Utilidades.mostrarAlerta("Campo vacío", "La contraseña no puede estar vacía.", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        // Validar licencia solo si el rol es "Conductor"
-        if ("Conductor".equals(colaborador.getRol()) && (colaborador.getNumeroLicencia() == null || colaborador.getNumeroLicencia().trim().isEmpty())) {
-            Utilidades.mostrarAlerta("Campo vacío", "El número de licencia es obligatorio para conductores.", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        // Validar rol
-        if (colaborador.getIdRol() == 0) {  // Asumiendo que `idRol` es el identificador numérico del rol
-            Utilidades.mostrarAlerta("Campo vacío", "Debe seleccionar un rol.", Alert.AlertType.WARNING);
+    // Validar nombre
+    if (colaborador.getNombre().trim().isEmpty()) {
+        Utilidades.mostrarAlerta("Campo vacío", "El nombre no puede estar vacío.", Alert.AlertType.WARNING);
         return false;
-        }
-
-        return true; // Si todos los campos son válidos
     }
+
+    // Validar apellido paterno
+    if (colaborador.getApellidoPaterno().trim().isEmpty()) {
+        Utilidades.mostrarAlerta("Campo vacío", "El apellido paterno no puede estar vacío.", Alert.AlertType.WARNING);
+        return false;
+    }
+
+    // Validar correo
+    if (colaborador.getCorreo().trim().isEmpty()) {
+        Utilidades.mostrarAlerta("Campo vacío", "El correo no puede estar vacío.", Alert.AlertType.WARNING);
+        return false;
+    }
+
+    // Validar CURP
+    if (colaborador.getCurp().trim().isEmpty()) {
+        Utilidades.mostrarAlerta("Campo vacío", "El CURP no puede estar vacío.", Alert.AlertType.WARNING);
+        return false;
+    }
+
+    // Validar contraseña
+    if (colaborador.getContraseña().trim().isEmpty()) {
+        Utilidades.mostrarAlerta("Campo vacío", "La contraseña no puede estar vacía.", Alert.AlertType.WARNING);
+        return false;
+    }
+    // Validar licencia solo si el rol es "Conductor" y el campo es visible
+    if (modoEdicion && "Conductor".equals(cbRol.getSelectionModel().getSelectedItem().getNombre()) && 
+        tfNumLicencia.isVisible() && tfNumLicencia.getText().trim().isEmpty()) {
+    Utilidades.mostrarAlerta("Campo vacío", "El número de licencia es obligatorio para conductores.", Alert.AlertType.WARNING);
+    return false;
+}
+
+
+
+    // Validar rol solo si no estamos en edición
+    if (!modoEdicion && colaborador.getIdRol() == 0) {  // Asumiendo que `idRol` es el identificador numérico del rol
+        Utilidades.mostrarAlerta("Campo vacío", "Debe seleccionar un rol.", Alert.AlertType.WARNING);
+        return false;
+    }
+
+    return true; // Si todos los campos son válidos
+}
+
 
     private void guardarDatosColaborador(Colaborador colaborador) {
         Mensaje mensaje = ColaboradorDAO.registrarColaborador(colaborador);
@@ -262,8 +274,9 @@ public class FXMLFormularioColaboradorController implements Initializable {
         if (!msj.isError()) {
             Utilidades.mostrarAlerta("Colaborador actualizado", "La información del colaborador " + 
                     colaborador.getNombre() + " ha sido actualizada correctamente.", Alert.AlertType.INFORMATION);
-            recargarPantallaColaboradores();
+            btnVolver(null);
         } else {
+            System.out.println(msj.getMensaje());
             Utilidades.mostrarAlerta("Error al modificar", msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }

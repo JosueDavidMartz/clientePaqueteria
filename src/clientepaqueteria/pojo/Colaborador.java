@@ -133,4 +133,5 @@ public class Colaborador {
         this.fotoBase64 = fotoBase64;
     }
 
+
 }
