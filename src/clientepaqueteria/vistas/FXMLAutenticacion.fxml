@@ -33,11 +33,12 @@
             </Label>
             <Label layoutX="365.0" layoutY="90.0" text="Por favor ingresar tu numero personal y contraseña" />
             <Label layoutX="357.0" layoutY="154.0" prefHeight="17.0" prefWidth="104.0" text="Número personal" />
-            <Label layoutX="386.0" layoutY="189.0" prefHeight="17.0" prefWidth="67.0" text="Contraseña" />
-            <Label fx:id="lbErrorIniciarSesion" layoutX="460.0" layoutY="210.0" prefHeight="17.0" prefWidth="161.0" textFill="RED" />
+            <Label layoutX="380.0" layoutY="202.0" prefHeight="17.0" prefWidth="67.0" text="Contraseña" />
+            <Label fx:id="lbErrorContraseña" layoutX="460.0" layoutY="222.0" prefHeight="17.0" prefWidth="161.0" textFill="RED" />
             <TextField fx:id="tfNumeroPersonal" layoutX="460.0" layoutY="150.0" prefHeight="25.0" prefWidth="161.0" />
-            <PasswordField fx:id="tfContrasenia" layoutX="460.0" layoutY="185.0" prefHeight="25.0" prefWidth="161.0" />
-            <Button layoutX="447.0" layoutY="261.0" mnemonicParsing="false" onAction="#btnIniciarSesion" prefHeight="25.0" prefWidth="121.0" text="Entrar" />
+            <PasswordField fx:id="tfContrasenia" layoutX="460.0" layoutY="198.0" prefHeight="25.0" prefWidth="161.0" />
+            <Button layoutX="447.0" layoutY="261.0" mnemonicParsing="false" onAction="#clicIngresar" prefHeight="25.0" prefWidth="121.0" text="Entrar" />
+            <Label fx:id="lbErrorNumeropersonal" layoutX="460.0" layoutY="175.0" prefHeight="17.0" prefWidth="161.0" textFill="RED" />
          </children>
       </Pane>
    </children>

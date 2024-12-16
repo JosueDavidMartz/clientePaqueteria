@@ -2,7 +2,7 @@ package clientepaqueteria.modelo.dao;
 
 import clientepaqueteria.modelo.ConexionWS;
 import clientepaqueteria.pojo.Cliente;
-import clientepaqueteria.pojo.ClienteTabla;
+//import clientepaqueteria.pojo.ClienteTabla;
 import clientepaqueteria.pojo.Direccion;
 import clientepaqueteria.pojo.Mensaje;
 import clientepaqueteria.pojo.RespuestaHTTP;

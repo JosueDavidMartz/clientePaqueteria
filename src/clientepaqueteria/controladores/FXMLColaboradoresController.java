@@ -80,10 +80,11 @@ public void initialize(URL url, ResourceBundle rb) {
     configurarTabla();
     cargarInformacionTabla();
     configurarFiltro();
+
 }
 
     private void configurarTabla() {
-        colNoPersonal.setCellValueFactory(new PropertyValueFactory("numeroPersonal"));
+        colNoPersonal.setCellValueFactory(new PropertyValueFactory("noPersonal"));
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         colApellidoP.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
         colApellidoM.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
@@ -190,7 +191,7 @@ public void initialize(URL url, ResourceBundle rb) {
                 if (colaborador.getNombre()!= null && colaborador.getNombre().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                if (colaborador.getNumeroPersonal()!= null && colaborador.getNumeroPersonal().toLowerCase().contains(lowerCaseFilter)) {
+                if (colaborador.getNoPersonal()!= null && colaborador.getNoPersonal().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 if (colaborador.getRol()!= null && colaborador.getRol().toLowerCase().contains(lowerCaseFilter)) {

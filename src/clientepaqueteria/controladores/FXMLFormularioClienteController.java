@@ -3,7 +3,7 @@ package clientepaqueteria.controladores;
 import clientepaqueteria.interfaz.INotificadorOperacion;
 import clientepaqueteria.modelo.dao.ClienteDAO;
 import clientepaqueteria.pojo.Cliente;
-import clientepaqueteria.pojo.ClienteTabla;
+//import clientepaqueteria.pojo.ClienteTabla;
 import clientepaqueteria.pojo.Direccion;
 import clientepaqueteria.pojo.Mensaje;
 import clientepaqueteria.utilidades.Utilidades;

@@ -1,8 +1,14 @@
 package clientepaqueteria.controladores;
 
+import clientepaqueteria.interfaz.INotificadorOperacion;
+import clientepaqueteria.modelo.dao.ColaboradorDAO;
+import clientepaqueteria.pojo.Colaborador;
 import clientepaqueteria.utilidades.Utilidades;
+import clientepaqueteria.utilidades.WindowManager;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,13 +28,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 public class FXMLInicioController implements Initializable {
 
-    private Pane paneSuperior;
+ private Pane paneSuperior;
+    private Colaborador colaborador;
+    private INotificadorOperacion observador;
     @FXML
     private HBox hbInfoColaborador;
     @FXML
@@ -59,72 +67,77 @@ public class FXMLInicioController implements Initializable {
     private Button btnPaquetes;
     @FXML
     private HBox hbSuperior;
+    
+    private Stage escenarioInicio;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Image imagen = new Image(getClass().getResourceAsStream("/clientepaqueteria/recursos/logo.png")); 
         ImageView portada = new ImageView(imagen);
         spEscena.getChildren().add(portada); 
+    }
+    
+   public void InicializarValores(INotificadorOperacion observador, Colaborador colaborador) {
+        this.observador = observador;
+        this.colaborador = colaborador;
+        lbRolColaborador.setText(colaborador.getRol());
+    }
 
-    }    
+
+    public void setEscenario(Stage escenario) {
+        this.escenarioInicio = escenario;
+        WindowManager.registrarVentana("inicio", escenario);
+    }
+
+    public Stage getEscenario() {
+        return escenarioInicio;
+    }
 
     @FXML
-    
-        
     private void clickFotoColaborador(MouseEvent event) {
+        cargarInformacionColaborador(colaborador);
+        INotificadorOperacion observador = null;
         try {
-            // Cargar el nuevo FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLPerfil.fxml"));     
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLPerfil.fxml"));
             Parent perfil = loader.load();
+            FXMLPerfilController controlador = loader.getController();
+            controlador.InicializarValores(observador, colaborador);
+            controlador.setInicioController(this);
 
-            // Crear un nuevo Stage para la ventana modal
             Stage stage = new Stage();
-            stage.setScene(new Scene(perfil)); // Establecer el contenido de la ventana
-            stage.setTitle("Perfil del Colaborador"); // Título de la ventana
-
-            // Configurar modalidad
+            stage.setScene(new Scene(perfil));
+            stage.setTitle("Perfil del Colaborador");
             stage.setResizable(false);
-            stage.initModality(Modality.WINDOW_MODAL); // Define que es modal
-            stage.initOwner(spEscena.getScene().getWindow()); // Bloquea la ventana actual
-
-            // Mostrar la ventana y esperar a que se cierre
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(spEscena.getScene().getWindow());
             stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-
     @FXML
-    private void btnColaborador(ActionEvent event) throws IOException {
-         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLColaboradores.fxml"));     
-            Parent colaboradores = loader.load();        
-            FXMLColaboradoresController controlador = loader.getController();         
+    private void btnColaborador(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLColaboradores.fxml"));
+            Parent colaboradores = loader.load();
+            FXMLColaboradoresController controlador = loader.getController();
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "COLABORADORES");
-
-            // Paso 5: Cambiar la vista en el StackPane
-            
             spEscena.getChildren().clear();
             spEscena.getChildren().add(colaboradores);
             lbNombreModulo.setText("Colaboradores");
         } catch (IOException ex) {
             Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
     }
 
     @FXML
-    private void btnUnidades(ActionEvent event){  //height 786 x width 474 946 X 474
-      
+    private void btnUnidades(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLUnidades.fxml"));     
-            Parent unidades = loader.load();        
-            FXMLUnidadesController controlador = loader.getController();          
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLUnidades.fxml"));
+            Parent unidades = loader.load();
+            FXMLUnidadesController controlador = loader.getController();
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "UNIDADES");
-
-            // Paso 5: Cambiar la vista en el StackPane
-            
             spEscena.getChildren().clear();
             spEscena.getChildren().add(unidades);
             lbNombreModulo.setText("Unidades");
@@ -136,70 +149,91 @@ public class FXMLInicioController implements Initializable {
     @FXML
     private void btnClientes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLCliente.fxml"));     
-            Parent clientes = loader.load();        
-            FXMLClienteController controlador = loader.getController();         
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLCliente.fxml"));
+            Parent clientes = loader.load();
+            FXMLClienteController controlador = loader.getController();
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "CLIENTES");
-
-            // Paso 5: Cambiar la vista en el StackPane
-            
             spEscena.getChildren().clear();
             spEscena.getChildren().add(clientes);
             lbNombreModulo.setText("Clientes");
         } catch (IOException ex) {
             Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }          
+        }
     }
 
     @FXML
     private void btnEnvios(ActionEvent event) {
-        
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLEnvios.fxml"));     
-            Parent envios = loader.load();        
-            FXMLEnviosController controlador = loader.getController();          
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLEnvios.fxml"));
+            Parent envios = loader.load();
+            FXMLEnviosController controlador = loader.getController();
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "ENVIOS");
-
-            // Paso 5: Cambiar la vista en el StackPane
-            
             spEscena.getChildren().clear();
             spEscena.getChildren().add(envios);
             lbNombreModulo.setText("Envios");
         } catch (IOException ex) {
             Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 
     @FXML
     private void btnPaquetes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLPaquetes.fxml"));     
-            Parent paquetes = loader.load();        
-            FXMLPaquetesController controlador = loader.getController();          
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLPaquetes.fxml"));
+            Parent paquetes = loader.load();
+            FXMLPaquetesController controlador = loader.getController();
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "PAQUETES");
-
-            // Paso 5: Cambiar la vista en el StackPane
-            
             spEscena.getChildren().clear();
             spEscena.getChildren().add(paquetes);
             lbNombreModulo.setText("Paquetes");
         } catch (IOException ex) {
             Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 
     @FXML
     private void clickLogo(MouseEvent event) {
-        Image imagen = new Image(getClass().getResourceAsStream("/clientepaqueteria/recursos/logo.png")); 
+        Image imagen = new Image(getClass().getResourceAsStream("/clientepaqueteria/recursos/logo.png"));
         ImageView portada = new ImageView(imagen);
         spEscena.getChildren().clear();
-        spEscena.getChildren().add(portada);   
+        spEscena.getChildren().add(portada);
         lbNombreModulo.setText("Inicio");
-                 
+    }
+
+    public void obtenerInformacionColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
+        if (colaborador != null) {
+            cargarInformacionColaborador(colaborador);
+        }
     }
     
-   
-    
+    private void cargarInformacionColaborador(Colaborador colaborador) {
+        System.out.print(colaborador.getNombre());
+        System.out.print(colaborador.getNoPersonal());
+        System.out.print(colaborador.getRol());
+        lbNombreColaborador.setText(colaborador.getNombre());
+        lbRolColaborador.setText(colaborador.getRol());
+        cargarFotoPerfil();
+    }
+
+    private void cargarFotoPerfil() {
+        int idColaborador = colaborador.getIdColaborador();
+        Colaborador colaboradorConFoto = ColaboradorDAO.obtenerFotoBase64(idColaborador);
+
+        if (colaboradorConFoto != null && colaboradorConFoto.getFotoBase64() != null && !colaboradorConFoto.getFotoBase64().isEmpty()) {
+            byte[] decodeImage = Base64.getDecoder().decode(colaboradorConFoto.getFotoBase64().replaceAll("\\n", ""));
+            Image image = new Image(new ByteArrayInputStream(decodeImage));
+            ivFotoColaborador.setImage(image);
+            Circle clip = new Circle(ivFotoColaborador.getFitWidth() / 2, ivFotoColaborador.getFitHeight() / 2, ivFotoColaborador.getFitWidth() / 2);
+                ivFotoColaborador.setClip(clip);
+        }
+    }
+
+    public void actualizarFotoPerfil(Colaborador colaborador) {
+        if (colaborador != null && colaborador.getFotoBlob() != null) {
+            byte[] fotoBlob = colaborador.getFotoBlob();
+            Image nuevaImagen = new Image(new ByteArrayInputStream(fotoBlob));
+            ivFotoColaborador.setImage(nuevaImagen);
+        }
+    }
 }

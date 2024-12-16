@@ -6,8 +6,13 @@ import clientepaqueteria.pojo.Colaborador;
 import clientepaqueteria.pojo.Mensaje;
 import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.pojo.Rol;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,14 +25,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 public class FXMLFormularioColaboradorController implements Initializable {
 
@@ -64,6 +72,8 @@ public class FXMLFormularioColaboradorController implements Initializable {
     private PasswordField pfContraseña;
     @FXML
     private Label lbNumeroLicencia;
+    @FXML
+    private Button botonFoto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -86,14 +96,26 @@ public class FXMLFormularioColaboradorController implements Initializable {
 
     }
     
-     public void InicializarValores(INotificadorOperacion observador, Colaborador colaboradorEdicion){
-        this.observador = observador;
-        this.colaboradorEdicion = colaboradorEdicion;
-        if (colaboradorEdicion != null){
-            modoEdicion = true;
-            cargarDatosEdicion();
+     public void InicializarValores(INotificadorOperacion observador, Colaborador colaboradorEdicion) {
+    this.observador = observador;
+    this.colaboradorEdicion = colaboradorEdicion;
+
+    ivFoto.setVisible(false);
+    botonFoto.setVisible(false);
+
+    if (colaboradorEdicion != null) {
+        modoEdicion = true;
+        ivFoto.setVisible(true);
+        botonFoto.setVisible(true);
+        cargarDatosEdicion();
+
+        // Mostrar la foto del colaborador si tiene un ID válido
+        if (colaboradorEdicion.getIdColaborador() > 0) {
+            mostrarFoto(colaboradorEdicion.getIdColaborador());
         }
     }
+}
+
 
     public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
         this.hbSuperior = hbSuperior;
@@ -120,7 +142,8 @@ public class FXMLFormularioColaboradorController implements Initializable {
     }
     
     private void cargarDatosEdicion(){
-        tfNumeroPersonal.setText(this.colaboradorEdicion.getNumeroPersonal());
+        System.out.println("IDCOLABORADOR: "+colaboradorEdicion.getIdColaborador());
+        tfNumeroPersonal.setText(this.colaboradorEdicion.getNoPersonal());
         tfNombre.setText(this.colaboradorEdicion.getNombre());
         tfApellidoPaterno.setText(this.colaboradorEdicion.getApellidoPaterno());
         tfApellidoMaterno.setText(this.colaboradorEdicion.getApellidoMaterno());
@@ -139,27 +162,33 @@ public class FXMLFormularioColaboradorController implements Initializable {
    @FXML
 private void btnAceptar(ActionEvent event) {
     // Obtener los valores de los campos del formulario
-    String numeroPersonal = tfNumeroPersonal.getText();
+    String noPersonal = tfNumeroPersonal.getText();
     String nombre = tfNombre.getText();
     String apellidoPaterno = tfApellidoPaterno.getText();
     String apellidoMaterno = tfApellidoMaterno.getText();
     String correo = tfCorreo.getText();
     String curp = tfCurp.getText();
-    String numLicencia = tfNumLicencia.isVisible() ? tfNumLicencia.getText() : null;  // Solo obtiene la licencia si es visible
+    String numLicencia = tfNumLicencia.isVisible() ? tfNumLicencia.getText() : null; // Solo obtiene la licencia si es visible
     String contrasena = pfContraseña.getText();
     int idRol = (cbRol.getSelectionModel().getSelectedItem() != null)
             ? cbRol.getSelectionModel().getSelectedItem().getIdRol() : 0;
     
+    // Crear el objeto Colaborador
     Colaborador colaborador = new Colaborador();
-    colaborador.setNumeroPersonal(numeroPersonal);
+    colaborador.setNoPersonal(noPersonal);
     colaborador.setNombre(nombre);
     colaborador.setApellidoPaterno(apellidoPaterno);
     colaborador.setApellidoMaterno(apellidoMaterno);
     colaborador.setCorreo(correo);
     colaborador.setCurp(curp);
-    colaborador.setNumeroLicencia(numLicencia);  // Si el campo es visible, toma el valor
+    colaborador.setNumeroLicencia(numLicencia); // Si el campo es visible, toma el valor
     colaborador.setContraseña(contrasena);
     colaborador.setIdRol(idRol);
+
+    // Añadir la foto si está disponible
+    if (colaboradorEdicion != null && colaboradorEdicion.getFotoBlob() != null) {
+        colaborador.setFotoBlob(colaboradorEdicion.getFotoBlob());
+    }
 
     if (sonCamposValidos(colaborador)) {
         if (!modoEdicion) {
@@ -172,11 +201,56 @@ private void btnAceptar(ActionEvent event) {
 }
 
 
+@FXML
+private void btnSubirFoto(ActionEvent event) {
+    int idColaborador = colaboradorEdicion.getIdColaborador();
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Seleccionar foto");
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.jpg", "*.png", "*.jpeg"));
+    File archivoFoto = fileChooser.showOpenDialog(null);
 
-    @FXML
-    private void btnSubirFoto(ActionEvent event) {
-        // Lógica para subir la foto del colaborador
+    if (archivoFoto != null) {
+        try {
+            byte[] fotoBlob = Files.readAllBytes(archivoFoto.toPath());
+            Mensaje respuesta = ColaboradorDAO.subirFoto(idColaborador, fotoBlob);
+            if (!respuesta.isError()) {
+                colaboradorEdicion.setFotoBlob(fotoBlob); // Asignar directamente el LongBlob
+                mostrarAlerta("Éxito", "Foto subida correctamente");
+                mostrarFoto(idColaborador); // Actualiza la imagen
+            } else {
+                mostrarAlerta("Error", respuesta.getMensaje());
+            }
+        } catch (IOException e) {
+            mostrarAlerta("Error", "Error al leer el archivo de foto: " + e.getMessage());
+        }
     }
+}
+
+
+private void mostrarFoto(int idColaborador) {
+    Colaborador colaborador = ColaboradorDAO.obtenerFotoBase64(idColaborador);
+        if(colaborador!=null&& colaborador.getFotoBase64()!=null && colaborador.getFotoBase64().length()>0){
+            byte[] decodeImage = Base64.getDecoder().decode(colaborador.getFotoBase64().replaceAll("\\n", ""));
+            Image image = new Image(new ByteArrayInputStream(decodeImage));
+            ivFoto.setImage(image);
+        }
+}
+
+
+
+
+
+
+
+
+
+private void mostrarAlerta(String titulo, String mensaje) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle(titulo);
+    alert.setContentText(mensaje);
+    alert.showAndWait();
+}
+
 
     private void cargarRoles() {
         roles = FXCollections.observableArrayList();

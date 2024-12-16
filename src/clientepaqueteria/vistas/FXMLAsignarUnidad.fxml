@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLAsignarUnidadController">
+    <children>
+        <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #F9FAFB;">
+            <children>
+                <Label layoutX="200.0" layoutY="20.0" text="Asignar Unidad" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Arial Bold" size="24.0" />
+                    </font>
+                </Label>
+                <VBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="80.0" prefWidth="500.0" spacing="20.0">
+                   <children>
+                       <HBox alignment="CENTER_LEFT" spacing="10.0">
+                          <children>
+                              <Label text="Número Vehículo:" wrapText="true">
+                                  <font>
+                                      <Font name="Arial Bold" size="16.0" />
+                                  </font>
+                              </Label>
+                              <Label fx:id="lbNoVehiculo" text="Aquí va Número del Vehículo" textFill="#5A5A5A" wrapText="true">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </Label>
+                          </children>
+                       </HBox>
+                       <HBox alignment="CENTER_LEFT" spacing="10.0">
+                          <children>
+                              <Label text="Número Personal:" wrapText="true">
+                                  <font>
+                                      <Font name="Arial Bold" size="16.0" />
+                                  </font>
+                              </Label>
+                              <ComboBox fx:id="cbNoPersonal" prefWidth="200.0" />
+                          </children>
+                       </HBox>
+                   </children>
+                </VBox>
+                <Button layoutX="260.0" layoutY="250.0" mnemonicParsing="false" onAction="#btnAsociar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="Asociar" />
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

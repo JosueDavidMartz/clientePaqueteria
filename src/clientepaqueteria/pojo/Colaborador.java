@@ -5,32 +5,32 @@ public class Colaborador {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private String numeroPersonal;
+    private String noPersonal;
     private String correo;
     private String curp;
     private String contraseña;
     private Integer idRol;
     private String rol;
     private String numeroLicencia;
+    private byte[] fotoBlob; 
     private String fotoBase64;
 
     public Colaborador() {
     }
 
-    
-    
-    public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String numeroPersonal, String correo, String curp, String contraseña, Integer idRol, String rol, String numeroLicencia, String fotoBase64) {
+    public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String noPersonal, String correo, String curp, String contraseña, Integer idRol, String rol, String numeroLicencia, byte[] fotoBlob, String fotoBase64) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
-        this.numeroPersonal = numeroPersonal;
+        this.noPersonal = noPersonal;
         this.correo = correo;
         this.curp = curp;
         this.contraseña = contraseña;
         this.idRol = idRol;
         this.rol = rol;
         this.numeroLicencia = numeroLicencia;
+        this.fotoBlob = fotoBlob;
         this.fotoBase64 = fotoBase64;
     }
 
@@ -66,12 +66,12 @@ public class Colaborador {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public String getNumeroPersonal() {
-        return numeroPersonal;
+    public String getNoPersonal() {
+        return noPersonal;
     }
 
-    public void setNumeroPersonal(String numeroPersonal) {
-        this.numeroPersonal = numeroPersonal;
+    public void setNoPersonal(String noPersonal) {
+        this.noPersonal = noPersonal;
     }
 
     public String getCorreo() {
@@ -122,6 +122,14 @@ public class Colaborador {
         this.numeroLicencia = numeroLicencia;
     }
 
+    public byte[] getFotoBlob() {
+        return fotoBlob;
+    }
+
+    public void setFotoBlob(byte[] fotoBlob) {
+        this.fotoBlob = fotoBlob;
+    }
+
     public String getFotoBase64() {
         return fotoBase64;
     }
@@ -130,10 +138,9 @@ public class Colaborador {
         this.fotoBase64 = fotoBase64;
     }
 
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
+    
+    
     
     
 }
