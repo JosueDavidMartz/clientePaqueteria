@@ -35,6 +35,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -225,9 +227,12 @@ public class FXMLFormularioEnvioController implements Initializable {
     
     @FXML
     private void btnCancelar(ActionEvent event) {
+        boolean respuesta = Utilidades.mostrarConfirmacion("Confirmar", "Si cancelas perderás los cambios no guardados");
+        if(respuesta){
         paneNumeroGuia.setVisible(false);
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Envios");
+        }
     }
 
     /*@FXML
@@ -365,18 +370,16 @@ public class FXMLFormularioEnvioController implements Initializable {
         return envio;
     }
 
-    /**
-     * Maneja el proceso de creación de un nuevo envío.
-     */
+  
     private void crearEnvio(Envio envioNuevo) {
         envioNuevo.setDireccionOrigen(Utilidades.direccionOrigen());
         envioNuevo.getDireccionDestino().setTipo("Destino");
-        System.out.println("calle crear orgine: "+envioNuevo.getDireccionOrigen().getCalle());
+        
         RespuestaEnvio resultado = EnvioDAO.crearEnvio(envioNuevo);
 
         if (!resultado.isError()) {
             Utilidades.mostrarAlerta("Creado", "El envío fue creado con éxito", Alert.AlertType.INFORMATION);
-            observador.notificarOperacionExitosa("Crear", envio.getNumeroGuia());
+            observador.notificarOperacionExitosa("Crear", resultado.getNumeroGuia());
             lbNumeroGuia.setText(resultado.getNumeroGuia());
             paneNumeroGuia.setVisible(true);
 
@@ -387,9 +390,7 @@ public class FXMLFormularioEnvioController implements Initializable {
         }
     }
 
-    /**
-     * Maneja el proceso de modificación de un envío existente.
-     */
+
     private void modificarEnvio(Envio envioNuevo) {
         envioNuevo.setIdEnvio(this.envio.getIdEnvio());
         envioNuevo.setIdColaborador(this.envio.getIdColaborador());
@@ -429,9 +430,7 @@ public class FXMLFormularioEnvioController implements Initializable {
         }
     }
 
-    /**
-     * Limpia los campos del formulario después de crear un envío.
-     */
+
     private void limpiarFormulario() {
         tfCalleDestino.setText("");
         tfNumeroDestino.setText("");
@@ -453,18 +452,34 @@ public class FXMLFormularioEnvioController implements Initializable {
 
     @FXML
     private void ivCopiarNumeroGuia(MouseEvent event) {
+        // Obtener el texto del TextField
+        String texto = lbNumeroGuia.getText();
+
+        // Verificar que el texto no esté vacío
+        if (texto != null && !texto.isEmpty()) {
+            // Obtener el portapapeles del sistema
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(texto);  // Colocar el texto en el portapapeles
+            clipboard.setContent(content);  // Establecer el contenido en el portapapeles
+            
+        }
     }
 
     @FXML
     private void btnAceptarNumeroGuia(ActionEvent event) {
         paneNumeroGuia.setVisible(false);
+        stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
+        Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Envio");
     }
 
    
     
     private void cerrarVentana() {
+       
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Envios");
+        
     }
 
 

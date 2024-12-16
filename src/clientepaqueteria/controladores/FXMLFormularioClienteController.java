@@ -38,6 +38,7 @@ public class FXMLFormularioClienteController implements Initializable {
     private boolean modoEdicion = false;
     private INotificadorOperacion observador;
     private Cliente clienteEdicion;
+    private List<Direccion> direccionEdicion;
 
     @FXML
     private TextField tfNombre;
@@ -77,9 +78,10 @@ public class FXMLFormularioClienteController implements Initializable {
         // Inicialización
     }
 
-    public void InicializarValores(INotificadorOperacion observador, Cliente clienteEdicion) {
+    public void InicializarValores(INotificadorOperacion observador, Cliente clienteEdicion, List<Direccion> direccion) {
         this.observador = observador;
-        this.clienteEdicion = clienteEdicion;
+        this.clienteEdicion = clienteEdicion;        
+        this.direccionEdicion  = direccion;
         if (clienteEdicion != null) {
             modoEdicion = true;
             cargarDatosEdicion(clienteEdicion);
@@ -88,8 +90,12 @@ public class FXMLFormularioClienteController implements Initializable {
 
     @FXML
     private void btnCancelar(ActionEvent event) {
-        stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
-        Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Cliente");
+        boolean respuesta = Utilidades.mostrarConfirmacion("Confirmar", "Al salir perderás la información que no se ha guardado");
+        if(respuesta){
+            stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
+            Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Cliente");
+        }
+        
     }
 
     private void cargarDatosEdicion(Cliente cliente) {
@@ -104,61 +110,61 @@ public class FXMLFormularioClienteController implements Initializable {
         tfCodigoP.setText(String.valueOf(this.clienteEdicion.getCodigoPostal()));
     }
 
-    @FXML
-private void btnAceptar(ActionEvent event) {
-    // Obtener los valores de los campos del formulario
-    
-    String nombre = tfNombre.getText();
-    String apellidoPaterno = tfApellidoPaterno.getText();
-    String apellidoMaterno = tfApellidoMaterno.getText();
-    String correo = tfCorreo.getText();
-    String telefono = tfTelefono.getText();
-    
-    Cliente cliente = new Cliente();
-    cliente.setNombre(nombre);
-    cliente.setApellidoPaterno(apellidoPaterno);
-    cliente.setApellidoMaterno(apellidoMaterno);
-    cliente.setCorreo(correo);
-    cliente.setTelefono(telefono);
-    
-    String calle = tfCalle.getText();
-    String colonia = tfColonia.getText();
-    
-    String tfCodigoPText = tfCodigoP.getText();
-    if (tfCodigoPText.isEmpty() || tfCodigoPText.length() != 5 || !tfCodigoPText.matches("\\d+")) {
-        Utilidades.mostrarAlerta("Error", "Ingrese un código postal válido.", Alert.AlertType.ERROR);
-        return;
-    }
-    String tfNumeroCasaText = tfNumeroCasa.getText();
-    if (tfNumeroCasaText.isEmpty() || Integer.parseInt (tfNumeroCasaText) <= 0) {
-        Utilidades.mostrarAlerta("Error", "Ingrese un numero de casa válido, de preferencia que sea valor positivo.", Alert.AlertType.ERROR);
-        return;
-    }
-    try{
-        int numeroCasa = Integer.parseInt(tfNumeroCasa.getText());
-        int codigoPostal = Integer.parseInt(tfCodigoP.getText());
+    /*@FXML
+    private void btnAceptar(ActionEvent event) {
+        // Obtener los valores de los campos del formulario
+
+        String nombre = tfNombre.getText();
+        String apellidoPaterno = tfApellidoPaterno.getText();
+        String apellidoMaterno = tfApellidoMaterno.getText();
+        String correo = tfCorreo.getText();
+        String telefono = tfTelefono.getText();
+
+        Cliente cliente = new Cliente();
+        cliente.setNombre(nombre);
+        cliente.setApellidoPaterno(apellidoPaterno);
+        cliente.setApellidoMaterno(apellidoMaterno);
+        cliente.setCorreo(correo);
+        cliente.setTelefono(telefono);
+
+        String calle = tfCalle.getText();
+        String colonia = tfColonia.getText();
+        String tfCodigoPText = tfCodigoP.getText();
         
-    Direccion direccion = new Direccion();
-    direccion.setCalle(calle);
-    direccion.setColonia(colonia);
-    direccion.setNumero(numeroCasa);
-    direccion.setCodigoPostal(codigoPostal);
-    List<Direccion> direcciones = new ArrayList<>();
-    direcciones.add(direccion);
-    
-    if (sonCamposValidos(cliente)) {
-        if (!modoEdicion) {
-            guardarDatosCliente(cliente, direccion); // Si es nuevo, guarda
-        } else {
-            cliente.setIdCliente(clienteEdicion.getIdCliente()); // Para la edición, usa el ID
-            editarDatosCliente(cliente,direcciones); // Llama al método para editar
+        if (tfCodigoPText.isEmpty() || tfCodigoPText.length() != 5 || !tfCodigoPText.matches("\\d+")) {
+            Utilidades.mostrarAlerta("Error", "Ingrese un código postal válido.", Alert.AlertType.ERROR);
+            return;
         }
-        
+        String tfNumeroCasaText = tfNumeroCasa.getText();
+        if (tfNumeroCasaText.isEmpty() || Integer.parseInt (tfNumeroCasaText) <= 0) {
+            Utilidades.mostrarAlerta("Error", "Ingrese un numero de casa válido, de preferencia que sea valor positivo.", Alert.AlertType.ERROR);
+            return;
+        }
+        try{
+            int numeroCasa = Integer.parseInt(tfNumeroCasa.getText());
+            int codigoPostal = Integer.parseInt(tfCodigoP.getText());
+
+        Direccion direccion = new Direccion();
+        direccion.setCalle(calle);
+        direccion.setColonia(colonia);
+        direccion.setNumero(numeroCasa);
+        direccion.setCodigoPostal(codigoPostal);
+        List<Direccion> direcciones = new ArrayList<>();
+        direcciones.add(direccion);
+
+        if (sonCamposValidos(cliente)) {
+            if (!modoEdicion) {
+                guardarDatosCliente(cliente, direccion); // Si es nuevo, guarda
+            } else {
+                cliente.setIdCliente(clienteEdicion.getIdCliente()); // Para la edición, usa el ID
+                editarDatosCliente(cliente,direcciones); // Llama al método para editar
+            }
+
+        }
+        }catch (NumberFormatException e){
+            Utilidades.mostrarAlerta("No es posible", "Ingrese un numero válido.", Alert.AlertType.WARNING);
+        }
     }
-    }catch (NumberFormatException e){
-        Utilidades.mostrarAlerta("No es posible", "Ingrese un numero válido.", Alert.AlertType.WARNING);
-    }
-}
 
 
 
@@ -189,6 +195,128 @@ private void btnAceptar(ActionEvent event) {
     }
     return true;
 }
+*/
+        @FXML
+    private void btnAceptar(ActionEvent event) {
+        // Obtener los valores de los campos del formulario
+        String nombre = tfNombre.getText().trim();
+        String apellidoPaterno = tfApellidoPaterno.getText().trim();
+        String apellidoMaterno = tfApellidoMaterno.getText().trim();
+        String correo = tfCorreo.getText().trim();
+        String telefono = tfTelefono.getText().trim();
+        String calle = tfCalle.getText().trim();
+        String colonia = tfColonia.getText().trim();
+        String codigoPostalText = tfCodigoP.getText().trim();
+        String numeroCasaText = tfNumeroCasa.getText().trim();
+
+        // Validar los campos básicos
+        if (nombre.isEmpty() || apellidoPaterno.isEmpty() || apellidoMaterno.isEmpty() || correo.isEmpty() || telefono.isEmpty() || calle.isEmpty() || colonia.isEmpty() || codigoPostalText.isEmpty() || numeroCasaText.isEmpty()) {
+            Utilidades.mostrarAlerta("Error", "Todos los campos deben ser completados.", Alert.AlertType.ERROR);
+            return; // Si algún campo está vacío, se detiene el proceso
+        }
+
+        if (!nombre.matches("^[a-zA-Z\\s]+$")) {
+            Utilidades.mostrarAlerta("Error", "Nombre debe contener solo letras.", Alert.AlertType.ERROR);
+            return;
+        }
+        if (!apellidoPaterno.matches("^[a-zA-Z\\s]+$")) {
+            Utilidades.mostrarAlerta("Error", "Apellido Paterno debe contener solo letras.", Alert.AlertType.ERROR);
+            return;
+        }
+        if (!apellidoMaterno.matches("^[a-zA-Z\\s]+$")) {
+            Utilidades.mostrarAlerta("Error", "Apellido Materno debe contener solo letras.", Alert.AlertType.ERROR);
+            return;
+        }
+        if (!correo.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+            Utilidades.mostrarAlerta("Error", "Correo no es válido.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Validar dirección
+        if (codigoPostalText.isEmpty() || codigoPostalText.length() != 5 || !codigoPostalText.matches("\\d+")) {
+            Utilidades.mostrarAlerta("Error", "Ingrese un código postal válido (5 dígitos).", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (numeroCasaText.isEmpty() || Integer.parseInt(numeroCasaText) <= 0) {
+            Utilidades.mostrarAlerta("Error", "Ingrese un número de casa válido, de preferencia positivo.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convertir valores para la dirección
+        try {
+            int numeroCasa = Integer.parseInt(numeroCasaText);
+            int codigoPostal = Integer.parseInt(codigoPostalText);
+
+            Direccion direccion = new Direccion();
+            direccion.setCalle(calle);
+            direccion.setColonia(colonia);
+            direccion.setNumero(numeroCasa);
+            direccion.setCodigoPostal(codigoPostal);
+
+            Cliente cliente = new Cliente();
+            cliente.setNombre(nombre);
+            cliente.setApellidoPaterno(apellidoPaterno);
+            cliente.setApellidoMaterno(apellidoMaterno);
+            cliente.setCorreo(correo);
+            cliente.setTelefono(telefono);
+            if (modoEdicion) {
+                Integer idDireccion = this.direccionEdicion.get(0).getIdDireccion();
+                direccion.setIdDireccion(idDireccion != null ? idDireccion : 0);
+            }
+
+            List<Direccion> direcciones = new ArrayList<>();
+            direcciones.add(direccion);
+
+
+            // Verificación de campos antes de guardar
+            if (sonCamposValidos(cliente)) {
+                if (!modoEdicion) {
+                    guardarDatosCliente(cliente, direccion); // Si es nuevo, guarda
+                } else {
+                    cliente.setIdCliente(clienteEdicion.getIdCliente()); // Para la edición, usa el ID
+                    
+                    editarDatosCliente(cliente, direcciones); // Llama al método para editar
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            Utilidades.mostrarAlerta("Error", "Ingrese un número válido en los campos de dirección.", Alert.AlertType.WARNING);
+        }
+    }
+
+    private boolean sonCamposValidos(Cliente cliente) {
+
+        // Validar que tfNombre sea válido
+        if (!cliente.getNombre().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            Utilidades.mostrarAlerta("Error", "Nombre debe contener solo letras y no se permiten acentos.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (!cliente.getApellidoPaterno().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            Utilidades.mostrarAlerta("Error", "Apellido Paterno debe contener solo letras y no se permiten acentos.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (!cliente.getApellidoMaterno().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            Utilidades.mostrarAlerta("Error", "Apellido Materno debe contener solo letras y no se permiten acentos.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        // Validar que tfCorreo sea válido
+        if (!cliente.getCorreo().matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+            Utilidades.mostrarAlerta("Error", "Correo no es válido.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        // Validar que el teléfono sea numérico y con el formato correcto (esto puede variar según el país)
+        if (!cliente.getTelefono().matches("^\\d{10}$")) {
+            Utilidades.mostrarAlerta("Error", "El teléfono debe tener 10 dígitos.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true;
+    }
 
 
     private void guardarDatosCliente(Cliente cliente, Direccion direccion) {
@@ -203,6 +331,8 @@ private void btnAceptar(ActionEvent event) {
     }
 
     private void editarDatosCliente(Cliente cliente, List <Direccion> direcciones) {
+         Direccion direccion = direcciones.get(0);
+       
         Mensaje respuesta = ClienteDAO.editarDatosCliente(cliente, direcciones);
         if (!respuesta.isError()) {
             Utilidades.mostrarAlerta("Éxito", "Cliente editado correctamente", Alert.AlertType.INFORMATION);

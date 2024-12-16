@@ -15,13 +15,13 @@
             <TextField fx:id="tfNoIdentificacionInterno" layoutX="639.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
             <TextField fx:id="tfAnio" layoutX="639.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
             <TextField fx:id="tfModelo" layoutX="356.0" layoutY="134.0" prefHeight="35.0" prefWidth="188.0" />
-            <TextField fx:id="tfNoIdentificacionVehicular" layoutX="80.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
-            <ComboBox fx:id="cbTipoUnidad" layoutX="356.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" />
+            <TextField fx:id="tfNoIdentificacionVehicular" layoutX="80.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" promptText="Requiere 17 caracteres" />
+            <ComboBox fx:id="cbTipoUnidad" layoutX="356.0" layoutY="226.0" prefHeight="35.0" prefWidth="188.0" promptText="Selecciona un tipo" />
             <Label layoutX="80.0" layoutY="111.0" prefHeight="17.0" prefWidth="175.0" text="Marca" textFill="WHITE" />
             <Label layoutX="356.0" layoutY="113.0" prefHeight="17.0" prefWidth="175.0" text="Modelo" textFill="WHITE" />
             <Label layoutX="639.0" layoutY="113.0" prefHeight="17.0" prefWidth="175.0" text="Año" textFill="WHITE" />
             <Label layoutX="80.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación vehicular" textFill="WHITE" />
-            <Label layoutX="639.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación interno" textFill="WHITE" />
+            <Label fx:id="lbNumeroInterno" layoutX="639.0" layoutY="209.0" prefHeight="17.0" prefWidth="188.0" text="Número de identificación interno" textFill="WHITE" />
             <Label layoutX="356.0" layoutY="209.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de unidad" textFill="WHITE" />
             <Button layoutX="770.0" layoutY="388.0" mnemonicParsing="false" onAction="#btnGuardarFormularioUnidad" prefHeight="35.0" prefWidth="114.0" text="Guardar" />
             <Button layoutX="639.0" layoutY="388.0" mnemonicParsing="false" onAction="#btnCancelarFormularioUnidad" prefHeight="35.0" prefWidth="114.0" text="Cancelar" />

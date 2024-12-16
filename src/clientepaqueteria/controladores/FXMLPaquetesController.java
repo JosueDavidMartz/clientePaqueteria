@@ -1,5 +1,6 @@
 package clientepaqueteria.controladores;
 
+import clientepaqueteria.interfaz.INotificadorOperacion;
 import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.modelo.dao.PaqueteDAO;
 import clientepaqueteria.pojo.Colaborador;
@@ -34,7 +35,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 
-public class FXMLPaquetesController implements Initializable {
+public class FXMLPaquetesController implements Initializable, INotificadorOperacion {
 
     HBox hbSuperior;
     VBox vbMenu;
@@ -94,9 +95,9 @@ public class FXMLPaquetesController implements Initializable {
             paquetes.addAll(listaWS);
             tvPaquetes.setItems(paquetes);
         } else {
-            Utilidades.mostrarAlerta("Datos no disponibles", 
-                "Lo sentimos, por el momento no se puede cargar la información de los paquetes", 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlerta("Sin registros", 
+                "No seencontraron registros de paquetes", 
+                Alert.AlertType.INFORMATION);
         }
     }
     
@@ -111,6 +112,31 @@ public class FXMLPaquetesController implements Initializable {
     @FXML
     private void btnModificarPaquete(ActionEvent event) {
         // Lógica para modificar un paquete (si es necesario)
+         Paquete paquete = tvPaquetes.getSelectionModel().getSelectedItem();
+       
+        if (paquete != null) {
+          Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena, label, "Editar paquetes");
+            try {
+                // Cargar la nueva vista para registrar paquetes
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioPaquetes.fxml"));
+                Parent formularioPaquetes = loader.load();
+
+                // Obtén el controlador de la nueva vista
+                FXMLFormularioPaquetesController controlador = loader.getController();
+                controlador.InicializarValores(this, paquete);
+                // Pasa el StackPane al nuevo controlador
+                controlador.setStackPane(spEscena);
+                controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, label, nombre);
+
+                // Agrega la nueva vista al StackPane (encima de la actual)
+                spEscena.getChildren().add(formularioPaquetes);
+            } catch (IOException e) {
+                Logger.getLogger(FXMLPaquetesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
+            }
+        } else {
+            Utilidades.mostrarAlerta("Seleccionar Cliente", "Para poder editar debes seleccionar un cliente", Alert.AlertType.WARNING);
+        }
+       
     }
 
     @FXML
@@ -123,7 +149,7 @@ public class FXMLPaquetesController implements Initializable {
 
             // Obtén el controlador de la nueva vista
             FXMLFormularioPaquetesController controlador = loader.getController();
-
+            controlador.InicializarValores(this, null);
             // Pasa el StackPane al nuevo controlador
             controlador.setStackPane(spEscena);
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, label, nombre);
@@ -192,5 +218,10 @@ public class FXMLPaquetesController implements Initializable {
         SortedList<Paquete> sortedData = new SortedList<>(listaPaquetes);
         sortedData.comparatorProperty().bind(tvPaquetes.comparatorProperty());
         tvPaquetes.setItems(sortedData);
+    }
+
+    @Override
+    public void notificarOperacionExitosa(String tipo, String nombre) {
+        cargarInformaciónTabla();
     }
 }

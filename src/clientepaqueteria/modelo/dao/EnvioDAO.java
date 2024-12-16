@@ -75,71 +75,7 @@ public class EnvioDAO {
     }*/
     
     public static RespuestaEnvio crearEnvio(Envio envioNuevo) {
-    System.out.println("Imprimiendo contenido de Envio...");
     
-    // Imprimiendo los atributos de Envio
-    System.out.print("Envio {");
-    System.out.print("idEnvio=" + envioNuevo.getIdEnvio() + ", ");
-    System.out.print("numeroGuia='" + envioNuevo.getNumeroGuia() + "', ");
-    System.out.print("costoEnvio=" + envioNuevo.getCostoEnvio() + ", ");
-    System.out.print("comentario='" + envioNuevo.getComentario() + "', ");
-    System.out.print("idColaborador=" + envioNuevo.getIdColaborador() + ", ");
-    System.out.print("idCliente=" + envioNuevo.getIdCliente() + ", ");
-
-    // Imprimiendo los atributos de Seguimiento
-    if (envioNuevo.getSeguimiento() != null) {
-        Seguimiento seguimiento = envioNuevo.getSeguimiento();
-        System.out.print("seguimiento={");
-        System.out.print("idSeguimiento=" + seguimiento.getIdSeguimiento() + ", ");
-        System.out.print("nombre='" + seguimiento.getNombre() + "', ");
-        System.out.print("fecha='" + seguimiento.getFecha() + "', ");
-        System.out.print("hora='" + seguimiento.getHora() + "', ");
-        System.out.print("idColaborador=" + seguimiento.getIdColaborador() + ", ");
-        System.out.print("idEnvio=" + seguimiento.getIdEnvio());
-        System.out.print("}, ");
-    } else {
-        System.out.print("seguimiento=null, ");
-    }
-
-    // Imprimiendo los atributos de DireccionOrigen
-    if (envioNuevo.getDireccionOrigen() != null) {
-        Direccion direccionOrigen = envioNuevo.getDireccionOrigen();
-        System.out.print("direccionOrigen={");
-        System.out.print("idDireccion=" + direccionOrigen.getIdDireccion() + ", ");
-        System.out.print("tipo='" + direccionOrigen.getTipo() + "', ");
-        System.out.print("calle='" + direccionOrigen.getCalle() + "', ");
-        System.out.print("numero=" + direccionOrigen.getNumero() + ", ");
-        System.out.print("colonia='" + direccionOrigen.getColonia() + "', ");
-        System.out.print("codigoPostal=" + direccionOrigen.getCodigoPostal() + ", ");
-        System.out.print("ciudad='" + direccionOrigen.getCiudad() + "', ");
-        System.out.print("estado='" + direccionOrigen.getEstado() + "', ");
-        System.out.print("idCliente=" + direccionOrigen.getIdCliente() + ", ");
-        System.out.print("idEnvio=" + direccionOrigen.getIdEnvio());
-        System.out.print("}, ");
-    } else {
-        System.out.print("direccionOrigen=null, ");
-    }
-
-    // Imprimiendo los atributos de DireccionDestino
-    if (envioNuevo.getDireccionDestino() != null) {
-        Direccion direccionDestino = envioNuevo.getDireccionDestino();
-        System.out.print("direccionDestino={");
-        System.out.print("idDireccion=" + direccionDestino.getIdDireccion() + ", ");
-        System.out.print("tipo='" + direccionDestino.getTipo() + "', ");
-        System.out.print("calle='" + direccionDestino.getCalle() + "', ");
-        System.out.print("numero=" + direccionDestino.getNumero() + ", ");
-        System.out.print("colonia='" + direccionDestino.getColonia() + "', ");
-        System.out.print("codigoPostal=" + direccionDestino.getCodigoPostal() + ", ");
-        System.out.print("ciudad='" + direccionDestino.getCiudad() + "', ");
-        System.out.print("estado='" + direccionDestino.getEstado() + "', ");
-        System.out.print("idCliente=" + direccionDestino.getIdCliente() + ", ");
-        System.out.print("idEnvio=" + direccionDestino.getIdEnvio());
-        System.out.print("}");
-        } else {
-            System.out.print("direccionDestino=null");
-        }
-        System.out.println("}");
-
         RespuestaEnvio msj = new RespuestaEnvio();
         String url = Constantes.URL_WS + "envios/crearEnvio";
         Gson gson = new Gson();

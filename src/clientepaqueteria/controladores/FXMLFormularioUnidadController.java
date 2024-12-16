@@ -69,6 +69,8 @@ public class FXMLFormularioUnidadController implements Initializable {
     private Label lbErrorAño;
     @FXML
     private Label lbErrorTipoUnidad;
+    @FXML
+    private Label lbNumeroInterno;
  
 
    
@@ -95,7 +97,8 @@ public class FXMLFormularioUnidadController implements Initializable {
             modoEdicion = true;
             cargarDatosEdicion();
         }else{
-            tfNoIdentificacionInterno.setVisible(true);
+            tfNoIdentificacionInterno.setVisible(false);
+            lbNumeroInterno.setVisible(false);
         }
     }
     
@@ -160,13 +163,16 @@ public class FXMLFormularioUnidadController implements Initializable {
     @FXML
     private void btnCancelarFormularioUnidad(ActionEvent event) {
         // Remueve la vista actual del StackPane
-        stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
-        Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Unidades");
+          boolean respuesta = Utilidades.mostrarConfirmacion("Confirmar", "Si cancelas perderás los cambios no guardados");
+          if(respuesta){
+            stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
+            Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Unidades");
+          }
     }
     
     private void guardarDatosUnidad(Unidad unidad){
      
-
+      
         RespuestaUnidad msj = UnidadDAO.registrarUnidad(unidad);
         if(!msj.isError()){
             Utilidades.mostrarAlerta("Unidad registrada", "La información de la unidad "+unidad.getModelo()+" se registró correctamente, su numero interno es: "+msj.getUnidad().getNumeroInterno(), Alert.AlertType.INFORMATION);
@@ -198,8 +204,7 @@ public class FXMLFormularioUnidadController implements Initializable {
     
     private boolean sonCamposValidos(Unidad unidad){
             //tarea hacer la validacion
-            
-        System.out.println("verificando");
+                   
         lbErrorMarca.setText("");
         lbErrorModelo.setText("");
         lbErrorAño.setText("");
@@ -223,7 +228,7 @@ public class FXMLFormularioUnidadController implements Initializable {
 
             bandera = false;
         }
-        if (unidad.getVin().isEmpty() || unidad.getVin().length() < 17) {
+        if (unidad.getVin().isEmpty() || unidad.getVin().length() != 17) {
             lbErrorVin.setText("El campo requiere 17 digitos");
             bandera = false;
         }    

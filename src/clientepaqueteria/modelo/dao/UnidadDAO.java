@@ -100,7 +100,7 @@ public class UnidadDAO {
                     msj = gson.fromJson(respuesta.getContenido(), RespuestaUnidad.class);
                 }else{
                     msj.setError(true);
-                    msj.setMensaje(respuesta.getContenido());
+                    msj.setMensaje("Problema al conectar con el servidor");
                 }
         } catch (Exception e) {
             msj.setError(true);

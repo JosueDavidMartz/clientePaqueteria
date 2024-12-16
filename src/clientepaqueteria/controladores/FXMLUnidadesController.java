@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -169,34 +170,38 @@ public class FXMLUnidadesController implements Initializable, INotificadorOperac
             lbErrorMotivo.setText("Se requiere registrar el motivo de la baja");
         } else {
             // Crear un cuadro de diálogo de confirmación
-            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmacion.setTitle("Confirmar eliminación");
-            confirmacion.setContentText("Esta acción no se puede deshacer.");
+          //  Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            //confirmacion.setTitle("Confirmar eliminación");        
+            boolean confirmacion = Utilidades.mostrarConfirmacion("Confirmar","La unidad no será eliminada, solo pasará a estado Inactivo y no podrá ser utilizada");
+             
 
             // Mostrar el cuadro de diálogo y esperar la respuesta del usuario
-            Optional<ButtonType> resultado = confirmacion.showAndWait();
-            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+           // Optional<ButtonType> resultado = confirmacion.showAndWait();
+            if (confirmacion) {
                 // El usuario confirmó, proceder con la eliminación
                 paneBajaUnidad.setVisible(false);
                 unidadBaja.setMotivo(taMotivo.getText());
+                unidadBaja.setSituacion("Inactivo");
                 taMotivo.setText("");
                 lbErrorMotivo.setText("");
                 RespuestaUnidad unidadRespuesta = UnidadDAO.darBajaUnidad(unidadBaja);
 
                 if (!unidadRespuesta.isError()) {
                     Utilidades.mostrarAlerta(
-                        "Eliminado",
-                        "Se eliminó la unidad: " + unidadBaja.getNumeroInterno(),
+                        "Estado actualizado",
+                        "Se ha dado de baja la unidad: " + unidadBaja.getNumeroInterno(),
                         Alert.AlertType.INFORMATION
                     );
+                    cargarInformacionTabla();
                 } else {
                     Utilidades.mostrarAlerta(
                         "Error",
-                        "No se pudo eliminar la unidad: " + unidadRespuesta.getMensaje(),
+                        "No se pudo dar de baja la unidad: " + unidadRespuesta.getMensaje(),
                         Alert.AlertType.ERROR
                     );
                 }
-            } else {
+            } 
+            if(!confirmacion){
                 // El usuario canceló la operación
                 Utilidades.mostrarAlerta(
                     "Operación cancelada",
@@ -225,7 +230,7 @@ public class FXMLUnidadesController implements Initializable, INotificadorOperac
         
     }
 
-    private void cargarInformacionTabla() {
+    /*private void cargarInformacionTabla() {
         unidades = FXCollections.observableArrayList();
         List<Unidad> listaWS = UnidadDAO.obtenerColaboradores();
         if(listaWS != null ){//nos interesa diferenciar cuando es null, ya que vacio y con contenido siguen el mismo camino
@@ -234,7 +239,27 @@ public class FXMLUnidadesController implements Initializable, INotificadorOperac
         }else{
             Utilidades.mostrarAlerta("Datos no disponibles", "Lo sentimos por el momento no se puede cargar la lista de las unidades", Alert.AlertType.ERROR);
         }
+    }*/
+    private void cargarInformacionTabla() {
+        unidades = FXCollections.observableArrayList();
+        List<Unidad> listaWS = UnidadDAO.obtenerColaboradores();
+
+        if (listaWS != null) {
+            // Filtrar las unidades cuyo estado sea "Activo"
+            List<Unidad> unidadesActivas = listaWS.stream()
+                .filter(unidad -> "Activo".equals(unidad.getSituacion())) // Filtramos solo las unidades activas
+                .collect(Collectors.toList());
+
+            // Agregar las unidades activas a la lista observable
+            unidades.addAll(unidadesActivas);
+
+            // Asignar la lista filtrada a la tabla
+            tvTablaUnidades.setItems(unidades);
+        } else {
+            Utilidades.mostrarAlerta("Datos no disponibles", "Lo sentimos por el momento no se puede cargar la lista de las unidades", Alert.AlertType.ERROR);
+        }
     }
+
 
     @Override
     public void notificarOperacionExitosa(String tipo, String nombre) {

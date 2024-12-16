@@ -8,7 +8,10 @@ import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.pojo.Rol;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,14 +78,14 @@ public class FXMLFormularioColaboradorController implements Initializable {
 
         // Agregar un ChangeListener al ComboBox para verificar el rol seleccionado
         cbRol.valueProperty().addListener((observable, oldValue, newValue) -> {
-    if (newValue != null && "Conductor".equals(newValue.getNombre())) {
-        tfNumLicencia.setVisible(true);
-        lbNumeroLicencia.setVisible(true);// Muestra el campo de licencia si el rol es Conductor
-    } else {
-        tfNumLicencia.setVisible(false);
-        lbNumeroLicencia.setVisible(false);
-    }
-});
+        if (newValue != null && "Conductor".equals(newValue.getNombre())) {
+            tfNumLicencia.setVisible(true);
+            lbNumeroLicencia.setVisible(true);// Muestra el campo de licencia si el rol es Conductor
+        } else {
+            tfNumLicencia.setVisible(false);
+            lbNumeroLicencia.setVisible(false);
+        }
+    });
 
     }
     
@@ -109,14 +112,17 @@ public class FXMLFormularioColaboradorController implements Initializable {
 
     @FXML
     private void btnVolver(ActionEvent event) {
+          boolean respuesta = Utilidades.mostrarConfirmacion("Confirmar", "Si cancelas perderás los cambios no guardados");
+          if(respuesta){
         // Remueve la vista actual del StackPane (el formulario)
-       stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
-    
-        // Reducir la interfaz al estado anterior (en este caso "Colaboradores")
-        Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Colaboradores");
-    
-        // Recargar la página de "Colaboradores"
-        recargarPantallaColaboradores();
+            stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
+
+             // Reducir la interfaz al estado anterior (en este caso "Colaboradores")
+             Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Colaboradores");
+
+             // Recargar la página de "Colaboradores"
+             recargarPantallaColaboradores();
+          }
     }
     
     private void cargarDatosEdicion(){
@@ -131,13 +137,15 @@ public class FXMLFormularioColaboradorController implements Initializable {
         tfNumeroPersonal.setEditable(false); 
         int posicionRol = obtenerPosicionRol(this.colaboradorEdicion.getIdRol());
         cbRol.getSelectionModel().select(posicionRol);
-        
+        pfContraseña.setText(this.colaboradorEdicion.getContraseña());
         tfNumeroPersonal.setDisable(true);  
         cbRol.setDisable(true);
+        
+       // tfNumLicencia.setVisible(true);
     }
 
    @FXML
-private void btnAceptar(ActionEvent event) {
+    private void btnAceptar(ActionEvent event) {
     // Obtener los valores de los campos del formulario
     String numeroPersonal = tfNumeroPersonal.getText();
     String nombre = tfNombre.getText();
@@ -160,12 +168,17 @@ private void btnAceptar(ActionEvent event) {
     colaborador.setNumeroLicencia(numLicencia);  // Si el campo es visible, toma el valor
     colaborador.setContraseña(contrasena);
     colaborador.setIdRol(idRol);
+    if(modoEdicion){
+        colaborador.setRol(colaboradorEdicion.getRol());
+        colaborador.setIdColaborador(colaboradorEdicion.getIdColaborador());
+    }
 
     if (sonCamposValidos(colaborador)) {
         if (!modoEdicion) {
             guardarDatosColaborador(colaborador); // Si es nuevo, guarda
         } else {
-            colaborador.setIdColaborador(colaboradorEdicion.getIdColaborador()); // Para la edición, usa el ID
+            // Para la edición, usa el ID            
+            
             editarDatosColaborador(colaborador); // Llama al método para editar
         }
     }
@@ -188,53 +201,52 @@ private void btnAceptar(ActionEvent event) {
     }
 
     private boolean sonCamposValidos(Colaborador colaborador) {
-    // Validar nombre
-    if (colaborador.getNombre().trim().isEmpty()) {
-        Utilidades.mostrarAlerta("Campo vacío", "El nombre no puede estar vacío.", Alert.AlertType.WARNING);
-        return false;
+        
+    // Validaciones en modo edición
+    if (modoEdicion) {
+        if (tfNombre.getText().trim().isEmpty() ||
+            tfCorreo.getText().trim().isEmpty() ||
+            tfCurp.getText().trim().isEmpty() ||
+            tfApellidoPaterno.getText().trim().isEmpty() ||
+            tfApellidoMaterno.getText().trim().isEmpty() ||
+            pfContraseña.getText().trim().isEmpty()) {
+           
+            Utilidades.mostrarAlerta("Campos vacíos", "Asegúrate de no dejar campos vacíos.", Alert.AlertType.ERROR);
+            return false;
+        }
+        
+        if (colaborador.getRol().equals("Conductor") && tfNumLicencia.getText().trim().isEmpty()) {
+                
+                Utilidades.mostrarAlerta("Campos vacíos", "El número de licencia no puede estar vacío para un conductor.", Alert.AlertType.ERROR);
+                return false;
+            }
+        
+        } else { // Validaciones en modo registro
+            if (tfNumeroPersonal.getText().trim().isEmpty() ||
+                cbRol.getValue() == null ||
+                tfNombre.getText().trim().isEmpty() ||
+                tfCorreo.getText().trim().isEmpty() ||
+                tfCurp.getText().trim().isEmpty() ||
+                tfApellidoPaterno.getText().trim().isEmpty() ||
+                tfApellidoMaterno.getText().trim().isEmpty() ||
+                pfContraseña.getText().trim().isEmpty()) {
+
+                Utilidades.mostrarAlerta("Campos vacíos", "Asegúrate de no dejar campos vacíos.", Alert.AlertType.ERROR);
+                return false;
+            }
+
+            // Validación adicional para conductores en modo registro
+            if (cbRol.getValue() != null && 
+                cbRol.getValue().getNombre().equals("Conductor") && 
+                tfNumLicencia.getText().trim().isEmpty()) {
+
+                Utilidades.mostrarAlerta("Campos vacíos", "Asegúrate de no dejar campos vacíos.", Alert.AlertType.ERROR);
+                return false;
+            }
+        }
+
+        return true; // Todos los campos son válidos
     }
-
-    // Validar apellido paterno
-    if (colaborador.getApellidoPaterno().trim().isEmpty()) {
-        Utilidades.mostrarAlerta("Campo vacío", "El apellido paterno no puede estar vacío.", Alert.AlertType.WARNING);
-        return false;
-    }
-
-    // Validar correo
-    if (colaborador.getCorreo().trim().isEmpty()) {
-        Utilidades.mostrarAlerta("Campo vacío", "El correo no puede estar vacío.", Alert.AlertType.WARNING);
-        return false;
-    }
-
-    // Validar CURP
-    if (colaborador.getCurp().trim().isEmpty()) {
-        Utilidades.mostrarAlerta("Campo vacío", "El CURP no puede estar vacío.", Alert.AlertType.WARNING);
-        return false;
-    }
-
-    // Validar contraseña
-    if (colaborador.getContraseña().trim().isEmpty()) {
-        Utilidades.mostrarAlerta("Campo vacío", "La contraseña no puede estar vacía.", Alert.AlertType.WARNING);
-        return false;
-    }
-    // Validar licencia solo si el rol es "Conductor" y el campo es visible
-    if (modoEdicion && "Conductor".equals(cbRol.getSelectionModel().getSelectedItem().getNombre()) && 
-        tfNumLicencia.isVisible() && tfNumLicencia.getText().trim().isEmpty()) {
-    Utilidades.mostrarAlerta("Campo vacío", "El número de licencia es obligatorio para conductores.", Alert.AlertType.WARNING);
-    return false;
-}
-
-
-
-    // Validar rol solo si no estamos en edición
-    if (!modoEdicion && colaborador.getIdRol() == 0) {  // Asumiendo que `idRol` es el identificador numérico del rol
-        Utilidades.mostrarAlerta("Campo vacío", "Debe seleccionar un rol.", Alert.AlertType.WARNING);
-        return false;
-    }
-
-    return true; // Si todos los campos son válidos
-}
-
 
     private void guardarDatosColaborador(Colaborador colaborador) {
         Mensaje mensaje = ColaboradorDAO.registrarColaborador(colaborador);
@@ -276,7 +288,7 @@ private void btnAceptar(ActionEvent event) {
                     colaborador.getNombre() + " ha sido actualizada correctamente.", Alert.AlertType.INFORMATION);
             btnVolver(null);
         } else {
-            System.out.println(msj.getMensaje());
+            
             Utilidades.mostrarAlerta("Error al modificar", msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }

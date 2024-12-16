@@ -74,7 +74,9 @@ public class PaqueteDAO {
         String url = Constantes.URL_WS + "paquetes/modificar";
         Gson gson = new Gson();
         try{
+            
            String parametros = gson.toJson(paquete);
+           System.out.println("Datos enviados en la petición: " + parametros);
             RespuestaHTTP respuesta = ConexionWS.peticionPUTJson(url, parametros);
             if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK ){
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);//crear el objeto mensaje que viene de respuesta

@@ -1,10 +1,12 @@
 package clientepaqueteria.controladores;
 
+import clientepaqueteria.interfaz.INotificadorOperacion;
 import clientepaqueteria.modelo.dao.ClienteDAO;
 import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.modelo.dao.PaqueteDAO;
 import clientepaqueteria.pojo.Cliente;
 import clientepaqueteria.pojo.Colaborador;
+import clientepaqueteria.pojo.Direccion;
 import clientepaqueteria.pojo.Envio;
 import clientepaqueteria.pojo.Mensaje;
 import clientepaqueteria.pojo.Paquete;
@@ -31,6 +33,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -42,6 +45,10 @@ import javafx.scene.layout.VBox;
 public class FXMLFormularioPaquetesController implements Initializable {
     private Map<String, Cliente> clienteMap = new HashMap<>();
     private Map<String, Colaborador> conductorMap = new HashMap<>();
+    private TitledPane ultimoPaquete = null; // Guarda el último TitledPane agregado
+    private INotificadorOperacion observador;
+    private Paquete paquete;
+    private boolean modoEdicion = false;
     
     private StackPane stackPane;
     HBox hbSuperior;
@@ -70,6 +77,20 @@ public class FXMLFormularioPaquetesController implements Initializable {
     List<Paquete> paquetes;
     @FXML
     private ComboBox<String> cbNumeroGuia;
+    @FXML
+    private ImageView ivAgregarPaquete;
+    @FXML
+    private Pane paneEditarPaquete;
+    @FXML
+    private TextField tfAltura;
+    @FXML
+    private TextField tfAncho;
+    @FXML
+    private TextField tfLargo;
+    @FXML
+    private TextField tfPeso;
+    @FXML
+    private TextArea taDescripcion;
 
 
     @Override
@@ -92,6 +113,16 @@ public class FXMLFormularioPaquetesController implements Initializable {
         this.spEscena = spEscena;
         this.label = label;
         this.nombre = nombre;
+    }
+    public void InicializarValores(INotificadorOperacion observador, Paquete paquete) {
+        this.observador = observador;
+        this.paquete = paquete;
+        if (this.paquete != null) {
+            modoEdicion = true;
+            cargarDatosEdicion(this.paquete);
+        }else{
+            
+        }
     }
 
     public void setStackPane(StackPane stackPane) {
@@ -118,7 +149,15 @@ public class FXMLFormularioPaquetesController implements Initializable {
     }
     
     
-
+    private void cargarDatosEdicion(Paquete paquete) {
+        paneEditarPaquete.setVisible(true);
+        tfAltura.setText(String.valueOf(paquete.getDimensionAlto()));
+        tfAncho.setText(String.valueOf(paquete.getDimensionAncho()));
+        tfLargo.setText(String.valueOf(paquete.getDimensionProfundidad()));
+        tfPeso.setText(String.valueOf(paquete.getPeso()));
+        taDescripcion.setText(paquete.getDescripcion());
+        ivAgregarPaquete.setVisible(false);
+    }
     
     private void actualizarNumerosDeGuia(String nombreCliente) {
     // Obtiene el objeto Cliente asociado al nombre seleccionado
@@ -145,12 +184,49 @@ public class FXMLFormularioPaquetesController implements Initializable {
     
     @FXML
     private void btnCancelarPaquete(ActionEvent event) {
+        boolean respuesta = Utilidades.mostrarConfirmacion("Confirmar", "Si te sales perderás los cambios sin guardar");
+        if(respuesta){
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Paquetes");
+        }
     }
 
     @FXML
     private void btnAceptarPaquete(ActionEvent event) {
+        
+         if (modoEdicion) {
+             
+             if(tfAltura.getText().isEmpty() || tfAncho.getText().isEmpty() || tfLargo.getText().isEmpty()
+                     || taDescripcion.getText().isEmpty() || tfPeso.getText().isEmpty()){
+                 Utilidades.mostrarAlerta("Error", "Por favor, complete todos los campos.", Alert.AlertType.ERROR);
+             
+         }
+            Paquete paqueteEditado = new Paquete();
+            paqueteEditado.setDescripcion(taDescripcion.getText());
+            paqueteEditado.setDimensionAlto(Float.parseFloat(tfAltura.getText()));
+            paqueteEditado.setDimensionAncho(Float.parseFloat(tfAncho.getText()));
+            paqueteEditado.setDimensionProfundidad(Float.parseFloat(tfLargo.getText()));
+            paqueteEditado.setPeso(Float.parseFloat(tfPeso.getText()));
+            paqueteEditado.setIdPaquete(paquete.getIdPaquete());
+
+            Mensaje respuesta = PaqueteDAO.modificar(paqueteEditado);
+            String mensaje;
+            boolean error = false;
+            if (respuesta != null && !respuesta.isError()) {
+                     mensaje = respuesta.getMensaje();
+                     Utilidades.mostrarAlerta("Editado", respuesta.getMensaje(), Alert.AlertType.INFORMATION);
+                     observador.notificarOperacionExitosa("Editado", paquete.getDescripcion());
+                     stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
+                     Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Paquetes");
+                 } else {
+                     error = true;
+                     mensaje = respuesta != null ? respuesta.getMensaje() : "Error al editar el paquete.";
+                     Utilidades.mostrarAlerta("Editado", respuesta.getMensaje(), Alert.AlertType.ERROR);
+                 }
+            
+         } else {
+                    
+
         //paneVincularEnvio.setVisible(true);
  
         paquetes = new ArrayList<>();
@@ -205,12 +281,13 @@ public class FXMLFormularioPaquetesController implements Initializable {
        // guardarPaquetes(paquetes);
         paneVincularEnvio.setVisible(true);
     }
+    }
 
     
     
         private void guardarPaquetes(List<Paquete> paquetes, String costo, String guia) {
          // Mostrar el panel para vincular el envío
-         System.out.println("Total de paquetes registrados: " + paquetes.size());
+         
          boolean error = false;
          String mensaje;
          int idEnvio = 0;
@@ -262,6 +339,9 @@ public class FXMLFormularioPaquetesController implements Initializable {
                  
                  if (respuestaCosto != null && !respuestaCosto.isError()) {
                      Utilidades.mostrarAlerta("Éxito", "Los paquetes y el costo han sido registrados correctamente.", Alert.AlertType.INFORMATION);
+                     observador.notificarOperacionExitosa("Registro", envio.getNumeroGuia());
+                     stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
+                     Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Paquetes");
                  } else {
                      Utilidades.mostrarAlerta("Advertencia", "Los paquetes fueron registrados, pero hubo un problema con el costo.", Alert.AlertType.WARNING);
                  }
@@ -278,14 +358,25 @@ public class FXMLFormularioPaquetesController implements Initializable {
     @FXML
     private void btnCancelarEnvio(ActionEvent event) {
         paneVincularEnvio.setVisible(false);
+        cbNumeroGuia.setValue(null);  // Limpiar el ComboBox de número de guía
+        cbNombreCliente.setValue(null);  // Limpiar el ComboBox de nombre de cliente
+        tfCostoEnvio.clear();  // Limpiar el TextField de costo de envío
+        lbErrorSeleccionarEnvio.setText(""); 
     }
 
-    @FXML
+   @FXML
     private void btnAgregar(MouseEvent event) {
+        // Retrae el último TitledPane si existe
+        if (ultimoPaquete != null) {
+            ultimoPaquete.setExpanded(false);
+        }
+
+        // Agrega un nuevo formulario
         agregarPaquete();
     }
 
-    private void agregarPaquete() {
+
+    /*private void agregarPaquete() {
     // Contenedor del formulario
     VBox formulario = new VBox();
     formulario.setSpacing(10);
@@ -335,38 +426,87 @@ public class FXMLFormularioPaquetesController implements Initializable {
 
     // Guardar la referencia del formulario generado en una lista (para ser procesada luego)
     paquetesFormularios.add(formulario);  // Lista global que contiene todos los formularios
+}*/
+
+  private void agregarPaquete() {
+    // Contenedor del formulario
+    VBox formulario = new VBox();
+    formulario.setSpacing(10);
+    formulario.setStyle("-fx-padding: 10; -fx-border-color: lightgray; -fx-border-radius: 5;");
+
+    // Campo de descripción
+    Label lblDescripcion = new Label("Descripción:");
+    TextArea txtDescripcion = new TextArea();
+    txtDescripcion.setPromptText("Ingrese la descripción del paquete");
+    txtDescripcion.setPrefRowCount(3);
+    txtDescripcion.setId("txtDescripcion"); // Agregar ID
+
+    // Campo de dimensiones
+    Label lblDimensiones = new Label("Dimensiones (cm):");
+    HBox hbDimensiones = new HBox(10);
+    TextField txtAlto = new TextField();
+    txtAlto.setPromptText("Alto");
+    txtAlto.setId("txtAlto"); // Agregar ID
+    TextField txtAncho = new TextField();
+    txtAncho.setPromptText("Ancho");
+    txtAncho.setId("txtAncho"); // Agregar ID
+    TextField txtLargo = new TextField();
+    txtLargo.setPromptText("Largo");
+    txtLargo.setId("txtLargo"); // Agregar ID
+    hbDimensiones.getChildren().addAll(txtAlto, txtAncho, txtLargo);
+
+    // Campo de peso
+    Label lblPeso = new Label("Peso (kg):");
+    TextField txtPeso = new TextField();
+    txtPeso.setPromptText("Ingrese el peso");
+    txtPeso.setId("txtPeso"); // Agregar ID
+
+    // Botón para eliminar el formulario
+    Button btnEliminar = new Button("Eliminar");
+    btnEliminar.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
+    // Crear el TitledPane con el formulario
+    TitledPane nuevoPaquete = new TitledPane();
+    nuevoPaquete.setText("Paquete #" + (vbPaquetes.getChildren().size() + 1));
+    nuevoPaquete.setContent(formulario);
+
+    // Configurar la acción del botón de eliminar
+    btnEliminar.setOnAction(event -> {
+        vbPaquetes.getChildren().remove(nuevoPaquete); // Eliminar el TitledPane directamente
+        paquetesFormularios.remove(formulario);       // Eliminar el formulario de la lista global
+    });
+
+    // Agregar elementos al formulario
+    formulario.getChildren().addAll(
+            lblDescripcion, txtDescripcion,
+            lblDimensiones, hbDimensiones,
+            lblPeso, txtPeso,
+            btnEliminar // Agregar el botón de eliminar al formulario
+    );
+
+    // Agregar el TitledPane al VBox principal
+    vbPaquetes.getChildren().add(nuevoPaquete);
+
+    // Guardar el nuevo TitledPane como el último
+    ultimoPaquete = nuevoPaquete;
+
+    // Guardar la referencia del formulario generado en una lista (para ser procesada luego)
+    paquetesFormularios.add(formulario); // Lista global que contiene todos los formularios
 }
 
     @FXML
-    private void btnAceptarEnvio(ActionEvent event) {
-        
+    private void btnAceptarEnvio(ActionEvent event) {        
          if (cbNumeroGuia.getValue() != null && 
             cbNombreCliente.getValue() != null && 
-            tfCostoEnvio.getText() != null && !tfCostoEnvio.getText().isEmpty()) {
-             
-            
-            String guiaSeleccionada = cbNumeroGuia.getValue();
-           
-
-            /*int idCliente = 0;
-            String nombreClienteSeleccionado = cbNombreCliente.getValue();
-            if (nombreClienteSeleccionado != null) {
-                Cliente clienteSeleccionado = clienteMap.get(nombreClienteSeleccionado);
-                if (clienteSeleccionado != null) {
-                    idCliente = clienteSeleccionado.getIdCliente();
-                }
-            }*/
-             
-             guardarPaquetes(paquetes, tfCostoEnvio.getText(), guiaSeleccionada);
-            
-        } else {
-            // Mostrar mensaje de error si algún campo está vacío
-            lbErrorSeleccionarEnvio.setText("No dejes ningún campo vacío.");
-            // Opcional: mostrar una alerta
-            //Utilidades.mostrarAlerta("Datos faltantes", "Por favor, no dejes ningún campo vacío.", Alert.AlertType.INFORMATION);
-        }
-        
-        // Lógica para aceptar el envío
-         
+            tfCostoEnvio.getText() != null && !tfCostoEnvio.getText().isEmpty()) {               
+            String guiaSeleccionada = cbNumeroGuia.getValue();        
+            guardarPaquetes(paquetes, tfCostoEnvio.getText(), guiaSeleccionada);             
+            cbNumeroGuia.setValue(null);  // Limpiar el ComboBox de número de guía
+            cbNombreCliente.setValue(null);  // Limpiar el ComboBox de nombre de cliente
+            tfCostoEnvio.clear();  // Limpiar el TextField de costo de envío
+            lbErrorSeleccionarEnvio.setText(""); 
+        } else {         
+            lbErrorSeleccionarEnvio.setText("No dejes ningún campo vacío.");            
+        }                         
     }
 }

@@ -2,17 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/ClientePaqueteria.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/utilidades/Constantes.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/utilidades/Utilidades.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/pojo/Colaborador.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/modelo/dao/LoginDAO.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/cientepaqueteria/modelo/ConexionWS.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/controladores/FXMLPerfilController.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/controladores/FXMLInicioController.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/controladores/FXMLAutenticacionController.java</file>
-            <file>file:/E:/EjerciciosJavaFX/clientePaqueteria/src/clientepaqueteria/pojo/Login.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

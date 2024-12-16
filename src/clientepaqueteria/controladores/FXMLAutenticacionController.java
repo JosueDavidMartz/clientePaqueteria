@@ -88,10 +88,7 @@ public class FXMLAutenticacionController implements Initializable {
             // Obtener el colaborador del Login
             Colaborador colaborador = respuestaLogin.getColaborador();
             
-            // Utilidades es una clase reutilizable que se encuentra en el paquete Utilidades
-            Utilidades.mostrarAlerta("Credenciales correctas", 
-                "Bienvenido " + respuestaLogin.getColaborador().getNombre(), 
-                Alert.AlertType.INFORMATION);
+           
             irPantallaPrincipal(colaborador);
         } else {
             Utilidades.mostrarAlerta("Credenciales incorrectas", 

@@ -143,6 +143,7 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
 
          // Obtén el controlador de la nueva vista
          FXMLFormularioEnvioController controlador = loader.getController();
+         controlador.inicializarValores(this, null);
            
          controlador.inicializarValores(this, null);
 
@@ -230,6 +231,8 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
         sortedData.comparatorProperty().bind(tvEnvios.comparatorProperty());
         tvEnvios.setItems(sortedData);
     }
-
+    
+    
+    
     
 }
