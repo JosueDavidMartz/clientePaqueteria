@@ -1,6 +1,7 @@
 package clientepaqueteria.pojo;
-import clientepaqueteria.pojo.Direccion;
+
 import java.util.List;
+
 public class Cliente {
     private Integer idCliente;
     private String nombre;
@@ -8,21 +9,18 @@ public class Cliente {
     private String apellidoMaterno;
     private String telefono;
     private String correo;
-    private Direccion direccion;
-    private List<Direccion> direcciones; 
+    private List<Direccion> direcciones;
 
-    // Constructor sin direcciones
     public Cliente() {
     }
 
-    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, Direccion direccion, List<Direccion> direcciones) {
+    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, List<Direccion> direcciones) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.correo = correo;
-        this.direccion = direccion;
         this.direcciones = direcciones;
     }
 
@@ -74,14 +72,6 @@ public class Cliente {
         this.correo = correo;
     }
 
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
     public List<Direccion> getDirecciones() {
         return direcciones;
     }
@@ -90,9 +80,6 @@ public class Cliente {
         this.direcciones = direcciones;
     }
 
-    
-
-    // Métodos para obtener datos de la primera dirección
     public String getCalle() {
         return direcciones != null && !direcciones.isEmpty() ? direcciones.get(0).getCalle() : "";
     }

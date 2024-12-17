@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clientepaqueteria.modelo.dao;
 
 import clientepaqueteria.modelo.ConexionWS;
@@ -19,10 +14,6 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.List;
 
-/**
- *
- * @author WIN 10
- */
 public class UnidadDAO {
 
     public static List<Unidad> obtenerColaboradores() {    
@@ -33,13 +24,10 @@ public class UnidadDAO {
         try {
             if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 Gson gson = new Gson();
-                // Convertir el JSON completo en un JsonObject
                 JsonObject jsonObject = gson.fromJson(respuesta.getContenido(), JsonObject.class);
 
-                // Extraer el array "unidades" del objeto
                 JsonArray jsonArrayUnidades = jsonObject.getAsJsonArray("unidades");
 
-                // Convertir el array "unidades" en una lista de Unidad
                 Type tipoLista = new TypeToken<List<Unidad>>(){}.getType();
                 unidades = gson.fromJson(jsonArrayUnidades, tipoLista);
             }
@@ -108,30 +96,24 @@ public class UnidadDAO {
         }
         return msj;
     }
-    
+
     public static RespuestaUnidad obtenerUnidadAsociada(Integer idColaborador) {
-    RespuestaUnidad respuestaUnidad = new RespuestaUnidad();
-    String url = Constantes.URL_WS + "/conductores/unidadAsociada/" + idColaborador; // Construir la URL con el PathParam
-    try {
-        // Realizamos la petición GET al servicio
-        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        RespuestaUnidad respuestaUnidad = new RespuestaUnidad();
+        String url = Constantes.URL_WS + "/conductores/unidadAsociada/" + idColaborador;
+        try {
+            RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
 
-        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-            // Convertimos la respuesta JSON al objeto RespuestaUnidad
-            Gson gson = new Gson();
-            respuestaUnidad = gson.fromJson(respuesta.getContenido(), RespuestaUnidad.class);
-        } else {
-            // Si no es HTTP 200, manejamos el error
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+                Gson gson = new Gson();
+                respuestaUnidad = gson.fromJson(respuesta.getContenido(), RespuestaUnidad.class);
+            } else {
+                respuestaUnidad.setError(true);
+                respuestaUnidad.setMensaje(respuesta.getContenido());
+            }
+        } catch (Exception e) {
             respuestaUnidad.setError(true);
-            respuestaUnidad.setMensaje(respuesta.getContenido());
+            respuestaUnidad.setMensaje("Error al consumir el servicio: " + e.getMessage());
         }
-    } catch (Exception e) {
-        // Manejo de excepciones
-        respuestaUnidad.setError(true);
-        respuestaUnidad.setMensaje("Error al consumir el servicio: " + e.getMessage());
+        return respuestaUnidad;
     }
-    return respuestaUnidad;
-}
-
-    
 }

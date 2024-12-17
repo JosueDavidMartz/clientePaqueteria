@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,7 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -33,10 +33,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLInicioController implements Initializable {
-
- private Pane paneSuperior;
+    
+    private Pane paneSuperior;
     private Colaborador colaborador;
     private INotificadorOperacion observador;
+
     @FXML
     private HBox hbInfoColaborador;
     @FXML
@@ -70,20 +71,6 @@ public class FXMLInicioController implements Initializable {
     
     private Stage escenarioInicio;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Image imagen = new Image(getClass().getResourceAsStream("/clientepaqueteria/recursos/logo.png")); 
-        ImageView portada = new ImageView(imagen);
-        spEscena.getChildren().add(portada); 
-    }
-    
-   public void InicializarValores(INotificadorOperacion observador, Colaborador colaborador) {
-        this.observador = observador;
-        this.colaborador = colaborador;
-        lbRolColaborador.setText(colaborador.getRol());
-    }
-
-
     public void setEscenario(Stage escenario) {
         this.escenarioInicio = escenario;
         WindowManager.registrarVentana("inicio", escenario);
@@ -93,7 +80,45 @@ public class FXMLInicioController implements Initializable {
         return escenarioInicio;
     }
 
-    @FXML
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Image imagen = new Image(getClass().getResourceAsStream("/clientepaqueteria/recursos/logo.png"));
+        ImageView portada = new ImageView(imagen);
+        spEscena.getChildren().add(portada);
+        
+        if (escenarioInicio != null) {
+            WindowManager.registrarVentana("inicio", escenarioInicio);
+        }
+    }
+
+    public void obtenerInformacionColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
+        if (colaborador != null) {
+            cargarInformacionColaborador(colaborador);
+        }
+    }
+    
+    
+    private void cargarInformacionColaborador(Colaborador colaborador) {
+        lbNombreColaborador.setText(colaborador.getNombre());
+        lbRolColaborador.setText(colaborador.getRol());
+        cargarFotoPerfil();
+    }
+
+    private void cargarFotoPerfil() {
+        int idColaborador = colaborador.getIdColaborador();
+        Colaborador colaboradorConFoto = ColaboradorDAO.obtenerFotoBase64(idColaborador);
+
+        if (colaboradorConFoto != null && colaboradorConFoto.getFotoBase64() != null && !colaboradorConFoto.getFotoBase64().isEmpty()) {
+            byte[] decodeImage = Base64.getDecoder().decode(colaboradorConFoto.getFotoBase64().replaceAll("\\n", ""));
+            Image image = new Image(new ByteArrayInputStream(decodeImage));
+            ivFotoColaborador.setImage(image);
+            Circle clip = new Circle(ivFotoColaborador.getFitWidth() / 2, ivFotoColaborador.getFitHeight() / 2, ivFotoColaborador.getFitWidth() / 2);
+            ivFotoColaborador.setClip(clip);
+        }
+    }
+
+       @FXML
     private void clickFotoColaborador(MouseEvent event) {
         cargarInformacionColaborador(colaborador);
         INotificadorOperacion observador = null;
@@ -167,7 +192,7 @@ public class FXMLInicioController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLEnvios.fxml"));
             Parent envios = loader.load();
             FXMLEnviosController controlador = loader.getController();
-            controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, lbNombreModulo, "ENVIOS");
+            controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, lbNombreModulo, "ENVIOS");
             spEscena.getChildren().clear();
             spEscena.getChildren().add(envios);
             lbNombreModulo.setText("Envios");
@@ -199,37 +224,8 @@ public class FXMLInicioController implements Initializable {
         spEscena.getChildren().add(portada);
         lbNombreModulo.setText("Inicio");
     }
-
-    public void obtenerInformacionColaborador(Colaborador colaborador) {
-        this.colaborador = colaborador;
-        if (colaborador != null) {
-            cargarInformacionColaborador(colaborador);
-        }
-    }
     
-    private void cargarInformacionColaborador(Colaborador colaborador) {
-        System.out.print(colaborador.getNombre());
-        System.out.print(colaborador.getNoPersonal());
-        System.out.print(colaborador.getRol());
-        lbNombreColaborador.setText(colaborador.getNombre());
-        lbRolColaborador.setText(colaborador.getRol());
-        cargarFotoPerfil();
-    }
-
-    private void cargarFotoPerfil() {
-        int idColaborador = colaborador.getIdColaborador();
-        Colaborador colaboradorConFoto = ColaboradorDAO.obtenerFotoBase64(idColaborador);
-
-        if (colaboradorConFoto != null && colaboradorConFoto.getFotoBase64() != null && !colaboradorConFoto.getFotoBase64().isEmpty()) {
-            byte[] decodeImage = Base64.getDecoder().decode(colaboradorConFoto.getFotoBase64().replaceAll("\\n", ""));
-            Image image = new Image(new ByteArrayInputStream(decodeImage));
-            ivFotoColaborador.setImage(image);
-            Circle clip = new Circle(ivFotoColaborador.getFitWidth() / 2, ivFotoColaborador.getFitHeight() / 2, ivFotoColaborador.getFitWidth() / 2);
-                ivFotoColaborador.setClip(clip);
-        }
-    }
-
-    public void actualizarFotoPerfil(Colaborador colaborador) {
+        public void actualizarFotoPerfil(Colaborador colaborador) {
         if (colaborador != null && colaborador.getFotoBlob() != null) {
             byte[] fotoBlob = colaborador.getFotoBlob();
             Image nuevaImagen = new Image(new ByteArrayInputStream(fotoBlob));

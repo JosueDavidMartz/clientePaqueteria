@@ -2,22 +2,30 @@ package clientepaqueteria.pojo;
 
 public class Direccion {
     private Integer idDireccion;
+    private String tipo;
     private String calle;
-    private int numero;
+    private Integer numero;
     private String colonia;
-    private int codigoPostal;
-    private String tipo;  // Opcional, según lo que necesites manejar
+    private Integer codigoPostal;
+    private String ciudad;
+    private String estado;
+    private Integer idCliente;
+    private Integer idEnvio;
 
     public Direccion() {
     }
 
-    public Direccion(Integer idDireccion, String calle, int numero, String colonia, int codigoPostal, String tipo) {
+    public Direccion(Integer idDireccion, String tipo, String calle, Integer numero, String colonia, Integer codigoPostal, String ciudad, String estado, Integer idCliente, Integer idEnvio) {
         this.idDireccion = idDireccion;
+        this.tipo = tipo;
         this.calle = calle;
         this.numero = numero;
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
-        this.tipo = tipo;
+        this.ciudad = ciudad;
+        this.estado = estado;
+        this.idCliente = idCliente;
+        this.idEnvio = idEnvio;
     }
 
     public Integer getIdDireccion() {
@@ -28,6 +36,14 @@ public class Direccion {
         this.idDireccion = idDireccion;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     public String getCalle() {
         return calle;
     }
@@ -36,11 +52,11 @@ public class Direccion {
         this.calle = calle;
     }
 
-    public int getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
@@ -52,19 +68,43 @@ public class Direccion {
         this.colonia = colonia;
     }
 
-    public int getCodigoPostal() {
+    public Integer getCodigoPostal() {
         return codigoPostal;
     }
 
-    public void setCodigoPostal(int codigoPostal) {
+    public void setCodigoPostal(Integer codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getCiudad() {
+        return ciudad;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public Integer getIdEnvio() {
+        return idEnvio;
+    }
+
+    public void setIdEnvio(Integer idEnvio) {
+        this.idEnvio = idEnvio;
     }
 }

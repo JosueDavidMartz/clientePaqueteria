@@ -1,5 +1,10 @@
 package clientepaqueteria.utilidades;
 
+
+import clientepaqueteria.pojo.Direccion;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+
 import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -33,25 +38,39 @@ public class Utilidades {
         label.setText(nombre);
     }
 
-    public static void mostrarAlertaSimple(String error, String pro_el_momento_no_se_puede_mostrar_la_pan, Alert.AlertType alertType) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
     
     public static void mostrarAlerta(String titulo, String contenido, Alert.AlertType tipo){
+
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(contenido);
+
         alerta.showAndWait();
     }
     
-    public static boolean mostrarAlertaConfirmacion(String titulo, String contenido){
+
+    public static boolean mostrarConfirmacion(String titulo, String contenido){
+
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(contenido);
         Optional<ButtonType> btnSeleccionado = alerta.showAndWait();
+
         return (btnSeleccionado.get() == ButtonType.OK);
     }
-    
+
+    public static Direccion direccionOrigen(){
+        Direccion origen = new Direccion();
+        origen.setTipo("Origen");
+        origen.setCalle("Carranza");
+        origen.setNumero(32);
+        origen.setColonia("Benito Juarez");
+        origen.setCodigoPostal(20900);
+        origen.setCiudad("Mexico");
+        origen.setEstado("Mexico");        
+        return origen;
+    }
 }

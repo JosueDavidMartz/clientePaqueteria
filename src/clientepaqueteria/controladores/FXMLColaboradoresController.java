@@ -73,7 +73,7 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
     @FXML
     private TextField tfBuscarColaborador;
     @FXML
-    private ComboBox<Rol> cbRol;
+    private TableColumn colLicencia;
 
    @Override
 public void initialize(URL url, ResourceBundle rb) {
@@ -90,6 +90,7 @@ public void initialize(URL url, ResourceBundle rb) {
         colApellidoM.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
         colCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
         colRol.setCellValueFactory(new PropertyValueFactory("rol"));
+        colLicencia.setCellValueFactory(new PropertyValueFactory("numeroLicencia"));
     }
 
     private void cargarInformacionTabla() {
@@ -115,7 +116,7 @@ public void initialize(URL url, ResourceBundle rb) {
     private void btnEliminar(ActionEvent event) {
         Colaborador colaborador = tvColaboradores.getSelectionModel().getSelectedItem();
         if (colaborador != null) {
-            boolean seElimina = Utilidades.mostrarAlertaConfirmacion("Eliminar colaborador", "¿Estás seguro de eliminar al colaborador " + colaborador.getNombre() + "?" + "\nRecuerda que una vez eliminado no se podrá recuperar.");
+            boolean seElimina = Utilidades.mostrarConfirmacion("Eliminar colaborador", "¿Estás seguro de eliminar al colaborador " + colaborador.getNombre() + "?" + "\nRecuerda que una vez eliminado no se podrá recuperar.");
             if (seElimina) {
                 eliminarColaborador(colaborador.getIdColaborador()); // Asegúrate de que aquí se usa getNoPersonal()
             }

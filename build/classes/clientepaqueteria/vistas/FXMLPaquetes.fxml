@@ -13,22 +13,23 @@
          <children>
             <TableView fx:id="tvPaquetes" layoutX="56.0" layoutY="137.0" prefHeight="200.0" prefWidth="694.0">
               <columns>
-                <TableColumn fx:id="tcDescripcion" prefWidth="174.0" text="Descripción" />
-                <TableColumn fx:id="tcPeso" prefWidth="89.0" text="Peso" />
-                  <TableColumn fx:id="tcAncho" prefWidth="84.0" text="Ancho" />
-                  <TableColumn fx:id="tcAlto" prefWidth="86.0" text="Alto" />
-                  <TableColumn fx:id="tcProfundidad" prefWidth="94.0" text="Profundidad" />
-                  <TableColumn fx:id="tcEnvio" prefWidth="166.0" text="Envío" />
+                <TableColumn id="colDescripcion" fx:id="tcDescripcion" prefWidth="218.0" text="Descripción" />
+                <TableColumn id="colPeso" fx:id="tcPeso" prefWidth="101.0" text="Peso" />
+                  <TableColumn id="colAncho" fx:id="tcAncho" prefWidth="92.0" text="Ancho" />
+                  <TableColumn id="colAlto" fx:id="tcAlto" prefWidth="94.0" text="Alto" />
+                  <TableColumn id="colProfundidad" fx:id="tcProfundidad" prefWidth="103.0" text="Profundidad" />
+                  <TableColumn id="colEnvio" fx:id="tcEnvio" prefWidth="85.0" text="Envío" />
               </columns>
             </TableView>
-            <Label layoutX="65.0" layoutY="69.0" text="Buscar:">
+            <Label layoutX="56.0" layoutY="70.0" text="Buscar:">
                <font>
-                  <Font size="17.0" />
+                  <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <TextField fx:id="tfBuscarPaquete" layoutX="123.0" layoutY="70.0" prefHeight="25.0" prefWidth="210.0" />
-            <Button layoutX="514.0" layoutY="419.0" mnemonicParsing="false" onAction="#btnModificarPaquete" prefHeight="25.0" prefWidth="87.0" text="Modificar" />
-            <Button layoutX="634.0" layoutY="419.0" mnemonicParsing="false" onAction="#btnAgregarPaquete" prefHeight="25.0" prefWidth="87.0" text="Agregar" />
+            <TextField fx:id="tfBuscarPaquete" layoutX="123.0" layoutY="70.0" prefHeight="25.0" prefWidth="210.0" promptText="Numero de Guia" />
+            <Button layoutX="426.0" layoutY="418.0" mnemonicParsing="false" onAction="#btnModificarPaquete" prefHeight="26.0" prefWidth="101.0" style="-fx-background-color: #414bb2;" text="Modificar" textFill="WHITE" />
+            <Button layoutX="540.0" layoutY="418.0" mnemonicParsing="false" onAction="#btnAgregarPaquete" prefHeight="26.0" prefWidth="101.0" style="-fx-background-color: #414bb2;" text="Agregar" textFill="WHITE" />
+            <Button layoutX="656.0" layoutY="418.0" mnemonicParsing="false" onAction="#btnEliminarPaquete" prefHeight="26.0" prefWidth="101.0" style="-fx-background-color: #db1313;" text="Eliminar" textFill="WHITE" />
          </children>
       </Pane>
    </children>

@@ -1,25 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clientepaqueteria.pojo;
 
 import java.util.List;
 
-/**
- *
- * @author WIN 10
- */
 public class RespuestaUnidad {
     private Boolean error;
     private String mensaje;
     private Unidad unidad;
     private List<Unidad> unidades;
 
+    // Constructor vacío
     public RespuestaUnidad() {
     }
 
+    // Constructor con parámetros
     public RespuestaUnidad(Boolean error, String mensaje, Unidad unidad, List<Unidad> unidades) {
         this.error = error;
         this.mensaje = mensaje;
@@ -27,6 +20,7 @@ public class RespuestaUnidad {
         this.unidades = unidades;
     }
 
+    // Getters y setters
     public Boolean getError() {
         return error;
     }
@@ -58,9 +52,9 @@ public class RespuestaUnidad {
     public void setUnidades(List<Unidad> unidades) {
         this.unidades = unidades;
     }
-    
+
+    // Método adicional para verificar si hay un error
     public boolean isError() {
-         return error != null && error; 
+        return error != null && error;
     }
-    
 }

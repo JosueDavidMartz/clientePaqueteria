@@ -29,20 +29,18 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class FXMLFormularioUnidadController implements Initializable {
-    
+
     private Unidad unidad;
     private boolean modoEdicion = false;
     private StackPane stackPane;
-    HBox hbSuperior;
-    VBox vbMenu;
-    StackPane spEscena;
-    Label label;
-    String nombre;
+    private HBox hbSuperior;
+    private VBox vbMenu;
+    private StackPane spEscena;
+    private Label label;
+    private String nombre;
     private INotificadorOperacion observador;
-    
-    
+
     @FXML
     private Pane paneContenedorFormularioUnidad;
     @FXML
@@ -69,14 +67,12 @@ public class FXMLFormularioUnidadController implements Initializable {
     private Label lbErrorAño;
     @FXML
     private Label lbErrorTipoUnidad;
- 
 
-   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         inicializarCombo();
-    }    
-    
+    }
+
     public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
         this.hbSuperior = hbSuperior;
         this.vbMenu = vbMenu;
@@ -84,77 +80,72 @@ public class FXMLFormularioUnidadController implements Initializable {
         this.label = label;
         this.nombre = nombre;
     }
+
     public void setStackPane(StackPane stackPane) {
-           this.stackPane = stackPane;
+        this.stackPane = stackPane;
     }
-    
+
     void inicializarValores(INotificadorOperacion observador, Unidad unidad) {
         this.observador = observador;
         this.unidad = unidad;
-        if(unidad != null){
+        if (unidad != null) {
             modoEdicion = true;
             cargarDatosEdicion();
-        }else{
+        } else {
             tfNoIdentificacionInterno.setVisible(true);
         }
     }
-    
-    private void cargarDatosEdicion(){
+
+    private void cargarDatosEdicion() {
         tfMarca.setText(this.unidad.getMarca());
         tfModelo.setText(this.unidad.getModelo());
         tfNoIdentificacionInterno.setText(this.unidad.getNumeroInterno());
         cbTipoUnidad.setValue(this.unidad.getTipoUnidad());
-        tfAnio.setText(this.unidad.getAño().toString());  
+        tfAnio.setText(this.unidad.getAño().toString());
         tfNoIdentificacionVehicular.setText(this.unidad.getVin());
         tfNoIdentificacionVehicular.setDisable(true);
         tfNoIdentificacionInterno.setDisable(true);
     }
-    
-    public void inicializarCombo(){
-        cbTipoUnidad.getItems().addAll("Gasolina", "Diesel", "Electrica", "Hibrida");
 
+    public void inicializarCombo() {
+        cbTipoUnidad.getItems().addAll("Gasolina", "Diesel", "Electrica", "Hibrida");
     }
 
     @FXML
     private void btnGuardarFormularioUnidad(ActionEvent event) {
-        
+
         Unidad unidad = new Unidad();
         String marca = tfMarca.getText();
         String modelo = tfModelo.getText();
-        if (!tfAnio.getText().isEmpty()){
+        if (!tfAnio.getText().isEmpty()) {
             int año = Integer.parseInt(tfAnio.getText());
             unidad.setAño(año);
         }
-       
+
         String vin = tfNoIdentificacionVehicular.getText();
         String numeroInterno = tfNoIdentificacionInterno.getText();
         String situacion = "Activo";
         String tipoUnidad = cbTipoUnidad.getValue();
-       
-        
+
         unidad.setMarca(marca);
-        unidad.setModelo(modelo);       
+        unidad.setModelo(modelo);
         unidad.setVin(vin);
         unidad.setNumeroInterno(numeroInterno);
         unidad.setSituacion(situacion);
-        unidad.setTipoUnidad(tipoUnidad);  
-      
-        
- 
-        
-        if(sonCamposValidos(unidad)){
-            if(!modoEdicion){
+        unidad.setTipoUnidad(tipoUnidad);
+
+        if (sonCamposValidos(unidad)) {
+            if (!modoEdicion) {
                 guardarDatosUnidad(unidad);
-            }else{
+            } else {
                 int idUnidad = this.unidad.getIdUnidad();
                 unidad.setIdUnidad(idUnidad);
                 unidad.setIdColaborador(this.unidad.getIdColaborador());
                 editarDatosUnidad(unidad);
-            }            
-        }else{
-            //datos faltantes
+            }
+        } else {
+            // datos faltantes
         }
-
     }
 
     @FXML
@@ -163,42 +154,36 @@ public class FXMLFormularioUnidadController implements Initializable {
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Unidades");
     }
-    
-    private void guardarDatosUnidad(Unidad unidad){
-     
 
+    private void guardarDatosUnidad(Unidad unidad) {
         RespuestaUnidad msj = UnidadDAO.registrarUnidad(unidad);
-        if(!msj.isError()){
-            Utilidades.mostrarAlerta("Unidad registrada", "La información de la unidad "+unidad.getModelo()+" se registró correctamente, su numero interno es: "+msj.getUnidad().getNumeroInterno(), Alert.AlertType.INFORMATION);
+        if (!msj.isError()) {
+            Utilidades.mostrarAlerta("Unidad registrada", "La información de la unidad " + unidad.getModelo() + " se registró correctamente, su numero interno es: " + msj.getUnidad().getNumeroInterno(), Alert.AlertType.INFORMATION);
             cerrarVentana();
             observador.notificarOperacionExitosa("Guardar", msj.getUnidad().getNumeroInterno());
-        }else{
+        } else {
             Utilidades.mostrarAlerta("Error al guardar", msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }
-    
-    
-    private void editarDatosUnidad(Unidad unidad){
+
+    private void editarDatosUnidad(Unidad unidad) {
         RespuestaUnidad msj = UnidadDAO.modificar(unidad);
-        if(!msj.isError()){
-            Utilidades.mostrarAlerta("Unidad actualizada", "La informacion ha sido actualizada correctamente", Alert.AlertType.INFORMATION);
+        if (!msj.isError()) {
+            Utilidades.mostrarAlerta("Unidad actualizada", "La información ha sido actualizada correctamente", Alert.AlertType.INFORMATION);
             cerrarVentana();
             Utilidades.reducirInterfaz(hbSuperior, vbMenu, spEscena, label, nombre);
             observador.notificarOperacionExitosa("Actualizar", unidad.getNumeroInterno());
-        }else{
+        } else {
             Utilidades.mostrarAlerta("Error al modificar", msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }
-    
+
     private void cerrarVentana() {
         stackPane.getChildren().remove(stackPane.getChildren().size() - 1);
         Utilidades.reducirInterfaz(hbSuperior, vbMenu, stackPane, label, "Unidades");
     }
 
-    
-    private boolean sonCamposValidos(Unidad unidad){
-            //tarea hacer la validacion
-            
+    private boolean sonCamposValidos(Unidad unidad) {
         System.out.println("verificando");
         lbErrorMarca.setText("");
         lbErrorModelo.setText("");
@@ -206,41 +191,29 @@ public class FXMLFormularioUnidadController implements Initializable {
         lbErrorVin.setText("");
         lbErrorNumeroInterno.setText("");
         lbErrorTipoUnidad.setText("");
-      
 
-        boolean bandera = true;    
+        boolean bandera = true;
         if (unidad.getMarca().isEmpty()) {
             lbErrorMarca.setText("El campo es obligatorio");
             bandera = false;
-
-        }if (unidad.getModelo().isEmpty()) {
+        }
+        if (unidad.getModelo().isEmpty()) {
             lbErrorModelo.setText("El campo es obligatorio");
             bandera = false;
         }
-
-        if (unidad.getAño()==null) {
+        if (unidad.getAño() == null) {
             lbErrorAño.setText("El campo es obligatorio");
-
             bandera = false;
         }
         if (unidad.getVin().isEmpty() || unidad.getVin().length() < 17) {
-            lbErrorVin.setText("El campo requiere 17 digitos");
+            lbErrorVin.setText("El campo requiere 17 dígitos");
             bandera = false;
-        }    
-        
-     
+        }
         if (unidad.getTipoUnidad() == null) {
             lbErrorTipoUnidad.setText("El campo es obligatorio");
             bandera = false;
         }
 
-
-    // Si pasa todas las validaciones, retorna true
-    return bandera;
-      
+        return bandera;
     }
-
-   
-   
-    
 }
