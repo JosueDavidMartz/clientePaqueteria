@@ -45,17 +45,17 @@
                   </Label>
                </children>
             </Pane>
-            <ImageView fx:id="btnSubirFoto" fitHeight="45.0" fitWidth="46.0" layoutX="178.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btnSubirFoto" fitHeight="45.0" fitWidth="46.0" layoutX="178.0" layoutY="108.0" onMouseClicked="#btnSubirFoto" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/iconoagregar.png" />
                </image>
             </ImageView>
-            <Label layoutX="105.0" layoutY="259.0" prefHeight="17.0" prefWidth="29.0" text="Rol:" textFill="#6f5fc1">
+            <Label layoutX="146.0" layoutY="252.0" prefHeight="17.0" prefWidth="29.0" text="Rol" textFill="#6f5fc1">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbRol" layoutX="134.0" layoutY="256.0" prefHeight="20.0" prefWidth="104.0" text="Chofer">
+            <Label fx:id="lbRol" alignment="CENTER" layoutX="40.0" layoutY="269.0" prefHeight="25.0" prefWidth="228.0" text="Chofer">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

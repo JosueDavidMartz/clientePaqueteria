@@ -132,13 +132,14 @@ public class Cliente {
     private String correo;
     private Direccion direccion;
     private List<Direccion> direcciones; 
+    private String estatus;
 
     // Constructor sin direcciones
     public Cliente() {
          this.direcciones = new ArrayList<>();
     }
 
-    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, Direccion direccion, List<Direccion> direcciones) {
+    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, Direccion direccion, List<Direccion> direcciones, String estatus) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -147,6 +148,15 @@ public class Cliente {
         this.correo = correo;
         this.direccion = direccion;
         this.direcciones = direcciones;
+        this.estatus = estatus;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
     }
 
     public Integer getIdCliente() {

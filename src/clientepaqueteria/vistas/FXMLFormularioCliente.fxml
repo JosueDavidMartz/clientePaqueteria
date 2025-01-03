@@ -7,84 +7,57 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioClienteController">
+<AnchorPane id="AnchorPane" prefHeight="565.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioClienteController">
    <children>
-      <Pane prefHeight="474.0" prefWidth="946.0" style="-fx-background-color: white;">
+      <Pane prefHeight="565.0" prefWidth="1250.0" style="-fx-background-color: #24024A;">
          <children>
-            <Label layoutX="57.0" layoutY="46.0" text="Datos Generales">
+            <Label layoutX="57.0" layoutY="46.0" text="Datos Generales" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="95.0" layoutY="96.0" text="Nombre(s)">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfNombre" layoutX="95.0" layoutY="121.0" prefHeight="36.0" prefWidth="189.0" />
-            <TextField fx:id="tfApellidoPaterno" layoutX="298.0" layoutY="121.0" prefHeight="36.0" prefWidth="189.0" />
-            <Label layoutX="299.0" layoutY="96.0" text="Apellido Paterno">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfApellidoMaterno" layoutX="502.0" layoutY="121.0" prefHeight="36.0" prefWidth="189.0" />
-            <Label layoutX="504.0" layoutY="95.0" text="Apellido Materno">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfCorreo" layoutX="95.0" layoutY="206.0" prefHeight="36.0" prefWidth="189.0" />
-            <Label layoutX="95.0" layoutY="181.0" text="Correo">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label layoutX="295.0" layoutY="181.0" text="Teléfono">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfTelefono" layoutX="295.0" layoutY="206.0" prefHeight="36.0" prefWidth="189.0" />
-            <Label layoutX="57.0" layoutY="272.0" text="Datos de Dirección">
+            <Label layoutX="95.0" layoutY="88.0" text="Nombre(s)" textFill="WHITE" />
+            <TextField fx:id="tfNombre" layoutX="95.0" layoutY="108.0" prefHeight="35.0" prefWidth="282.0" />
+            <TextField fx:id="tfApellidoPaterno" layoutX="468.0" layoutY="108.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="468.0" layoutY="88.0" text="Apellido Paterno" textFill="WHITE" />
+            <TextField fx:id="tfApellidoMaterno" layoutX="826.0" layoutY="108.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="830.0" layoutY="88.0" text="Apellido Materno" textFill="WHITE" />
+            <TextField fx:id="tfCorreo" layoutX="95.0" layoutY="184.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="95.0" layoutY="163.0" text="Correo" textFill="WHITE" />
+            <Label layoutX="468.0" layoutY="164.0" text="Teléfono" textFill="WHITE" />
+            <TextField fx:id="tfTelefono" layoutX="468.0" layoutY="184.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="57.0" layoutY="238.0" text="Datos de Dirección" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="tfCalle" layoutX="95.0" layoutY="337.0" prefHeight="36.0" prefWidth="189.0" />
-            <Label layoutX="95.0" layoutY="312.0" text="Calle">
+            <TextField fx:id="tfCalle" layoutX="93.0" layoutY="295.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="95.0" layoutY="275.0" text="Calle" textFill="WHITE" />
+            <Label layoutX="468.0" layoutY="275.0" text="Colonia" textFill="WHITE" />
+            <TextField fx:id="tfColonia" layoutX="468.0" layoutY="295.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="829.0" layoutY="275.0" text="Número de Casa o Oficina" textFill="WHITE" />
+            <TextField fx:id="tfNumeroCasa" layoutX="827.0" layoutY="295.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="94.0" layoutY="363.0" text="Código Postal" textFill="WHITE" />
+            <TextField fx:id="tfCodigoP" layoutX="95.0" layoutY="382.0" prefHeight="35.0" prefWidth="282.0" />
+            <Button layoutX="940.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="35.0" prefWidth="114.0" style="-fx-background-color: #034073;" text="Cancelar" textFill="WHITE">
                <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label layoutX="299.0" layoutY="312.0" text="Colonia">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfColonia" layoutX="299.0" layoutY="337.0" prefHeight="36.0" prefWidth="189.0" />
-            <Label layoutX="502.0" layoutY="312.0" text="Número de Casa o Oficina">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfNumeroCasa" layoutX="502.0" layoutY="337.0" prefHeight="36.0" prefWidth="200.0" />
-            <Label layoutX="716.0" layoutY="312.0" text="Código Postal">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tfCodigoP" layoutX="716.0" layoutY="337.0" prefHeight="36.0" prefWidth="189.0" />
-            <Button layoutX="654.0" layoutY="401.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: #034073;" text="Cancelar" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button layoutX="772.0" layoutY="401.0" mnemonicParsing="false" onAction="#btnAceptar" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: #034073;" text="Aceptar" textFill="WHITE">
+            <Button layoutX="1093.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnAceptar" prefHeight="35.0" prefWidth="115.0" style="-fx-background-color: #034073;" text="Aceptar" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+            <Label fx:id="lbErrorNombre" layoutX="94.0" layoutY="143.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorCorreo" layoutX="95.0" layoutY="218.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorCalle" layoutX="93.0" layoutY="330.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorCodigoPostal" layoutX="95.0" layoutY="417.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorColonia" layoutX="468.0" layoutY="330.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorTelefono" layoutX="468.0" layoutY="218.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorApellidoPaterno" layoutX="468.0" layoutY="143.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
+            <Label fx:id="lbErrorApellidoMaterno" layoutX="826.0" layoutY="143.0" prefHeight="17.0" prefWidth="282.0" textFill="#ff0808" />
+            <Label fx:id="lbErrorNumeroCasa" layoutX="828.0" layoutY="330.0" prefHeight="17.0" prefWidth="282.0" textFill="RED" />
          </children>
       </Pane>
    </children>

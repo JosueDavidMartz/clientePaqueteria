@@ -7,29 +7,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="786.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLPaquetesController">
+<AnchorPane id="AnchorPane" prefHeight="565.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLPaquetesController">
    <children>
-      <Pane fx:id="paneContenedorPaquetes" prefHeight="474.0" prefWidth="786.0" style="-fx-background-color: white;">
+      <Pane fx:id="paneContenedorPaquetes" prefHeight="565.0" prefWidth="1090.0" style="-fx-background-color: white;">
          <children>
-            <TableView fx:id="tvPaquetes" layoutX="56.0" layoutY="137.0" prefHeight="200.0" prefWidth="694.0">
+            <TableView fx:id="tvPaquetes" layoutX="37.0" layoutY="121.0" prefHeight="310.0" prefWidth="1017.0">
               <columns>
-                <TableColumn id="colDescripcion" fx:id="tcDescripcion" prefWidth="218.0" text="Descripción" />
-                <TableColumn id="colPeso" fx:id="tcPeso" prefWidth="101.0" text="Peso" />
-                  <TableColumn id="colAncho" fx:id="tcAncho" prefWidth="92.0" text="Ancho" />
-                  <TableColumn id="colAlto" fx:id="tcAlto" prefWidth="94.0" text="Alto" />
-                  <TableColumn id="colProfundidad" fx:id="tcProfundidad" prefWidth="103.0" text="Profundidad" />
-                  <TableColumn id="colEnvio" fx:id="tcEnvio" prefWidth="85.0" text="Envío" />
+                <TableColumn id="colDescripcion" fx:id="tcDescripcion" prefWidth="237.0" text="Descripción" />
+                <TableColumn id="colPeso" fx:id="tcPeso" prefWidth="160.0" text="Peso" />
+                  <TableColumn id="colAncho" fx:id="tcAncho" prefWidth="144.0" text="Ancho" />
+                  <TableColumn id="colAlto" fx:id="tcAlto" prefWidth="171.0" text="Alto" />
+                  <TableColumn id="colProfundidad" fx:id="tcProfundidad" prefWidth="135.0" text="Profundidad" />
+                  <TableColumn id="colEnvio" fx:id="tcEnvio" prefWidth="168.0" text="Envío" />
               </columns>
             </TableView>
-            <Label layoutX="56.0" layoutY="70.0" text="Buscar:">
+            <Label layoutX="37.0" layoutY="28.0" prefHeight="35.0" prefWidth="61.0" text="Buscar:">
                <font>
-                  <Font name="System Bold" size="17.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="tfBuscarPaquete" layoutX="123.0" layoutY="70.0" prefHeight="25.0" prefWidth="210.0" promptText="Numero de Guia" />
-            <Button layoutX="426.0" layoutY="418.0" mnemonicParsing="false" onAction="#btnModificarPaquete" prefHeight="26.0" prefWidth="101.0" style="-fx-background-color: #414bb2;" text="Modificar" textFill="WHITE" />
-            <Button layoutX="540.0" layoutY="418.0" mnemonicParsing="false" onAction="#btnAgregarPaquete" prefHeight="26.0" prefWidth="101.0" style="-fx-background-color: #414bb2;" text="Agregar" textFill="WHITE" />
-            <Button layoutX="656.0" layoutY="418.0" mnemonicParsing="false" onAction="#btnEliminarPaquete" prefHeight="26.0" prefWidth="101.0" style="-fx-background-color: #db1313;" text="Eliminar" textFill="WHITE" />
+            <TextField fx:id="tfBuscarPaquete" layoutX="104.0" layoutY="30.0" prefHeight="35.0" prefWidth="283.0" promptText="Número de guia" />
+            <Button layoutX="807.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnModificarPaquete" prefHeight="35.0" prefWidth="115.0" text="Editar" textFill="WHITE" />
+            <Button layoutX="940.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnAgregarPaquete" prefHeight="35.0" prefWidth="115.0" text="Agregar" textFill="WHITE" />
+            <Button layoutX="671.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnEliminarPaquete" prefHeight="35.0" prefWidth="115.0" style="-fx-background-color: #B61101;" text="Eliminar" textFill="WHITE" />
          </children>
       </Pane>
    </children>

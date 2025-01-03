@@ -1,9 +1,7 @@
 package clientepaqueteria.controladores;
 
 import clientepaqueteria.interfaz.INotificadorOperacion;
-import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.modelo.dao.PaqueteDAO;
-import clientepaqueteria.pojo.Colaborador;
 import clientepaqueteria.pojo.Mensaje;
 import clientepaqueteria.pojo.Paquete;
 import clientepaqueteria.utilidades.Utilidades;
@@ -34,7 +32,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-
 public class FXMLPaquetesController implements Initializable, INotificadorOperacion {
 
     HBox hbSuperior;
@@ -45,62 +42,59 @@ public class FXMLPaquetesController implements Initializable, INotificadorOperac
     private ScrollPane scrollPane;
     private ObservableList<Paquete> paquetes;
     private FilteredList<Paquete> listaPaquetes;
-    
+
     @FXML
     private Pane paneContenedorPaquetes;
     @FXML
-    private TableView<Paquete> tvPaquetes; // Cambiar el tipo de TableView a Paquete
+    private TableView<Paquete> tvPaquetes;
     @FXML
-    private TableColumn<Paquete, String> tcDescripcion; // Cambiar el tipo de TableColumn a Paquete y String
+    private TableColumn<Paquete, String> tcDescripcion;
     @FXML
-    private TableColumn<Paquete, Double> tcPeso; // Cambiar el tipo de TableColumn a Paquete y Double
+    private TableColumn<Paquete, Double> tcPeso;
     @FXML
-    private TableColumn<Paquete, Double> tcAncho; // Cambiar el tipo de TableColumn a Paquete y Double
+    private TableColumn<Paquete, Double> tcAncho;
     @FXML
-    private TableColumn<Paquete, Double> tcAlto; // Cambiar el tipo de TableColumn a Paquete y Double
+    private TableColumn<Paquete, Double> tcAlto;
     @FXML
-    private TableColumn<Paquete, Double> tcProfundidad; // Cambiar el tipo de TableColumn a Paquete y Double
+    private TableColumn<Paquete, Double> tcProfundidad;
     @FXML
-    private TableColumn<Paquete, Integer> tcEnvio; // Cambiar el tipo de TableColumn a Paquete y Integer
+    private TableColumn<Paquete, String> tcEnvio;
     @FXML
     private TextField tfBuscarPaquete;
-   
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformaciónTabla();
         configurarFiltro();
-    } 
-    
-    private void configurarTabla(){
-        // Configurar las columnas con los métodos get de la clase Paquete
+    }
+
+    private void configurarTabla() {
+
         tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         tcPeso.setCellValueFactory(new PropertyValueFactory<>("peso"));
         tcAncho.setCellValueFactory(new PropertyValueFactory<>("dimensionAncho"));
         tcAlto.setCellValueFactory(new PropertyValueFactory<>("dimensionAlto"));
         tcProfundidad.setCellValueFactory(new PropertyValueFactory<>("dimensionProfundidad"));
         tcEnvio.setCellValueFactory(new PropertyValueFactory<>("numeroGuia"));
+
     }
-    
-    private void cargarInformaciónTabla(){
-        // Traer la información a la tabla
+
+    private void cargarInformaciónTabla() {
+
         paquetes = FXCollections.observableArrayList();
-        // Obtener lo que trae el DAO
+
         List<Paquete> listaWS = PaqueteDAO.obtenerPaquetes();
         if (listaWS != null && !listaWS.isEmpty()) {
             paquetes.addAll(listaWS);
             tvPaquetes.setItems(paquetes);
         } else {
-            Utilidades.mostrarAlerta("Sin registros", 
-                "No seencontraron registros de paquetes", 
-                Alert.AlertType.INFORMATION);
+           // Utilidades.mostrarAlerta("Sin registros",
+             //       "No seencontraron registros de paquetes",
+               //     Alert.AlertType.INFORMATION);
         }
     }
-    
+
     public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
         this.hbSuperior = hbSuperior;
         this.vbMenu = vbMenu;
@@ -111,50 +105,46 @@ public class FXMLPaquetesController implements Initializable, INotificadorOperac
 
     @FXML
     private void btnModificarPaquete(ActionEvent event) {
-        // Lógica para modificar un paquete (si es necesario)
-         Paquete paquete = tvPaquetes.getSelectionModel().getSelectedItem();
-       
+
+        Paquete paquete = tvPaquetes.getSelectionModel().getSelectedItem();
+
         if (paquete != null) {
-          Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena, label, "Editar paquetes");
+            Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena, label, "Editar paquetes");
             try {
-                // Cargar la nueva vista para registrar paquetes
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioPaquetes.fxml"));
                 Parent formularioPaquetes = loader.load();
 
-                // Obtén el controlador de la nueva vista
                 FXMLFormularioPaquetesController controlador = loader.getController();
                 controlador.InicializarValores(this, paquete);
-                // Pasa el StackPane al nuevo controlador
+
                 controlador.setStackPane(spEscena);
                 controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, label, nombre);
 
-                // Agrega la nueva vista al StackPane (encima de la actual)
                 spEscena.getChildren().add(formularioPaquetes);
             } catch (IOException e) {
                 Logger.getLogger(FXMLPaquetesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
             }
         } else {
-            Utilidades.mostrarAlerta("Seleccionar Cliente", "Para poder editar debes seleccionar un cliente", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlerta("Seleccionar Paquete", "Para poder editar debes seleccionar un paquete", Alert.AlertType.WARNING);
         }
-       
+
     }
 
     @FXML
     private void btnAgregarPaquete(ActionEvent event) {
         Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena, label, "Registrar paquetes");
         try {
-            // Cargar la nueva vista para registrar paquetes
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioPaquetes.fxml"));
             Parent formularioPaquetes = loader.load();
 
-            // Obtén el controlador de la nueva vista
             FXMLFormularioPaquetesController controlador = loader.getController();
             controlador.InicializarValores(this, null);
-            // Pasa el StackPane al nuevo controlador
+
             controlador.setStackPane(spEscena);
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, label, nombre);
 
-            // Agrega la nueva vista al StackPane (encima de la actual)
             spEscena.getChildren().add(formularioPaquetes);
         } catch (IOException e) {
             Logger.getLogger(FXMLPaquetesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
@@ -163,41 +153,41 @@ public class FXMLPaquetesController implements Initializable, INotificadorOperac
 
     @FXML
     private void btnEliminarPaquete(ActionEvent event) {
-    Paquete paquete = tvPaquetes.getSelectionModel().getSelectedItem();
-    if (paquete != null) {
-        boolean seElimina = Utilidades.mostrarConfirmacion(
-            "Eliminar paquete",
-            "¿Estás seguro de eliminar el paquete seleccionado? " +
-            "Recuerda que una vez eliminado no se puede recuperar."
-        );
-        if (seElimina) {
-            // Llama al método para eliminar el paquete en la base de datos
-            eliminarPaquete(paquete.getIdPaquete());
+        Paquete paquete = tvPaquetes.getSelectionModel().getSelectedItem();
+        if (paquete != null) {
+            boolean seElimina = Utilidades.mostrarConfirmacion(
+                    "Eliminar paquete",
+                    "¿Estás seguro de eliminar el paquete seleccionado? "
+                    + "Recuerda que una vez eliminado no se puede recuperar."
+            );
+            if (seElimina) {
 
-            // Elimina el paquete de la lista original
-            if (paquetes != null) {
-                paquetes.remove(paquete);
+                eliminarPaquete(paquete.getIdPaquete());
+
+                if (paquetes != null) {
+                    paquetes.remove(paquete);
+                }
             }
+        } else {
+            Utilidades.mostrarAlerta(
+                    "Selecciona Paquete",
+                    "Para poder eliminar debes seleccionar un paquete de la tabla.",
+                    Alert.AlertType.WARNING
+            );
         }
-    } else {
-        Utilidades.mostrarAlerta(
-            "Selecciona Paquete",
-            "Para poder eliminar debes seleccionar un paquete de la tabla.",
-            Alert.AlertType.WARNING
-        );
     }
-}
-    private void eliminarPaquete(int idPaquete){
-        //IMPLEMENTACION CON EL DAO
+
+    private void eliminarPaquete(int idPaquete) {
+
         Mensaje mensaje = PaqueteDAO.eliminarPaquete(idPaquete);
         if (!mensaje.isError()) {
-        Utilidades.mostrarAlerta("Paquete eliminado", mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlerta("Paquete eliminado", mensaje.getMensaje(), Alert.AlertType.INFORMATION);
         } else {
             Utilidades.mostrarAlerta("Error al eliminar paquete", mensaje.getMensaje(), Alert.AlertType.ERROR);
         }
-        //System.out.println("ID: "+idColaborador);
+
     }
-    
+
     private void configurarFiltro() {
 
         listaPaquetes = new FilteredList<>(paquetes, b -> true);
@@ -208,7 +198,7 @@ public class FXMLPaquetesController implements Initializable, INotificadorOperac
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                if (paquete.getNumeroGuia()!= null && paquete.getNumeroGuia().toLowerCase().contains(lowerCaseFilter)) {
+                if (paquete.getNumeroGuia() != null && paquete.getNumeroGuia().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
@@ -223,5 +213,6 @@ public class FXMLPaquetesController implements Initializable, INotificadorOperac
     @Override
     public void notificarOperacionExitosa(String tipo, String nombre) {
         cargarInformaciónTabla();
+        configurarFiltro();
     }
 }

@@ -17,12 +17,14 @@ public class Colaborador {
     private String rol;
     private String numeroLicencia;
     private String fotoBase64;
+    private byte[] fotoBlob; 
+    private String estatus;
 
 
     public Colaborador() {
     }
 
-    public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String numeroPersonal, String correo, String curp, String contraseña, Integer idRol, String rol, String numeroLicencia, String fotoBase64) {
+    public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String numeroPersonal, String correo, String curp, String contraseña, Integer idRol, String rol, String numeroLicencia, String fotoBase64, byte[] fotoBlob, String estatus) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -35,6 +37,8 @@ public class Colaborador {
         this.rol = rol;
         this.numeroLicencia = numeroLicencia;
         this.fotoBase64 = fotoBase64;
+        this.fotoBlob = fotoBlob;
+        this.estatus = estatus;
     }
 
     public Integer getIdColaborador() {
@@ -133,5 +137,23 @@ public class Colaborador {
         this.fotoBase64 = fotoBase64;
     }
 
+    public byte[] getFotoBlob() {
+        return fotoBlob;
+    }
 
+    public void setFotoBlob(byte[] fotoBlob) {
+        this.fotoBlob = fotoBlob;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
+
+    
+
+    
 }

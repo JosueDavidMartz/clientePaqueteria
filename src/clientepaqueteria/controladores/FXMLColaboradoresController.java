@@ -4,19 +4,10 @@ import clientepaqueteria.interfaz.INotificadorOperacion;
 import clientepaqueteria.modelo.dao.ColaboradorDAO;
 import clientepaqueteria.pojo.Colaborador;
 import clientepaqueteria.pojo.Mensaje;
-
 import clientepaqueteria.pojo.Unidad;
 import clientepaqueteria.pojo.Rol;
-
 import clientepaqueteria.utilidades.Utilidades;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -44,13 +35,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class FXMLColaboradoresController implements Initializable, INotificadorOperacion{
+public class FXMLColaboradoresController implements Initializable, INotificadorOperacion {
 
     private ObservableList<Colaborador> colaboradores;
     private FilteredList<Colaborador> listaColaboradores;
-    
-    private Unidad unidad;
+    private Colaborador colaborador;
+    private FXMLInicioController inicioController;
 
+    private Unidad unidad;
 
     HBox hbSuperior;
     VBox vbMenu;
@@ -59,10 +51,9 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
     String nombre;
     String numeroPersonal;
     String rol;
-   
-    
+
     private ObservableList<Rol> roles;
-    
+
     @FXML
     private TableView<Colaborador> tvColaboradores;
     @FXML
@@ -87,19 +78,14 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
     @FXML
     private ComboBox<Rol> cbRol;
 
-
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacionTabla();
         configurarFiltro();
     }
 
+    private void configurarTabla() {
 
-    
-
-
-    private void configurarTabla() {  
-        
         colNoPersonal.setCellValueFactory(new PropertyValueFactory("numeroPersonal"));
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         colApellidoP.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
@@ -120,24 +106,50 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
         }
     }
 
-    public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
+    public void recibirConfiguracion(HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre, Colaborador colaborador) {
         this.hbSuperior = hbSuperior;
         this.vbMenu = vbMenu;
         this.spEscena = spEscena;
         this.label = label;
         this.nombre = nombre;
+        this.colaborador = colaborador;
     }
 
     @FXML
     private void btnEliminar(ActionEvent event) {
-        Colaborador colaborador = tvColaboradores.getSelectionModel().getSelectedItem();
-        if (colaborador != null) {
-            boolean seElimina = Utilidades.mostrarConfirmacion("Eliminar colaborador", "¿Estás seguro de eliminar al colaborador " + colaborador.getNombre() + "?" + "\nRecuerda que una vez eliminado no se podrá recuperar.");
-            if (seElimina) {                
-                eliminarColaborador(colaborador.getIdColaborador()); // Asegúrate de que aquí se usa getNoPersonal()
-            }
-        } else {
-            Utilidades.mostrarAlerta("Seleccionar Colaborador", "Para poder eliminar debes seleccionar al Colaborador", Alert.AlertType.WARNING);
+
+        Colaborador colaboradorSeleccionado = tvColaboradores.getSelectionModel().getSelectedItem();
+
+        if (colaboradorSeleccionado == null) {
+
+            Utilidades.mostrarAlerta("Seleccionar Colaborador",
+                    "Para poder eliminar, debes seleccionar al colaborador.",
+                    Alert.AlertType.WARNING);
+            return;
+        }
+        
+        
+        if (this.colaborador.getIdColaborador() == colaboradorSeleccionado.getIdColaborador()) {
+            Utilidades.mostrarAlerta("Error",
+                    "No puedes eliminar al usuario actualmente logueado. Inicia sesión con otra cuenta con permisos de administrador.",
+                    Alert.AlertType.ERROR);
+            return;
+        }
+
+        String mensajeConfirmacion = "¿Estás seguro de eliminar al colaborador "
+                + colaboradorSeleccionado.getNombre() + "?";
+
+        if ("Conductor".equalsIgnoreCase(colaboradorSeleccionado.getRol())) {
+            mensajeConfirmacion += "\n\nNo olvides asignar sus envios a otro conductor, en caso de tener un auto asignado, este volverá a estár disponible";
+        }
+
+       // mensajeConfirmacion += "\n\nRecuerda que una vez eliminado no se podrá recuperar.";
+
+        boolean seElimina = Utilidades.mostrarConfirmacion("Eliminar colaborador", mensajeConfirmacion);
+
+        if (seElimina) {
+            eliminarColaborador(colaboradorSeleccionado.getIdColaborador(), colaboradorSeleccionado.getNumeroPersonal());
+
         }
     }
 
@@ -164,10 +176,10 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
             Parent formularioColaborador = loader.load();
 
             FXMLFormularioColaboradorController controlador = loader.getController();
-            controlador.InicializarValores(observador,colaborador);
+            controlador.InicializarValores(observador, colaborador);
             controlador.setStackPane(spEscena);
             controlador.recibirConfiguracion(hbSuperior, vbMenu, spEscena, label, nombre);
-
+            controlador.setInicioController(inicioController);
             spEscena.getChildren().add(formularioColaborador);
 
         } catch (IOException e) {
@@ -175,59 +187,49 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
         }
     }
 
-    private void eliminarColaborador(int idColaborador) {
-        Mensaje respuesta = ColaboradorDAO.eliminarColaborador(idColaborador);
+    private void eliminarColaborador(int idColaborador, String noPersonal) {
+
+        Mensaje respuesta = ColaboradorDAO.eliminarColaborador(idColaborador, noPersonal);
         if (!respuesta.isError()) {
             Utilidades.mostrarAlerta("Éxito", "Colaborador eliminado correctamente", Alert.AlertType.INFORMATION);
-            cargarInformacionTabla(); 
+            cargarInformacionTabla();
         } else {
             Utilidades.mostrarAlerta("Error", respuesta.getMensaje(), Alert.AlertType.ERROR);
         }
+
     }
-
-
-
-    
 
     private void actualizarTablaColaboradores(List<Colaborador> colaboradoresEncontrados) {
         colaboradores.clear();
         colaboradores.addAll(colaboradoresEncontrados);
         tvColaboradores.setItems(colaboradores);
     }
-    
+
     private void buscarColaborador(String filtro) {
-        // Crear un mapa de parámetros para enviar al servicio
+
         Map<String, String> parametros = new HashMap<>();
         parametros.put("nombre", filtro);
         parametros.put("numeroPersonal", filtro);
         parametros.put("rol", filtro);
 
-        // Llama al DAO para buscar colaboradores con los filtros proporcionados
         List<Colaborador> colaboradoresEncontrados = ColaboradorDAO.buscarColaborador(parametros);
 
         if (colaboradoresEncontrados != null && !colaboradoresEncontrados.isEmpty()) {
             actualizarTablaColaboradores(FXCollections.observableArrayList(colaboradoresEncontrados));
         } else {
             limpiarTablaColaboradores();
-            
-            // Utilidades.mostrarAlerta("No se encontraron resultados", "No hay colaboradores que coincidan con el filtro: " + filtro, Alert.AlertType.INFORMATION);
+
         }
     }
-
 
     private void limpiarTablaColaboradores() {
         ObservableList<Colaborador> listaVacia = FXCollections.observableArrayList();
         tvColaboradores.setItems(listaVacia);
     }
 
-
-
     private void actualizarTablaColaboradores(ObservableList<Colaborador> listaColaborador) {
         tvColaboradores.setItems(listaColaborador);
     }
-
-  
-  
 
     private void configurarFiltro() {
 
@@ -239,13 +241,13 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                if (colaborador.getNombre()!= null && colaborador.getNombre().toLowerCase().contains(lowerCaseFilter)) {
+                if (colaborador.getNombre() != null && colaborador.getNombre().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                if (colaborador.getNumeroPersonal()!= null && colaborador.getNumeroPersonal().toLowerCase().contains(lowerCaseFilter)) {
+                if (colaborador.getNumeroPersonal() != null && colaborador.getNumeroPersonal().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                if (colaborador.getRol()!= null && colaborador.getRol().toLowerCase().contains(lowerCaseFilter)) {
+                if (colaborador.getRol() != null && colaborador.getRol().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
@@ -257,10 +259,15 @@ public class FXMLColaboradoresController implements Initializable, INotificadorO
         tvColaboradores.setItems(sortedData);
     }
 
-
-
     @Override
     public void notificarOperacionExitosa(String tipo, String nombre) {
         cargarInformacionTabla();
+        configurarFiltro();
+
+    }
+
+    void Inizializar(Colaborador colaborador, FXMLInicioController inicioController) {
+        this.colaborador = colaborador;
+        this.inicioController = inicioController;
     }
 }

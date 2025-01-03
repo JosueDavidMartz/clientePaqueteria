@@ -9,9 +9,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="534.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLInicioController">
+<AnchorPane id="AnchorPane" prefHeight="625.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLInicioController">
    <children>
-      <HBox fx:id="hbSuperior" alignment="CENTER" layoutX="160.0" prefHeight="61.0" prefWidth="786.0" style="-fx-background-color: #10002C;">
+      <HBox fx:id="hbSuperior" alignment="CENTER" layoutX="160.0" prefHeight="61.0" prefWidth="1090.0" style="-fx-background-color: #10002C;">
          <children>
             <Label fx:id="lbNombreModulo" alignment="TOP_LEFT" contentDisplay="RIGHT" prefHeight="31.0" prefWidth="446.0" text="Inicio" textFill="WHITE">
                <font>
@@ -37,7 +37,7 @@
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </VBox>
-                  <ImageView fx:id="ivFotoColaborador" fitHeight="39.0" fitWidth="85.0" onMouseClicked="#clickFotoColaborador" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="ivFotoColaborador" fitHeight="39.0" fitWidth="85.0" onMouseClicked="#clickFotoColaborador" onMouseEntered="#enteredFoto" onMouseExited="#exitedFoto" onMousePressed="#pressedFoto" onMouseReleased="#releasedFoto" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../recursos/image%20(4).png" />
                      </image>
@@ -52,8 +52,8 @@
             </HBox>
          </children>
       </HBox>
-      <StackPane fx:id="spEscena" layoutX="160.0" layoutY="60.0" prefHeight="474.0" prefWidth="786.0" style="-fx-background-color: #5542B6;" />
-      <VBox fx:id="vbMenu" alignment="TOP_CENTER" prefHeight="534.0" prefWidth="160.0" style="-fx-background-color: #10002C;">
+      <StackPane fx:id="spEscena" layoutX="160.0" layoutY="60.0" prefHeight="565.0" prefWidth="1090.0" style="-fx-background-color: #5542B6;" />
+      <VBox fx:id="vbMenu" alignment="TOP_CENTER" prefHeight="625.0" prefWidth="160.0" style="-fx-background-color: #10002C;">
          <children>
             <ImageView fx:id="ivLogo" fitHeight="67.0" fitWidth="110.0" onMouseClicked="#clickLogo" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -71,8 +71,8 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Separator prefWidth="200.0" />
-            <HBox prefHeight="39.0" prefWidth="160.0">
+            <Separator fx:id="separador1" prefWidth="200.0" />
+            <HBox fx:id="hbColaboradores" prefHeight="39.0" prefWidth="160.0">
                <children>
                   <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -82,7 +82,7 @@
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnColaborador" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#btnColaborador" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Colaborador" textFill="WHITE">
+                  <Button fx:id="btnColaborador" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#btnColaborador" onMouseEntered="#entered" onMouseExited="#exited" onMousePressed="#pressed" onMouseReleased="#released" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Colaborador" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -93,7 +93,7 @@
                </VBox.margin>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="39.0" prefWidth="160.0">
+            <HBox fx:id="hbUnidades" prefHeight="39.0" prefWidth="160.0">
                <children>
                   <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -103,7 +103,7 @@
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnUnidades" mnemonicParsing="false" onAction="#btnUnidades" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Unidades" textFill="WHITE">
+                  <Button fx:id="btnUnidades" mnemonicParsing="false" onAction="#btnUnidades" onMouseEntered="#entered" onMouseExited="#exited" onMousePressed="#pressed" onMouseReleased="#released" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Unidades" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -113,8 +113,8 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
-            <Separator prefWidth="200.0" />
-            <HBox prefHeight="39.0" prefWidth="160.0">
+            <Separator fx:id="seperador2" prefWidth="200.0" />
+            <HBox fx:id="hbClientes" prefHeight="39.0" prefWidth="160.0">
                <children>
                   <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -124,7 +124,7 @@
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnClientes" mnemonicParsing="false" onAction="#btnClientes" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Clientes" textFill="WHITE">
+                  <Button fx:id="btnClientes" mnemonicParsing="false" onAction="#btnClientes" onMouseEntered="#entered" onMouseExited="#exited" onMousePressed="#pressed" onMouseReleased="#released" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Clientes" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -135,7 +135,7 @@
                </VBox.margin>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="39.0" prefWidth="160.0">
+            <HBox fx:id="hbEnvios" prefHeight="39.0" prefWidth="160.0">
                <children>
                   <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -145,7 +145,7 @@
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnEnvios" mnemonicParsing="false" onAction="#btnEnvios" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Envíos" textFill="WHITE">
+                  <Button fx:id="btnEnvios" mnemonicParsing="false" onAction="#btnEnvios" onMouseEntered="#entered" onMouseExited="#exited" onMousePressed="#pressed" onMouseReleased="#released" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Envíos" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -156,7 +156,7 @@
                </VBox.margin>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="39.0" prefWidth="160.0">
+            <HBox fx:id="hbPaquetes" prefHeight="39.0" prefWidth="160.0">
                <children>
                   <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -166,7 +166,7 @@
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnPaquetes" mnemonicParsing="false" onAction="#btnPaquetes" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Paquetes" textFill="WHITE">
+                  <Button fx:id="btnPaquetes" mnemonicParsing="false" onAction="#btnPaquetes" onMouseEntered="#entered" onMouseExited="#exited" onMousePressed="#pressed" onMouseReleased="#released" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Paquetes" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

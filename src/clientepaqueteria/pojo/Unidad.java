@@ -21,12 +21,14 @@ public class Unidad {
     private String motivo;
     private Integer idColaborador;
     private String tipoUnidad;
+    private String numeroPersonal;
+    private String nombreConductor;
     
 
     public Unidad() {
     }
 
-    public Unidad(Integer idUnidad, String marca, String modelo, Integer año, String vin, String numeroInterno, String situacion, String motivo, Integer idColaborador, String tipoUnidad) {
+    public Unidad(Integer idUnidad, String marca, String modelo, Integer año, String vin, String numeroInterno, String situacion, String motivo, Integer idColaborador, String tipoUnidad, String numeroPersonal, String nombreConductor) {
         this.idUnidad = idUnidad;
         this.marca = marca;
         this.modelo = modelo;
@@ -37,6 +39,8 @@ public class Unidad {
         this.motivo = motivo;
         this.idColaborador = idColaborador;
         this.tipoUnidad = tipoUnidad;
+        this.numeroPersonal = numeroPersonal;
+        this.nombreConductor = nombreConductor;
     }
 
     public Integer getIdUnidad() {
@@ -118,6 +122,24 @@ public class Unidad {
     public void setTipoUnidad(String tipoUnidad) {
         this.tipoUnidad = tipoUnidad;
     }
+
+    public String getNumeroPersonal() {
+        return numeroPersonal;
+    }
+
+    public void setNumeroPersonal(String numeroPersonal) {
+        this.numeroPersonal = numeroPersonal;
+    }
+
+    public String getNombreConductor() {
+        return nombreConductor;
+    }
+
+    public void setNombreConductor(String nombreConductor) {
+        this.nombreConductor = nombreConductor;
+    }
+
+    
 
     
     

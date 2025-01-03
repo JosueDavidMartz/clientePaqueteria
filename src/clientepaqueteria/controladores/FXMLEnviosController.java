@@ -26,6 +26,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,13 +35,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-
 public class FXMLEnviosController implements Initializable, INotificadorOperacion {
+
     private ObservableList<ResultadoObtenerEnvio> envios;
     private FilteredList<ResultadoObtenerEnvio> listaEnvios;
-   
-    
-    
+
     Colaborador colaborador;
     HBox hbSuperior;
     VBox vbMenu;
@@ -48,8 +47,7 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
     Label label;
     String nombre;
     ResultadoObtenerEnvio direccionOrigen;
-   // List<ResultadoObtenerEnvio> listaEnvios;
-    
+
     @FXML
     private Label lbBuscarEnvio;
     @FXML
@@ -57,7 +55,7 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
     @FXML
     private TableView<ResultadoObtenerEnvio> tvEnvios;
     @FXML
-    private TableColumn tcCliente;
+    private TableColumn<ResultadoObtenerEnvio, String> tcCliente;
     @FXML
     private TableColumn<ResultadoObtenerEnvio, String> tcOrigen;
     @FXML
@@ -68,18 +66,20 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
     private TableColumn tcConductor;
     @FXML
     private TableColumn tcPaquetes;
-   
+    @FXML
+    private TableColumn tcGuia;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    
+
         configurarTabla();
         obtenerEnvios();
         configurarFiltro();
-    }    
+    }
 
     void recibirConfiguracion(Colaborador colaborador, HBox hbSuperior, VBox vbMenu, StackPane spEscena, Label label, String nombre) {
-         //To change body of generated methods, choose Tools | Templates.
+
         this.colaborador = colaborador;
         this.hbSuperior = hbSuperior;
         this.vbMenu = vbMenu;
@@ -91,40 +91,38 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
     @FXML
     private void btnModificar(ActionEvent event) {
         ResultadoObtenerEnvio envio = tvEnvios.getSelectionModel().getSelectedItem();
-        if(envio != null){
-            
+        if (envio != null) {
+
             irFormularioEnvio(this, envio);
-        }else{
+        } else {
             Utilidades.mostrarAlerta("Sin selección", "Selecciona una unidad para poder editar", Alert.AlertType.WARNING);
         }
     }
-    
-    private void irFormularioEnvio(INotificadorOperacion observador, ResultadoObtenerEnvio envio){
+
+    private void irFormularioEnvio(INotificadorOperacion observador, ResultadoObtenerEnvio envio) {
         Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena, label, "Registrar envio");
         try {
-         // Cargar la nueva vista
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioEnvio.fxml"));
-         Parent formularioUnidad = loader.load();
 
-         // Obtén el controlador de la nueva vista
-         FXMLFormularioEnvioController controlador = loader.getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioEnvio.fxml"));
+            Parent formularioUnidad = loader.load();
 
-         // Pasa el StackPane al nuevo controlador
-         controlador.setStackPane(spEscena);
-         controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, label, nombre);
-         controlador.inicializarValores(observador, envio);
-         // Agrega la nueva vista al StackPane (encima de la actual)
-         spEscena.getChildren().add(formularioUnidad);
-     } catch (IOException e) {
-         Logger.getLogger(FXMLUnidadesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
-     }
+            FXMLFormularioEnvioController controlador = loader.getController();
+
+            controlador.setStackPane(spEscena);
+            controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, label, nombre);
+            controlador.inicializarValores(observador, envio);
+
+            spEscena.getChildren().add(formularioUnidad);
+        } catch (IOException e) {
+            Logger.getLogger(FXMLUnidadesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
+        }
     }
-    
+
     public void obtenerEnvios() {
         envios = FXCollections.observableArrayList();
         List<ResultadoObtenerEnvio> listaObtenida = EnvioDAO.obtenerEnvios();
         if (listaObtenida != null && !listaObtenida.isEmpty()) {
-            //ObservableList<ResultadoObtenerEnvio> observableList = FXCollections.observableArrayList(listaObtenida);
+
             envios.addAll(listaObtenida);
             tvEnvios.setItems(envios);
         } else {
@@ -132,82 +130,111 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
         }
     }
 
-
     @FXML
     private void btnCrearEnvio(ActionEvent event) {
         Utilidades.expandirInterfaz(hbSuperior, vbMenu, spEscena, label, "Registrar Envío");
         try {
-         // Cargar la nueva vista
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioEnvio.fxml"));
-         Parent formularioEnvio = loader.load();
 
-         // Obtén el controlador de la nueva vista
-         FXMLFormularioEnvioController controlador = loader.getController();
-         controlador.inicializarValores(this, null);
-           
-         controlador.inicializarValores(this, null);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLFormularioEnvio.fxml"));
+            Parent formularioEnvio = loader.load();
 
+            FXMLFormularioEnvioController controlador = loader.getController();
+            controlador.inicializarValores(this, null);
 
-// Pasa el StackPane al nuevo controlador
-         controlador.setStackPane(spEscena);
-         controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, label, nombre);
-         // Agrega la nueva vista al StackPane (encima de la actual)
-         spEscena.getChildren().add(formularioEnvio);
-     } catch (IOException e) {
-         Logger.getLogger(FXMLUnidadesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
-     }
+            controlador.inicializarValores(this, null);
+
+            controlador.setStackPane(spEscena);
+            controlador.recibirConfiguracion(colaborador, hbSuperior, vbMenu, spEscena, label, nombre);
+
+            spEscena.getChildren().add(formularioEnvio);
+        } catch (IOException e) {
+            Logger.getLogger(FXMLUnidadesController.class.getName()).log(Level.SEVERE, "Error al cargar la vista", e);
+        }
     }
-    
-    private void configurarTabla() {
-        // Asignar propiedades directamente
-        tcCliente.setCellValueFactory(new PropertyValueFactory<>("nombreCliente"));
 
-        // Concatenar las propiedades para tcOrigen
+    private void configurarTabla() {
+
+        // Columna Cliente
+        tcCliente.setCellValueFactory(cellData -> {
+            ResultadoObtenerEnvio envio = cellData.getValue();
+            String nombreCliente = envio.getNombreCliente();
+            String estatusCliente = envio.getEstatusCliente();
+
+            if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
+                return new SimpleStringProperty(""); // Campo vacío si no hay información
+            }
+
+            if (!"Activo".equals(estatusCliente)) {
+                nombreCliente += " (cliente eliminado)";
+            }
+
+            return new SimpleStringProperty(nombreCliente);
+        });
+
+        // Columna Origen
         tcOrigen.setCellValueFactory(cellData -> {
             ResultadoObtenerEnvio direccionOrigen = cellData.getValue();
-            String concatenado = direccionOrigen.getCalleOrigen() + " " 
-                                + direccionOrigen.getNumeroOrigen() + ", " 
-                                + direccionOrigen.getColoniaOrigen() + ", " 
-                                + direccionOrigen.getCiudadOrigen();
-            return new SimpleStringProperty(concatenado);
+            String concatenado = (direccionOrigen.getCalleOrigen() == null ? "" : direccionOrigen.getCalleOrigen()) + " "
+                    + (direccionOrigen.getNumeroOrigen() == null ? "" : direccionOrigen.getNumeroOrigen()) + ", "
+                    + (direccionOrigen.getColoniaOrigen() == null ? "" : direccionOrigen.getColoniaOrigen()) + ", "
+                    + (direccionOrigen.getCiudadOrigen() == null ? "" : direccionOrigen.getCiudadOrigen());
+            return new SimpleStringProperty(concatenado.trim().replaceAll(", $", "")); // Limpia espacios o comas finales
         });
-        
+
+        // Columna Destino
         tcDestino.setCellValueFactory(cellData -> {
             ResultadoObtenerEnvio direccionDestino = cellData.getValue();
-            String concatenado = direccionDestino.getCalleDestino() + " " 
-                                + direccionDestino.getNumeroDestino() + ", " 
-                                + direccionDestino.getColoniaDestino() + ", " 
-                                + direccionDestino.getCodigoPostalDestino()+ ", " 
-                                + direccionDestino.getCiudadDestino()+ ", " 
-                                + direccionDestino.getEstadoDestino();
-            return new SimpleStringProperty(concatenado);
+            String concatenado = (direccionDestino.getCalleDestino() == null ? "" : direccionDestino.getCalleDestino()) + " "
+                    + (direccionDestino.getNumeroDestino() == null ? "" : direccionDestino.getNumeroDestino()) + ", "
+                    + (direccionDestino.getColoniaDestino() == null ? "" : direccionDestino.getColoniaDestino()) + ", "
+                    + (direccionDestino.getCodigoPostalDestino() == null ? "" : direccionDestino.getCodigoPostalDestino()) + ", "
+                    + (direccionDestino.getCiudadDestino() == null ? "" : direccionDestino.getCiudadDestino()) + ", "
+                    + (direccionDestino.getEstadoDestino() == null ? "" : direccionDestino.getEstadoDestino());
+            return new SimpleStringProperty(concatenado.trim().replaceAll(", $", "")); // Limpia espacios o comas finales
         });
-        
+
+        // Otras columnas
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("nombreSeguimiento"));
         tcConductor.setCellValueFactory(new PropertyValueFactory<>("nombreConductor"));
         tcPaquetes.setCellValueFactory(new PropertyValueFactory<>("cantidadPaquetes"));
+        tcGuia.setCellValueFactory(new PropertyValueFactory<>("numeroGuia"));
 
-        // Configura otras columnas según sea necesario
-        
+        tcEstado.setCellFactory(tc -> {
+            return new TableCell<Envio, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
 
-        // Puedes continuar con el resto de las columnas aquí
+                    if (empty || item == null) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item);
+
+                        // Aplicar estilos según el estado
+                        if ("Pendiente".equals(item)) {
+                            setStyle("-fx-text-fill: black");
+                        } else if ("En tránsito".equals(item)) {
+                            setStyle("-fx-text-fill: blue;");
+                        } else if ("Detenido".equals(item)) {
+                            setStyle("-fx-text-fill: orange;");
+                        } else if ("Entregado".equals(item)) {
+                            setStyle("-fx-text-fill: green;");
+                        } else if ("Cancelado".equals(item)) {
+                            setStyle("-fx-text-fill: red;");
+                        } else {
+                            setStyle(""); // Restablecer estilo por defecto
+                        }
+                    }
+                }
+            };
+        });
     }
-
-
-    /*private void cargarInformacionTabla() {
-        unidades = FXCollections.observableArrayList();
-        List<Unidad> listaWS = UnidadDAO.obtenerColaboradores();
-        if(listaWS != null ){//nos interesa diferenciar cuando es null, ya que vacio y con contenido siguen el mismo camino
-            unidades.addAll(listaWS);
-            tvTablaUnidades.setItems(unidades);
-        }else{
-            Utilidades.mostrarAlerta("Datos no disponibles", "Lo sentimos por el momento no se puede cargar la lista de las unidades", Alert.AlertType.ERROR);
-        }
-    }*/
 
     @Override
     public void notificarOperacionExitosa(String tipo, String nombre) {
-         obtenerEnvios();
+        obtenerEnvios();
+        configurarFiltro();
     }
 
     private void configurarFiltro() {
@@ -220,9 +247,9 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                if (envio.getNumeroGuia()!= null && envio.getNumeroGuia().toLowerCase().contains(lowerCaseFilter)) {
+                if (envio.getNumeroGuia() != null && envio.getNumeroGuia().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }               
+                }
                 return false;
             });
         });
@@ -231,8 +258,5 @@ public class FXMLEnviosController implements Initializable, INotificadorOperacio
         sortedData.comparatorProperty().bind(tvEnvios.comparatorProperty());
         tvEnvios.setItems(sortedData);
     }
-    
-    
-    
-    
+
 }

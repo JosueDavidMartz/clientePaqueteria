@@ -1,4 +1,3 @@
-
 package clientepaqueteria.controladores;
 
 import clientepaqueteria.modelo.dao.LoginDAO;
@@ -21,9 +20,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-
 public class FXMLAutenticacionController implements Initializable {
-    
+
     @FXML
     private TextField tfNumeroPersonal;
     @FXML
@@ -32,102 +30,89 @@ public class FXMLAutenticacionController implements Initializable {
     private Label lbErrorContraseña;
     @FXML
     private Label lbErrorNumeropersonal;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
-
-/*    @FXML
-    private void btnIniciarSesion(ActionEvent event) {
-         try{
-            Stage escenarioBase = (Stage) lbErrorIniciarSesion.getScene().getWindow();
-            Parent principal = FXMLLoader.load(getClass().getResource("/clientepaqueteria/vistas/FXMLInicio.fxml"));
-
-            Scene escenaPrincipal = new Scene(principal);
-            escenarioBase.setScene(escenaPrincipal);
-            escenarioBase.setTitle("Inicio");
-            escenarioBase.show();
-        }catch (IOException ex){
-            Utilidades.mostrarAlerta("Error", "Pro el momento no se puede mostrar la pantalla principal", Alert.AlertType.ERROR);
-
-*/
-     @FXML
+    @FXML
     private void clicIngresar(ActionEvent event) {
-        //obtener resultados
         String noPersonal = tfNumeroPersonal.getText();
         String contraseña = tfContrasenia.getText();
-        
-        if(validarCampos(noPersonal, contraseña)){
-            verificaCredencialesAcceso(noPersonal, contraseña); //se llama el metodo
 
+        if (validarCampos(noPersonal, contraseña)) {
+            verificaCredencialesAcceso(noPersonal, contraseña);
         }
     }
-    
-    private boolean validarCampos(String noPersonal, String contraseña){
+
+    private boolean validarCampos(String noPersonal, String contraseña) {
         boolean camposValidos = true;
         lbErrorNumeropersonal.setText("");
         lbErrorContraseña.setText("");
-        if(noPersonal.isEmpty()){
+        if (noPersonal.isEmpty()) {
             camposValidos = false;
             lbErrorNumeropersonal.setText("Numero Personal obligatorio");
         }
-        if(contraseña.isEmpty()){
+        if (contraseña.isEmpty()) {
             camposValidos = false;
             lbErrorContraseña.setText("Contraseña obligatoria");
         }
         return camposValidos;
     }
-    
-    // Verifica que existen
+
     private void verificaCredencialesAcceso(String noPersonal, String contraseña) {
         Login respuestaLogin = LoginDAO.iniciarsesion(noPersonal, contraseña);
         if (!respuestaLogin.isError()) {
-            
-            // Obtener el colaborador del Login
             Colaborador colaborador = respuestaLogin.getColaborador();
             
-           
+            if(colaborador.getRol().equals("Conductor")){
+                Utilidades.mostrarAlerta("Usuario no autorizado",
+                    "No tienes permisos para acceder al sistema",
+                    Alert.AlertType.ERROR);
+                return;
+            }
+            
             irPantallaPrincipal(colaborador);
         } else {
-            Utilidades.mostrarAlerta("Credenciales incorrectas", 
-                "Número personal y/o contraseña incorrectos", 
-                Alert.AlertType.ERROR);
-       }
+            Utilidades.mostrarAlerta("Credenciales incorrectas",
+                    "Número personal y/o contraseña incorrectos",
+                    Alert.AlertType.ERROR);
+        }
     }
 
     private void irPantallaPrincipal(Colaborador colaborador) {
         try {
-        // Cargar la vista de la pantalla principal
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLInicio.fxml"));
-        Parent principal = loader.load();
-        
-        // Obtener el controlador de la nueva pantalla
-        FXMLInicioController controlador = loader.getController();
-        
-        // Pasar el objeto Colaborador al controlador de la pantalla principal
-        controlador.obtenerInformacionColaborador(colaborador);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientepaqueteria/vistas/FXMLInicio.fxml"));
+            Parent principal = loader.load();
 
-        // Configurar el escenario base (ventana principal)
-        Stage escenarioBase = (Stage) tfNumeroPersonal.getScene().getWindow();
+            FXMLInicioController controlador = loader.getController();
 
-        // Registrar el escenario en WindowManager
-        controlador.setEscenario(escenarioBase); // Registrar este escenario en el controlador
-        WindowManager.registrarVentana("inicio", escenarioBase); // Guardar el escenario con un identificador
+            controlador.obtenerInformacionColaborador(colaborador);
+          
 
-        // Cambiar la escena a la pantalla principal
-        Scene escenaPrincipal = new Scene(principal);
-        escenarioBase.setScene(escenaPrincipal);
-        escenarioBase.setTitle("Pantalla Principal");
-        escenarioBase.show();
-    } catch (IOException ex) {
-        Utilidades.mostrarAlerta(
-            "Error", 
-            "Por el momento no se puede mostrar la pantalla principal", 
-            Alert.AlertType.ERROR
-        );
-        ex.printStackTrace(); // Opcional: para facilitar la depuración
+            Stage escenarioBase = (Stage) tfNumeroPersonal.getScene().getWindow();
+
+            controlador.setEscenario(escenarioBase); // Registrar este escenario en el controlador
+            WindowManager.registrarVentana("inicio", escenarioBase); // Guardar el escenario con un identificador
+
+            // Cambiar la escena a la pantalla principal
+            Scene escenaPrincipal = new Scene(principal);
+            escenaPrincipal.getStylesheets().add(
+                    getClass().getResource("/clientepaqueteria/recursos/estilos.css").toExternalForm()
+            );
+            escenarioBase.setScene(escenaPrincipal);              
+            escenarioBase.setTitle("Pantalla Principal");
+            escenarioBase.setX(50);
+            escenarioBase.setY(30);
+            escenarioBase.show();
+        } catch (IOException ex) {
+            Utilidades.mostrarAlerta(
+                    "Error",
+                    "Por el momento no se puede mostrar la pantalla principal",
+                    Alert.AlertType.ERROR
+            );
+            ex.printStackTrace();
+        }
     }
-}
 }

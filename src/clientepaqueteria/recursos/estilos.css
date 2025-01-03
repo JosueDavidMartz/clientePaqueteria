@@ -1,0 +1,54 @@
+/* Estilo base */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #2C2C3E, #1F1F2C); /* Degradado gris-azul oscuro */
+    -fx-border-color: #5A5A7D; /* Bordes gris-azulado */
+    -fx-border-width: 0px;
+    -fx-text-fill: #FFFFFF; /* Texto blanco */
+    -fx-padding: 10;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+}
+
+/* Hover (cursor encima) */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #3A3A4E, #2A2A3A); /* Fondo ligeramente más claro */
+    -fx-border-color: #6A6A8D; /* Bordes más definidos */
+    -fx-text-fill: #F0F0F0; /* Texto ligeramente más claro */
+    -fx-effect: dropshadow(gaussian, rgba(90, 90, 125, 0.3), 8, 0.2, 0, 2); /* Sombra sutil */
+}
+
+/* Presionado */
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #232333, #191926); /* Fondo más oscuro y sumido */
+    -fx-border-color: #4A4A6D; /* Bordes más opacos */
+    -fx-text-fill: #D0D0D0; /* Texto gris claro */
+    -fx-effect: innershadow(gaussian, rgba(74, 74, 109, 0.5), 8, 0.3, 0, 1); /* Sombra interna */
+}
+
+/* Activo (sección seleccionada) */
+.button-active {
+    -fx-background-color: linear-gradient(to bottom, #40405A, #2E2E4A); /* Fondo destacado */
+    -fx-border-color: #7A7A9D; /* Bordes gris-azul llamativo */
+    -fx-text-fill: #FFFFFF; /* Texto blanco */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-effect: dropshadow(gaussian, rgba(122, 122, 157, 0.4), 10, 0.3, 0, 3); /* Sombra moderada */
+}
+
+.image-default {
+    -fx-effect: null; /* Sin efecto */
+    -fx-opacity: 1.0; /* Opacidad completa */
+}
+
+.image-hovered {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0, 0); /* Sombra */
+    -fx-opacity: 1.0;
+}
+
+.image-pressed {
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.5, 0, 0); /* Sombra interna */
+    -fx-opacity: 0.8; /* Leve transparencia */
+}
+
+

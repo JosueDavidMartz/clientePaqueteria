@@ -8,65 +8,79 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioEnvioController">
+<AnchorPane id="AnchorPane" prefHeight="565.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientepaqueteria.controladores.FXMLFormularioEnvioController">
    <children>
-      <Pane prefHeight="474.0" prefWidth="946.0" style="-fx-background-color: #12002B;">
+      <Pane layoutX="-1.0" prefHeight="565.0" prefWidth="1250.0" style="-fx-background-color: #24024A;">
          <children>
-            <Label layoutX="21.0" layoutY="18.0" prefHeight="16.0" prefWidth="103.0" text="Cliente" textFill="WHITE">
+            <Label layoutX="61.0" layoutY="20.0" prefHeight="16.0" prefWidth="103.0" text="Cliente" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="547.0" layoutY="222.0" text="Origen" textFill="WHITE">
+            <Label layoutX="60.0" layoutY="140.0" text="Destino" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="21.0" layoutY="94.0" text="Destino" textFill="WHITE">
+            <ComboBox fx:id="tfClienteFormularioEnvio" layoutX="60.0" layoutY="47.0" prefHeight="35.0" prefWidth="516.0" />
+            <TextField fx:id="tfCalleDestino" layoutX="60.0" layoutY="182.0" prefHeight="35.0" prefWidth="516.0" />
+            <TextField fx:id="tfNumeroDestino" layoutX="615.0" layoutY="181.0" prefHeight="35.0" prefWidth="234.0" />
+            <TextField fx:id="tfCodiigoPostalDestino" layoutX="883.0" layoutY="181.0" prefHeight="35.0" prefWidth="246.0" />
+            <TextField fx:id="tfColoniaDestino" layoutX="61.0" layoutY="260.0" prefHeight="35.0" prefWidth="516.0" />
+            <TextField fx:id="tfEstadoDestino" layoutX="615.0" layoutY="258.0" prefHeight="35.0" prefWidth="516.0" />
+            <TextField fx:id="tfCiudadDestino" layoutX="60.0" layoutY="344.0" prefHeight="35.0" prefWidth="516.0" />
+            <TextField fx:id="tfCosto" layoutX="616.0" layoutY="344.0" prefHeight="35.0" prefWidth="234.0" />
+            <Button layoutX="945.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="35.0" prefWidth="114.0" text="Cancelar" />
+            <Button layoutX="1084.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnAceptar" prefHeight="35.0" prefWidth="114.0" text="Aceptar" />
+            <Label layoutX="61.0" layoutY="164.0" prefHeight="17.0" prefWidth="52.0" text="Calle" textFill="WHITE" />
+            <Label layoutX="616.0" layoutY="164.0" prefHeight="17.0" prefWidth="52.0" text="Número" textFill="WHITE" />
+            <Label layoutX="62.0" layoutY="243.0" prefHeight="17.0" prefWidth="52.0" text="Colonia" textFill="WHITE" />
+            <Label layoutX="887.0" layoutY="164.0" prefHeight="17.0" prefWidth="112.0" text="Código Postal" textFill="WHITE" />
+            <Label layoutX="615.0" layoutY="240.0" prefHeight="17.0" prefWidth="52.0" text="Estado" textFill="WHITE" />
+            <Label layoutX="61.0" layoutY="326.0" prefHeight="17.0" prefWidth="52.0" text="Ciudad" textFill="WHITE" />
+            <ComboBox fx:id="cbConductor" layoutX="618.0" layoutY="47.0" prefHeight="35.0" prefWidth="234.0" />
+            <ComboBox fx:id="cbEstado" layoutX="886.0" layoutY="47.0" prefHeight="35.0" prefWidth="246.0" />
+            <Label layoutX="618.0" layoutY="25.0" prefHeight="17.0" prefWidth="352.0" text="Conductor asignado al envío:" textFill="WHITE" />
+            <Label fx:id="lbCosto" layoutX="615.0" layoutY="326.0" prefHeight="17.0" prefWidth="112.0" text="Costo" textFill="WHITE" />
+            <Label layoutX="886.0" layoutY="26.0" prefHeight="17.0" prefWidth="285.0" text="Estatus del envio:" textFill="WHITE" />
+            <Label layoutX="60.0" layoutY="476.0" prefHeight="17.0" prefWidth="492.0" text="Esta dirección es el origen y pertenece a la sucursal de recolección, no se puede cambiar." textFill="#f8ff0a">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font size="10.0" />
+               </font></Label>
+            <Label fx:id="lbErrorCliente" layoutX="62.0" layoutY="83.0" prefHeight="17.0" prefWidth="424.0" textFill="RED" />
+            <Label fx:id="lbErrorCalle" layoutX="62.0" layoutY="216.0" prefHeight="17.0" prefWidth="424.0" textFill="RED" />
+            <Label fx:id="lbErrorColonia" layoutX="62.0" layoutY="295.0" prefHeight="17.0" prefWidth="424.0" textFill="RED" />
+            <Label fx:id="lbErrorCiudad" layoutX="61.0" layoutY="379.0" prefHeight="17.0" prefWidth="424.0" textFill="RED" />
+            <Label fx:id="lbErrorCosto" layoutX="617.0" layoutY="379.0" prefHeight="17.0" prefWidth="227.0" textFill="RED" />
+            <Label fx:id="lbErrorEstado" layoutX="616.0" layoutY="293.0" prefHeight="17.0" prefWidth="227.0" textFill="RED" />
+            <Label fx:id="lbErrorNumero" layoutX="617.0" layoutY="216.0" prefHeight="17.0" prefWidth="227.0" textFill="RED" />
+            <Label fx:id="lbErrorCodigoPostal" layoutX="885.0" layoutY="216.0" prefHeight="17.0" prefWidth="227.0" textFill="RED" />
+            <Label fx:id="lbDireccionOrigen" layoutX="60.0" layoutY="454.0" prefHeight="17.0" prefWidth="741.0" textFill="#c6b4b4" />
+            <Label layoutX="885.0" layoutY="72.0" prefHeight="54.0" prefWidth="246.0" text="El estado del envío lo puedes cambiar una vez lo hayas creado, por defecto iniciara en &quot;Pendiente&quot;." textFill="#ffe100" wrapText="true">
+               <font>
+                  <Font size="10.0" />
                </font>
             </Label>
-            <TextField fx:id="tfCalleDestino" layoutX="21.0" layoutY="143.0" prefHeight="25.0" prefWidth="411.0" />
-            <TextField fx:id="tfColoniaDestino" layoutX="22.0" layoutY="249.0" prefHeight="25.0" prefWidth="411.0" />
-            <TextField fx:id="tfNumeroDestino" layoutX="21.0" layoutY="195.0" prefHeight="25.0" prefWidth="192.0" />
-            <TextField fx:id="tfCodiigoPostalDestino" layoutX="227.0" layoutY="195.0" prefHeight="25.0" prefWidth="204.0" />
-            <TextField fx:id="tfEstadoDestino" layoutX="22.0" layoutY="305.0" prefHeight="25.0" prefWidth="411.0" />
-            <TextField fx:id="tfCiudadDestino" layoutX="21.0" layoutY="360.0" prefHeight="25.0" prefWidth="411.0" />
-            <Button layoutX="24.0" layoutY="415.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="31.0" prefWidth="112.0" text="Cancelar" />
-            <Button layoutX="163.0" layoutY="415.0" mnemonicParsing="false" onAction="#btnAceptar" prefHeight="31.0" prefWidth="112.0" text="Aceptar" />
-            <Label layoutX="21.0" layoutY="122.0" prefHeight="17.0" prefWidth="52.0" text="Calle" textFill="WHITE" />
-            <Label layoutX="24.0" layoutY="178.0" prefHeight="17.0" prefWidth="52.0" text="Número" textFill="WHITE" />
-            <Label layoutX="23.0" layoutY="232.0" prefHeight="17.0" prefWidth="52.0" text="Colonia" textFill="WHITE" />
-            <Label layoutX="227.0" layoutY="178.0" prefHeight="17.0" prefWidth="112.0" text="Código Postal" textFill="WHITE" />
-            <Label layoutX="24.0" layoutY="287.0" prefHeight="17.0" prefWidth="52.0" text="Estado" textFill="WHITE" />
-            <Label layoutX="24.0" layoutY="342.0" prefHeight="17.0" prefWidth="52.0" text="Ciudad" textFill="WHITE" />
-            <ComboBox fx:id="cbConductor" layoutX="547.0" layoutY="55.0" prefHeight="25.0" prefWidth="377.0" />
-            <ComboBox fx:id="cbEstado" layoutX="547.0" layoutY="111.0" prefHeight="25.0" prefWidth="377.0" />
-            <TextField fx:id="tfCosto" layoutX="547.0" layoutY="170.0" prefHeight="25.0" prefWidth="377.0" />
-            <Label layoutX="547.0" layoutY="33.0" prefHeight="17.0" prefWidth="112.0" text="Conductor" textFill="WHITE" />
-            <Label layoutX="547.0" layoutY="150.0" prefHeight="17.0" prefWidth="112.0" text="Costo" textFill="WHITE" />
-            <Label layoutX="547.0" layoutY="91.0" prefHeight="17.0" prefWidth="112.0" text="Estatus" textFill="WHITE" />
-            <ComboBox fx:id="tfClienteFormularioEnvio" layoutX="21.0" layoutY="55.0" prefHeight="25.0" prefWidth="411.0" />
-            <TextArea fx:id="taDireccionOrigen" layoutX="544.0" layoutY="249.0" prefHeight="137.0" prefWidth="377.0" />
-            <Label layoutX="642.0" layoutY="232.0" prefHeight="17.0" prefWidth="289.0" text="Esta dirección pertenece a la sucursal de recolección" textFill="#f8ff0a" />
-            <Separator layoutX="509.0" layoutY="8.0" orientation="VERTICAL" prefHeight="459.0" prefWidth="0.0" style="-fx-background-color: white;" />
          </children>
       </Pane>
-      <Pane fx:id="paneNumeroGuia" layoutX="220.0" layoutY="100.0" prefHeight="154.0" prefWidth="439.0" style="-fx-background-color: white;" visible="false">
+      <Pane fx:id="paneNumeroGuia" layoutX="422.0" layoutY="109.0" prefHeight="154.0" prefWidth="439.0" style="-fx-background-color: white;" visible="false">
          <children>
-            <Label layoutX="172.0" layoutY="14.0" prefHeight="17.0" prefWidth="112.0" text="Número de guía" />
-            <Label fx:id="lbNumeroGuia" alignment="CENTER" layoutX="68.0" layoutY="43.0" prefHeight="36.0" prefWidth="295.0" text="15615277372627">
+            <Label layoutX="148.0" layoutY="12.0" prefHeight="30.0" prefWidth="160.0" text="Número de guía">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font></Label>
+            <Label fx:id="lbNumeroGuia" alignment="CENTER" layoutX="89.0" layoutY="45.0" prefHeight="36.0" prefWidth="279.0" text="0">
                <font>
                   <Font size="25.0" />
                </font>
             </Label>
-            <ImageView fx:id="ivCopiarNumeroGuia" fitHeight="36.0" fitWidth="33.0" layoutX="373.0" layoutY="43.0" onMouseClicked="#ivCopiarNumeroGuia" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ivCopiarNumeroGuia" fitHeight="36.0" fitWidth="33.0" layoutX="373.0" layoutY="43.0" onMouseClicked="#ivCopiarNumeroGuia" onMouseEntered="#enteredCopiarGuia" onMouseExited="#exitedCopiarGuia" onMousePressed="#pressedCopiarGuia" onMouseReleased="#releasedCopiarGuia" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/copiar.png" />
                </image>
             </ImageView>
-            <Button layoutX="192.0" layoutY="108.0" mnemonicParsing="false" onAction="#btnAceptarNumeroGuia" prefHeight="25.0" prefWidth="72.0" text="Aceptar" />
+            <Button layoutX="171.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnAceptarNumeroGuia" prefHeight="35.0" prefWidth="114.0" text="Aceptar" />
+            <Label fx:id="lbCopiado" layoutX="366.0" layoutY="83.0" prefHeight="17.0" prefWidth="72.0" text="Copiado ✔" visible="false" />
          </children>
       </Pane>
    </children>

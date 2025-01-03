@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clientepaqueteria.pojo;
 
 public class ResultadoObtenerEnvio {
@@ -31,6 +26,7 @@ public class ResultadoObtenerEnvio {
        
     private Integer idCliente;
     private String nombreCliente;
+    private String estatusCliente;
     
     private Integer idColaborador; 
     private String nombreColaborador;
@@ -47,7 +43,7 @@ public class ResultadoObtenerEnvio {
     public ResultadoObtenerEnvio() {
     }
 
-    public ResultadoObtenerEnvio(Integer idEnvio, String seguimiento, String numeroGuia, Float costoEnvio, Integer idDireccionOrigen, String tipoOrigen, String calleOrigen, Integer numeroOrigen, String coloniaOrigen, Integer codigoPostalOrigen, String ciudadOrigen, String estadoOrigen, Integer idDireccionDestino, String tipoDestino, String calleDestino, Integer numeroDestino, String coloniaDestino, Integer codigoPostalDestino, String ciudadDestino, String estadoDestino, Integer idCliente, String nombreCliente, Integer idColaborador, String nombreColaborador, String nombreConductor, Integer idSeguimiento, String nombreSeguimiento, Integer cantidadPaquetes, boolean error, String mensaje) {
+    public ResultadoObtenerEnvio(Integer idEnvio, String seguimiento, String numeroGuia, Float costoEnvio, Integer idDireccionOrigen, String tipoOrigen, String calleOrigen, Integer numeroOrigen, String coloniaOrigen, Integer codigoPostalOrigen, String ciudadOrigen, String estadoOrigen, Integer idDireccionDestino, String tipoDestino, String calleDestino, Integer numeroDestino, String coloniaDestino, Integer codigoPostalDestino, String ciudadDestino, String estadoDestino, Integer idCliente, String nombreCliente, String estatusCliente, Integer idColaborador, String nombreColaborador, String nombreConductor, Integer idSeguimiento, String nombreSeguimiento, Integer cantidadPaquetes, boolean error, String mensaje) {
         this.idEnvio = idEnvio;
         this.seguimiento = seguimiento;
         this.numeroGuia = numeroGuia;
@@ -70,6 +66,7 @@ public class ResultadoObtenerEnvio {
         this.estadoDestino = estadoDestino;
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
+        this.estatusCliente = estatusCliente;
         this.idColaborador = idColaborador;
         this.nombreColaborador = nombreColaborador;
         this.nombreConductor = nombreConductor;
@@ -256,6 +253,14 @@ public class ResultadoObtenerEnvio {
         this.nombreCliente = nombreCliente;
     }
 
+    public String getEstatusCliente() {
+        return estatusCliente;
+    }
+
+    public void setEstatusCliente(String estatusCliente) {
+        this.estatusCliente = estatusCliente;
+    }
+
     public Integer getIdColaborador() {
         return idColaborador;
     }
@@ -320,6 +325,7 @@ public class ResultadoObtenerEnvio {
         this.mensaje = mensaje;
     }
 
+    
    
     
 }

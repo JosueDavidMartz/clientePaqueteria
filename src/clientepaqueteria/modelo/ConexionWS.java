@@ -19,8 +19,7 @@ public class ConexionWS {
             HttpURLConnection conexionHttp = (HttpURLConnection) urlDestino.openConnection();
             conexionHttp.setRequestMethod("GET");
             int codigoRespuesta = conexionHttp.getResponseCode();
-            respuesta.setCodigoRespuesta(codigoRespuesta);
-            System.out.println("Codigo WS: "+codigoRespuesta);
+            respuesta.setCodigoRespuesta(codigoRespuesta);           
             if(codigoRespuesta == HttpURLConnection.HTTP_OK){
                 respuesta.setContenido(obtenerContenidoWS(conexionHttp.getInputStream()));
             }else{
@@ -226,4 +225,35 @@ public class ConexionWS {
         in.close();
         return respuestaEntrada.toString();
     }
+    
+    public static RespuestaHTTP peticionPUTBinary(String url, byte[] fotoBlob) {
+    RespuestaHTTP respuesta = new RespuestaHTTP();
+    try {
+        URL urlDestino = new URL(url);
+        HttpURLConnection conexionHttp = (HttpURLConnection) urlDestino.openConnection();
+        conexionHttp.setRequestMethod("PUT");
+        conexionHttp.setRequestProperty("Content-Type", "application/octet-stream");
+        conexionHttp.setDoOutput(true);
+
+        OutputStream os = conexionHttp.getOutputStream();
+        os.write(fotoBlob); // Enviar los datos binarios directamente
+        os.flush();
+        os.close();
+
+        int codigoRespuesta = conexionHttp.getResponseCode();
+        respuesta.setCodigoRespuesta(codigoRespuesta);
+        if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+            respuesta.setContenido(obtenerContenidoWS(conexionHttp.getInputStream()));
+        } else {
+            respuesta.setContenido("Código de respuesta HTTP: " + codigoRespuesta);
+        }
+    } catch (MalformedURLException e) {
+        respuesta.setCodigoRespuesta(Constantes.ERROR_URL);
+        respuesta.setContenido("Error en la dirección de conexión.");
+    } catch (IOException io) {
+        respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
+        respuesta.setContenido("Error: no se pudo realizar la solicitud correspondiente.");
+    }
+    return respuesta;
+}
 }
